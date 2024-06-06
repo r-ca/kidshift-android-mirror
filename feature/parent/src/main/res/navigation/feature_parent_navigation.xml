@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/featureParentFragment"
-        android:name="one.nem.kidshift.feature.parent.FeatureParentFragment"
+        android:name="one.nem.kidshift.feature.parent.ParentMainFragment"
         android:label="fragment_feature_parent"
-        tools:layout="@layout/fragment_feature_parent" />
+        tools:layout="@layout/fragment_parent_main" />
 </navigation>
