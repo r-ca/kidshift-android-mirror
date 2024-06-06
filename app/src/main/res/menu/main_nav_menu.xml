@@ -5,4 +5,12 @@
         android:id="@+id/feature_debug_navigation"
         android:title="Debug" />
 
+    <item
+        android:id="@+id/feature_parent_navigation"
+        android:title="Parent" />
+
+    <item
+        android:id="@+id/feature_child_navigation"
+        android:title="Child" />
+
 </menu>
