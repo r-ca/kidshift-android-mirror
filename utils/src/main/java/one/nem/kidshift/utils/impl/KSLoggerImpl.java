@@ -14,44 +14,55 @@ public class KSLoggerImpl implements KSLogger {
 
     private ArrayList<LogModel> logs = new ArrayList<LogModel>();
 
+    private ArrayList<String> tags = new ArrayList<String>();
+
+    public KSLoggerImpl() {
+        tags.add("UNTAGGED");
+    }
+
+    public KSLoggerImpl(String tag) {
+        tags.add(tag);
+    }
+
     @Override
     public KSLogger getChildLogger(String tag) {
-        return null;
+        tags.add(tag);
+        return this;
     }
 
     @Override
     public KSLogger get(String tag) {
-        return null;
+        return new KSLoggerImpl(tag);
     }
 
     @Override
     public void info(String message) {
-
+        log(new LogModel(LogLevelEnum.INFO, new String[]{}, message));
     }
 
     @Override
     public void warn(String message) {
-
+        log(new LogModel(LogLevelEnum.WARN, new String[]{}, message));
     }
 
     @Override
     public void error(String message) {
-
+        log(new LogModel(LogLevelEnum.ERROR, new String[]{}, message));
     }
 
     @Override
     public void debug(String message) {
-
+        log(new LogModel(LogLevelEnum.DEBUG, new String[]{}, message));
     }
 
     @Override
     public void trace(String message) {
-
+        log(new LogModel(LogLevelEnum.TRACE, new String[]{}, message));
     }
 
     @Override
     public void fatal(String message) {
-
+        log(new LogModel(LogLevelEnum.FATAL, new String[]{}, message));
     }
 
     private void log(LogModel log) {
