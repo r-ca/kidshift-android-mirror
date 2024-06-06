@@ -6,6 +6,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.enums.LogLevelEnum;
 import one.nem.kidshift.utils.models.LogModel;
@@ -16,6 +18,7 @@ public class KSLoggerImpl implements KSLogger {
 
     private ArrayList<String> tags = new ArrayList<String>();
 
+    @Inject
     public KSLoggerImpl() {
         tags.add("UNTAGGED");
     }
