@@ -40,6 +40,8 @@ dependencies {
 
     // Module
     implementation project(':feature:debug')
+    implementation project(':feature:parent')
+    implementation project(':feature:child')
 
 
     // Hilt (DI)
