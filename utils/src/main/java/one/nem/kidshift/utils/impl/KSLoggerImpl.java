@@ -39,6 +39,19 @@ public class KSLoggerImpl implements KSLogger {
     }
 
     @Override
+    public KSLogger setTag(String tag) {
+        tags.clear();
+        tags.add(tag);
+        return this;
+    }
+
+    @Override
+    public KSLogger addTag(String tag) {
+        tags.add(tag);
+        return this;
+    }
+
+    @Override
     public void info(String message) {
         log(new LogModel(LogLevelEnum.INFO, new String[]{}, message));
     }
