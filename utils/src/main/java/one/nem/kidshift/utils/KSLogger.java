@@ -1,7 +1,8 @@
 package one.nem.kidshift.utils;
 
 public interface KSLogger {
-    void getChildLogger(String tag);
+    KSLogger getChildLogger(String tag);
+    KSLogger get(String tag);
     void info(String message);
     void warn(String message);
     void error(String message);
