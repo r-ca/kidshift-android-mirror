@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/feature_debug_navigation"
+    app:startDestination="@id/debugMainFragment">
+
+    <fragment
+        android:id="@+id/debugMainFragment"
+        android:name="one.nem.kidshift.feature.debug.DebugMainFragment"
+        android:label="fragment_debug_main"
+        tools:layout="@layout/fragment_debug_main" />
+</navigation>

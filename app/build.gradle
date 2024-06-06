@@ -38,6 +38,11 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
+    // Module
+    implementation project(':feature:debug')
+    implementation project(':feature:parent')
+    implementation project(':feature:child')
+
 
     // Hilt (DI)
     implementation libs.com.google.dagger.hilt.android

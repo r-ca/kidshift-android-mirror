@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/feature_debug_navigation"
+        android:title="Debug" />
+
+    <item
+        android:id="@+id/feature_parent_navigation"
+        android:title="Parent" />
+
+    <item
+        android:id="@+id/feature_child_navigation"
+        android:title="Child" />
+
+</menu>

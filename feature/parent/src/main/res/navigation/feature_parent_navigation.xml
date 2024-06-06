@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/feature_parent_navigation"
+    app:startDestination="@id/featureParentFragment">
+
+    <fragment
+        android:id="@+id/featureParentFragment"
+        android:name="one.nem.kidshift.feature.parent.ParentMainFragment"
+        android:label="fragment_feature_parent"
+        tools:layout="@layout/fragment_parent_main" />
+</navigation>
