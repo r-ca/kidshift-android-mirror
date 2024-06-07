@@ -1,7 +1,5 @@
 package one.nem.kidshift.model;
 
-import one.nem.kidshift.model.enums.TaskBlockingType;
-
 public class TaskItemModel {
 
     String internalId;
