@@ -37,4 +37,7 @@ dependencies {
     // Hilt (DI)
     implementation libs.com.google.dagger.hilt.android
     annotationProcessor libs.com.google.dagger.hilt.compiler
+
+    // Java Faker
+    implementation 'com.github.javafaker:javafaker:1.0.2'
 }
