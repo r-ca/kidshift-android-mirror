@@ -8,12 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.utils.KSLogger;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DebugMainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 public class DebugMainFragment extends Fragment {
+
+    @Inject
+    KSLogger ksLogger;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,5 +69,14 @@ public class DebugMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_debug_main, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        view.findViewById(R.id.insertDebugLogButton).setOnClickListener(v -> {
+            ksLogger.debug("Log inserted from DebugMainFragment!");
+        });
     }
 }

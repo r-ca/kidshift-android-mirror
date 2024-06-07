@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'one.nem.kidshift.feature.debug'
+    namespace 'one.nem.kidshift.utils'
     compileSdk 34
 
     defaultConfig {
@@ -30,8 +30,6 @@ dependencies {
 
     implementation libs.appcompat
     implementation libs.material
-    implementation libs.navigation.fragment
-    implementation libs.navigation.ui
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -39,7 +37,4 @@ dependencies {
     // Hilt (DI)
     implementation libs.com.google.dagger.hilt.android
     annotationProcessor libs.com.google.dagger.hilt.compiler
-
-    // App Module
-    implementation project(':utils')
 }
