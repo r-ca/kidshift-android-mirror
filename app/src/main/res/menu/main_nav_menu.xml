@@ -3,14 +3,18 @@
 
     <item
         android:id="@+id/feature_debug_navigation"
+        android:icon="@drawable/developer_mode_24px"
         android:title="Debug" />
 
+    <!-- TODO: アイコン再検討 -->
     <item
         android:id="@+id/feature_parent_navigation"
+        android:icon="@drawable/pending_24px"
         android:title="Parent" />
 
     <item
         android:id="@+id/feature_child_navigation"
+        android:icon="@drawable/child_care_24px"
         android:title="Child" />
 
 </menu>
