@@ -21,5 +21,4 @@ public class KidShiftApplication extends Application {
             Log.d("StartUp/DynamicColors", "DynamicColors is not available.");
         }
     }
-
 }
