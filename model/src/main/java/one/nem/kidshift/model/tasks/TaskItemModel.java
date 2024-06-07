@@ -1,5 +1,7 @@
 package one.nem.kidshift.model.tasks;
 
+import one.nem.kidshift.model.tasks.condition.TaskConditionBaseModel;
+
 public class TaskItemModel {
 
     String internalId;

@@ -1,4 +1,4 @@
-package one.nem.kidshift.model.tasks;
+package one.nem.kidshift.model.tasks.condition;
 
 import one.nem.kidshift.model.enums.WeekdayEnum;
 
