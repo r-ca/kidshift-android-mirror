@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/feature/parent" />
             <option value="$PROJECT_DIR$/feature/setting" />
             <option value="$PROJECT_DIR$/model" />
+            <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/utils" />
           </set>
         </option>
