@@ -44,6 +44,8 @@ dependencies {
     implementation project(':feature:parent')
     implementation project(':feature:child')
 
+    implementation project(':shared')
+
 
     // Hilt (DI)
     implementation libs.com.google.dagger.hilt.android
