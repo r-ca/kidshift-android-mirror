@@ -9,14 +9,5 @@
         android:id="@+id/debugMainFragment"
         android:name="one.nem.kidshift.feature.debug.DebugMainFragment"
         android:label="fragment_debug_main"
-        tools:layout="@layout/fragment_debug_main" >
-        <action
-            android:id="@+id/action_debugMainFragment_to_debugMockTestFragment"
-            app:destination="@id/debugMockTestFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/debugMockTestFragment"
-        android:name="one.nem.kidshift.feature.debug.DebugMockTestFragment"
-        android:label="fragment_debug_mock_test"
-        tools:layout="@layout/fragment_debug_mock_test" />
+        tools:layout="@layout/fragment_debug_main" />
 </navigation>
