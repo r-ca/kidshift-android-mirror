@@ -83,7 +83,7 @@ public class DebugMockTestFragment extends Fragment {
         TextView taskDataResult = view.findViewById(R.id.taskData_resultTextView);
 
         view.findViewById(R.id.taskData_getTasksButton).setOnClickListener(v -> {
-            taskDataResult.setText(taskData.getTasks().toString());
+            taskDataResult.setText(taskData.getTasks().stream().map(Object::toString).reduce("", (a, b) -> a + b + "\n"));
         });
     }
 
