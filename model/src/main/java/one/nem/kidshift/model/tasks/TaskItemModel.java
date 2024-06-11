@@ -5,13 +5,15 @@ import one.nem.kidshift.model.tasks.condition.TaskConditionBaseModel;
 public class TaskItemModel {
 
     String internalId;
+    String attachedChildId;
     String displayName;
     TaskConditionBaseModel condition;
     long reward;
 
     // constructor
-    public TaskItemModel(String internalId, String displayName, TaskConditionBaseModel condition, long reward) {
+    public TaskItemModel(String internalId, String displayName, String attachedChildId, TaskConditionBaseModel condition, long reward) {
         this.internalId = internalId;
+        this.attachedChildId = attachedChildId;
         this.displayName = displayName;
         this.condition = condition;
         this.reward = reward;
@@ -25,6 +27,14 @@ public class TaskItemModel {
 
     public void setInternalId(String internalId) {
         this.internalId = internalId;
+    }
+
+    public String getAttachedChildId() {
+        return attachedChildId;
+    }
+
+    public void setAttachedChildId(String attachedChildId) {
+        this.attachedChildId = attachedChildId;
     }
 
     public String getDisplayName() {
