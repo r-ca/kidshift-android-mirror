@@ -40,6 +40,8 @@ dependencies {
     implementation libs.com.google.dagger.hilt.android
     annotationProcessor libs.com.google.dagger.hilt.compiler
 
-    // App Module
+    // Project modules
+    implementation project(':model')
     implementation project(':utils')
+    implementation project(':data')
 }
