@@ -9,21 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
-import dagger.hilt.android.AndroidEntryPoint;
-import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.feature.debug.adapter.DebugMenuListItemAdapter;
+import one.nem.kidshift.feature.debug.model.DebugMenuListItemModel;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DebugMainFragment#newInstance} factory method to
+ * Use the {@link DebugTopMenuFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@AndroidEntryPoint
-public class DebugMainFragment extends Fragment {
-
-    @Inject
-    KSLogger ksLogger;
+public class DebugTopMenuFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +31,7 @@ public class DebugMainFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public DebugMainFragment() {
+    public DebugTopMenuFragment() {
         // Required empty public constructor
     }
 
@@ -44,11 +41,11 @@ public class DebugMainFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DebugMainFragment.
+     * @return A new instance of fragment DebugTopMenuFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DebugMainFragment newInstance(String param1, String param2) {
-        DebugMainFragment fragment = new DebugMainFragment();
+    public static DebugTopMenuFragment newInstance(String param1, String param2) {
+        DebugTopMenuFragment fragment = new DebugTopMenuFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,13 +65,18 @@ public class DebugMainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_debug_main, container, false);
-    }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_debug_top_menu, container, false);
 
-        // NONE
+        RecyclerView recyclerView = view.findViewById(R.id.topItemsRecyclerView);
+        recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getContext()));
+        List<DebugMenuListItemModel> debugMenuListItems = new ArrayList<>();
+
+        debugMenuListItems.add(new DebugMenuListItemModel("Data mock tester", "データモジュールの取得処理のモックをテストします", R.id.action_debugTopMenuFragment_to_debugMockTestFragment, true));
+
+        DebugMenuListItemAdapter adapter = new DebugMenuListItemAdapter(debugMenuListItems);
+        recyclerView.setAdapter(adapter);
+
+        return view;
     }
 }

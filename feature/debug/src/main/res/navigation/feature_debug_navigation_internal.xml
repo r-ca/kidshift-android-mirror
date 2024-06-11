@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/feature_debug_navigation_internal"
+    app:startDestination="@id/debugTopMenuFragment">
+
+    <fragment
+        android:id="@+id/debugTopMenuFragment"
+        android:name="one.nem.kidshift.feature.debug.DebugTopMenuFragment"
+        android:label="fragment_debug_top_menu"
+        tools:layout="@layout/fragment_debug_top_menu" >
+        <action
+            android:id="@+id/action_debugTopMenuFragment_to_debugMockTestFragment"
+            app:destination="@id/debugMockTestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/debugMockTestFragment"
+        android:name="one.nem.kidshift.feature.debug.DebugMockTestFragment"
+        android:label="fragment_debug_mock_test"
+        tools:layout="@layout/fragment_debug_mock_test" />
+</navigation>
