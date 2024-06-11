@@ -66,12 +66,12 @@ public class TaskItemModel {
     @NonNull
     @Override
     public String toString() {
-        return "TaskItemModel{" +
-                "internalId='" + internalId + '\'' +
-                ", attachedChildId='" + attachedChildId + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", condition=" + condition +
-                ", reward=" + reward +
+        return "TaskItemModel{" + '\n' +
+                "  internalId='" + internalId + '\n' +
+                "  attachedChildId='" + attachedChildId + '\n' +
+                "  displayName='" + displayName + '\n' +
+                "  condition=" + condition.toString() + '\n' +
+                "  reward=" + reward +
                 '}';
     }
 }
