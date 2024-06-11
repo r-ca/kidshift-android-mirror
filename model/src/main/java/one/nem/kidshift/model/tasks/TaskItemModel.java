@@ -1,5 +1,7 @@
 package one.nem.kidshift.model.tasks;
 
+import androidx.annotation.NonNull;
+
 import one.nem.kidshift.model.tasks.condition.TaskConditionBaseModel;
 
 public class TaskItemModel {
@@ -59,5 +61,18 @@ public class TaskItemModel {
 
     public void setReward(long reward) {
         this.reward = reward;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "TaskItemModel{" + '\n' +
+                "  internalId='" + internalId + '\n' +
+                "  attachedChildId='" + attachedChildId + '\n' +
+                "  displayName='" + displayName + '\n' +
+//                "  condition=" + condition.toString() + '\n' +
+                "  condition=" + "__________" + '\n' +
+                "  reward=" + reward + '\n' +
+                '}';
     }
 }
