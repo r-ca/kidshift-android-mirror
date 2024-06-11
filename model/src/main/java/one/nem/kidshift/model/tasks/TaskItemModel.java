@@ -72,7 +72,7 @@ public class TaskItemModel {
                 "  displayName='" + displayName + '\n' +
 //                "  condition=" + condition.toString() + '\n' +
                 "  condition=" + "__________" + '\n' +
-                "  reward=" + reward +
+                "  reward=" + reward + '\n' +
                 '}';
     }
 }
