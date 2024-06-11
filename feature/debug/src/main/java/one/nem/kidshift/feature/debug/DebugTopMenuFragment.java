@@ -77,6 +77,6 @@ public class DebugTopMenuFragment extends Fragment {
         DebugMenuListItemAdapter adapter = new DebugMenuListItemAdapter(debugMenuListItems);
         recyclerView.setAdapter(adapter);
 
-        return inflater.inflate(R.layout.fragment_debug_top_menu, container, false);
+        return view;
     }
 }
