@@ -70,7 +70,8 @@ public class TaskItemModel {
                 "  internalId='" + internalId + '\n' +
                 "  attachedChildId='" + attachedChildId + '\n' +
                 "  displayName='" + displayName + '\n' +
-                "  condition=" + condition.toString() + '\n' +
+//                "  condition=" + condition.toString() + '\n' +
+                "  condition=" + "__________" + '\n' +
                 "  reward=" + reward +
                 '}';
     }
