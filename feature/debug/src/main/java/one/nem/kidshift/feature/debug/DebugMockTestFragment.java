@@ -12,6 +12,7 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.data.TaskData;
 
 /**
@@ -24,6 +25,9 @@ public class DebugMockTestFragment extends Fragment {
 
     @Inject
     TaskData taskData;
+
+    @Inject
+    RewardData rewardData;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,6 +88,15 @@ public class DebugMockTestFragment extends Fragment {
 
         view.findViewById(R.id.taskData_getTasksButton).setOnClickListener(v -> {
             taskDataResult.setText(taskData.getTasks().stream().map(Object::toString).reduce("", (a, b) -> a + b + "\n"));
+        });
+
+        // RewardData
+        TextView rewardDataStatus = view.findViewById(R.id.rewardData_mockedStatusTextView);
+        rewardDataStatus.setText("isMocked: true"); // TODO: 固定値やめる
+
+        TextView rewardDataResult = view.findViewById(R.id.rewardData_resultTextView);
+        view.findViewById(R.id.rewardData_getTotalRewardButton).setOnClickListener(v -> {
+            rewardDataResult.setText(rewardData.getTotalReward().toString());
         });
     }
 
