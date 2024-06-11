@@ -45,6 +45,7 @@ dependencies {
     implementation project(':feature:child')
 
     implementation project(':shared')
+    implementation project(':utils')
 
 
     // Hilt (DI)

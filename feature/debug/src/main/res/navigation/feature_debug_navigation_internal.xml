@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_debugTopMenuFragment_to_debugMockTestFragment"
             app:destination="@id/debugMockTestFragment" />
+        <action
+            android:id="@+id/action_debugTopMenuFragment_to_debugDebugConsoleFragment"
+            app:destination="@id/debugDebugConsoleFragment" />
     </fragment>
     <fragment
         android:id="@+id/debugMockTestFragment"
         android:name="one.nem.kidshift.feature.debug.DebugMockTestFragment"
         android:label="fragment_debug_mock_test"
         tools:layout="@layout/fragment_debug_mock_test" />
+    <fragment
+        android:id="@+id/debugDebugConsoleFragment"
+        android:name="one.nem.kidshift.feature.debug.DebugDebugConsoleFragment"
+        android:label="fragment_debug_debug_console"
+        tools:layout="@layout/fragment_debug_debug_console" />
 </navigation>

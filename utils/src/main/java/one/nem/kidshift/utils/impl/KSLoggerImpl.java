@@ -5,6 +5,7 @@ import static one.nem.kidshift.utils.enums.LogLevelEnum.INFO;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -49,6 +50,11 @@ public class KSLoggerImpl implements KSLogger {
     public KSLogger addTag(String tag) {
         tags.add(tag);
         return this;
+    }
+
+    @Override
+    public List<LogModel> getHistory() {
+        return logs;
     }
 
     @Override
