@@ -14,7 +14,10 @@
         android:id="@+id/commandTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="monospace"
         android:text="Command"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,6 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
         android:text="resultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholderresultPlaceholder"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
