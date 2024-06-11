@@ -11,8 +11,9 @@ public class TaskItemModel {
     long reward;
 
     // constructor
-    public TaskItemModel(String internalId, String displayName, TaskConditionBaseModel condition, long reward) {
+    public TaskItemModel(String internalId, String displayName, String attachedChildId, TaskConditionBaseModel condition, long reward) {
         this.internalId = internalId;
+        this.attachedChildId = attachedChildId;
         this.displayName = displayName;
         this.condition = condition;
         this.reward = reward;
