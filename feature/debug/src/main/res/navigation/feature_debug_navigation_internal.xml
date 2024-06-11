@@ -11,11 +11,11 @@
         android:label="fragment_debug_top_menu"
         tools:layout="@layout/fragment_debug_top_menu" >
         <action
-            android:id="@+id/action_debugTopMenuFragment_to_debugMockTestFragment2"
-            app:destination="@id/debugMockTestFragment2" />
+            android:id="@+id/action_debugTopMenuFragment_to_debugMockTestFragment"
+            app:destination="@id/debugMockTestFragment" />
     </fragment>
     <fragment
-        android:id="@+id/debugMockTestFragment2"
+        android:id="@+id/debugMockTestFragment"
         android:name="one.nem.kidshift.feature.debug.DebugMockTestFragment"
         android:label="fragment_debug_mock_test"
         tools:layout="@layout/fragment_debug_mock_test" />

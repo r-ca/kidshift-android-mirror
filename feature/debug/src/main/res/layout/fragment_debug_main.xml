@@ -20,12 +20,13 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="one.nem.kidshift.feature.debug.DebugTopMenuFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debugMenuToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/debugMenuToolbar"
+        app:navGraph="@navigation/feature_debug_navigation_internal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
