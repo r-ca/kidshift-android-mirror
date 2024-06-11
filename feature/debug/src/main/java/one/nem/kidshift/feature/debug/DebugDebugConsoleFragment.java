@@ -3,10 +3,19 @@ package one.nem.kidshift.feature.debug;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import one.nem.kidshift.feature.debug.adapter.DebugCommandListItemAdapter;
+import one.nem.kidshift.feature.debug.adapter.DebugMenuListItemAdapter;
+import one.nem.kidshift.feature.debug.model.DebugCommandItemModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +23,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class DebugDebugConsoleFragment extends Fragment {
+
+    private final List<DebugCommandItemModel> debugCommandItemModels = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,7 +69,32 @@ public class DebugDebugConsoleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_debug_debug_console, container, false);
+        View view = inflater.inflate(R.layout.fragment_debug_debug_console, container, false);
+
+        RecyclerView recyclerView = view.findViewById(R.id.debugCommandHistoryRecyclerView);
+        recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getContext()));
+
+        debugCommandItemModels.add(new DebugCommandItemModel("---", "Initialized Debug Console"));
+
+        DebugCommandListItemAdapter debugCommandItemAdapter = new DebugCommandListItemAdapter(debugCommandItemModels);
+        recyclerView.setAdapter(debugCommandItemAdapter);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        TextView debugCommandInput = view.findViewById(R.id.debugCommandEditText);
+        view.findViewById(R.id.debugCommandExecuteButton).setOnClickListener(v -> {
+            DebugCommandProcessor debugCommandProcessor = new DebugCommandProcessor();
+            debugCommandItemModels.add(
+                    new DebugCommandItemModel(
+                            debugCommandInput.getText().toString(),
+                            debugCommandProcessor.execute(debugCommandInput.getText().toString())));
+
+            debugCommandInput.setText(""); // Clear the input field
+        });
     }
 }
