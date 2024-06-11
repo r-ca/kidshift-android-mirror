@@ -24,15 +24,15 @@ public class TaskDataDummyImpl implements TaskData {
     @Inject
     public TaskDataDummyImpl() {
         faker = new Faker();
-        logger.setTag("TaskDataDummyImpl");
+//        logger.setTag("TaskDataDummyImpl");
     }
 
     @Override
     public List<TaskItemModel> getTasks() {
-        logger.info("getTotalReward called");
+//        logger.info("getTotalReward called");
         List<TaskItemModel> tasks = new ArrayList<>();
         int totalTasks = faker.number().numberBetween(1, 15);
-        logger.info("Returning total tasks: " + totalTasks);
+//        logger.info("Returning total tasks: " + totalTasks);
         for (int i = 0; i < totalTasks; i++) {
             tasks.add(new TaskItemModel(
                     UUID.randomUUID().toString(),
@@ -40,7 +40,7 @@ public class TaskDataDummyImpl implements TaskData {
                     new TaskConditionNoneModel(),
                     faker.number().numberBetween(1, 1000)));
         }
-        logger.info("Returning tasks: " + tasks);
+//        logger.info("Returning tasks: " + tasks);
         return tasks;
     }
 }
