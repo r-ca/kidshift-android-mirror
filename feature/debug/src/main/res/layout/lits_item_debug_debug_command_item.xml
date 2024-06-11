@@ -10,17 +10,24 @@
     android:paddingHorizontal="12dp"
     android:paddingVertical="24dp">
 
-    <TextView
-        android:id="@+id/commandTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="monospace"
-        android:text="Command"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="12sp"
+    <LinearLayout
+        android:id="@+id/commandLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/commandTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="Command"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/resultTextView"
@@ -32,5 +39,5 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commandTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/commandLinearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
