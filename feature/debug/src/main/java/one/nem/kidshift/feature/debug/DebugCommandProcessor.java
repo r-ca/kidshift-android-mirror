@@ -24,10 +24,15 @@ public class DebugCommandProcessor {
             case "ping":
                 return "pong";
             case "echo":
-                return commandArray[1];
+                return executeEcho(commandArray);
             default:
                 throw new InvalidCommandException();
         }
+    }
+
+    private String executeEcho(String[] commandArray) {
+        // 結合して返す
+        return String.join(" ", commandArray);
     }
 
     // Exceptions
