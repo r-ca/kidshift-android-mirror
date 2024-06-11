@@ -13,16 +13,24 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.feature.debug.adapter.DebugCommandListItemAdapter;
 import one.nem.kidshift.feature.debug.adapter.DebugMenuListItemAdapter;
 import one.nem.kidshift.feature.debug.model.DebugCommandItemModel;
+import one.nem.kidshift.utils.KSLogger;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DebugDebugConsoleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 public class DebugDebugConsoleFragment extends Fragment {
+
+    @Inject
+    KSLogger ksLogger;
 
     private final List<DebugCommandItemModel> debugCommandItemModels = new ArrayList<>();
     DebugCommandListItemAdapter debugCommandItemAdapter;
@@ -89,7 +97,8 @@ public class DebugDebugConsoleFragment extends Fragment {
 
         TextView debugCommandInput = view.findViewById(R.id.debugCommandEditText);
         view.findViewById(R.id.debugCommandExecuteButton).setOnClickListener(v -> {
-            DebugCommandProcessor debugCommandProcessor = new DebugCommandProcessor();
+            DebugCommandProcessor debugCommandProcessor = new DebugCommandProcessor(
+                    ksLogger);
             debugCommandItemModels.add(
                     new DebugCommandItemModel(
                             debugCommandInput.getText().toString(),
