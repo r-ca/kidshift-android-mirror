@@ -25,6 +25,7 @@ import one.nem.kidshift.feature.debug.model.DebugCommandItemModel;
 public class DebugDebugConsoleFragment extends Fragment {
 
     private final List<DebugCommandItemModel> debugCommandItemModels = new ArrayList<>();
+    DebugCommandListItemAdapter debugCommandItemAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,7 +77,7 @@ public class DebugDebugConsoleFragment extends Fragment {
 
         debugCommandItemModels.add(new DebugCommandItemModel("---", "Initialized Debug Console"));
 
-        DebugCommandListItemAdapter debugCommandItemAdapter = new DebugCommandListItemAdapter(debugCommandItemModels);
+        debugCommandItemAdapter = new DebugCommandListItemAdapter(debugCommandItemModels);
         recyclerView.setAdapter(debugCommandItemAdapter);
 
         return view;
@@ -95,6 +96,8 @@ public class DebugDebugConsoleFragment extends Fragment {
                             debugCommandProcessor.execute(debugCommandInput.getText().toString())));
 
             debugCommandInput.setText(""); // Clear the input field
+
+            debugCommandItemAdapter.notifyItemInserted(debugCommandItemModels.size() - 1);
         });
     }
 }
