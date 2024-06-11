@@ -72,7 +72,7 @@ public class DebugTopMenuFragment extends Fragment {
         recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getContext()));
         List<DebugMenuListItemModel> debugMenuListItems = new ArrayList<>();
 
-        debugMenuListItems.add(new DebugMenuListItemModel("Data mock tester", "データモジュールの取得処理のモックをテストします", R.id.action_debugMainFragment_to_debugMockTestFragment, true));
+        debugMenuListItems.add(new DebugMenuListItemModel("Data mock tester", "データモジュールの取得処理のモックをテストします", R.id.action_debugTopMenuFragment_to_debugMockTestFragment2, true));
 
         DebugMenuListItemAdapter adapter = new DebugMenuListItemAdapter(debugMenuListItems);
         recyclerView.setAdapter(adapter);
