@@ -14,10 +14,16 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.utils.KSLogger;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+
+    @Inject
+    KSLogger ksLogger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0); // 0にしないとボトムナビゲーションが埋まるため
             return insets;
         });
+
+        ksLogger.info("MainActivity started!");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 
