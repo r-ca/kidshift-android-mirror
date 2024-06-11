@@ -1,5 +1,7 @@
 package one.nem.kidshift.feature.debug;
 
+import java.util.Arrays;
+
 public class DebugCommandProcessor {
 
     public DebugCommandProcessor() {
@@ -31,8 +33,8 @@ public class DebugCommandProcessor {
     }
 
     private String executeEcho(String[] commandArray) {
-        // 結合して返す
-        return String.join(" ", commandArray);
+        String[] echoArray = Arrays.copyOfRange(commandArray, 1, commandArray.length);
+        return String.join(" ", echoArray);
     }
 
     // Exceptions
