@@ -39,5 +39,5 @@ dependencies {
     annotationProcessor libs.com.google.dagger.hilt.compiler
 
     // Gson
-    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation libs.gson
 }
