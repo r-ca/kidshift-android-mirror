@@ -53,6 +53,18 @@ public class SharedPrefUtilsImpl implements SharedPrefUtils {
     }
 
     @Override
+    public <T> List<T> getObjects(Class<T> clazz) {
+        // SharedPreferenceの中身を全て取得
+        List<T> list = null;
+        for (String key : sharedPreferences.getAll().keySet()) {
+            String json = sharedPreferences.getString(key, null);
+            T object = gson.fromJson(json, clazz);
+            list.add(object);
+        }
+        return list;
+    }
+
+    @Override
     public void reset() {
         editor.clear().apply();
     }
