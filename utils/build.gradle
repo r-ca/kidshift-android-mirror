@@ -37,4 +37,7 @@ dependencies {
     // Hilt (DI)
     implementation libs.com.google.dagger.hilt.android
     annotationProcessor libs.com.google.dagger.hilt.compiler
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.11.0'
 }
