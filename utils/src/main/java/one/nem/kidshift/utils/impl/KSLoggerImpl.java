@@ -57,7 +57,7 @@ public class KSLoggerImpl implements KSLogger {
 
     @Override
     public List<LogModel> getHistory() {
-        return null; // WIP
+        return sharedPrefUtils.getObjects(LogModel.class);
     }
 
     @Override
