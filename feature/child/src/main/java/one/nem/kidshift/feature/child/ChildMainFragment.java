@@ -7,13 +7,29 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.text.NumberFormat;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.RewardData;
+import one.nem.kidshift.utils.KSLogger;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ChildMainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+@AndroidEntryPoint
 public class ChildMainFragment extends Fragment {
+    @Inject
+    KSLogger ksLogger;
+
+    @Inject
+    RewardData rewardData;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,5 +76,23 @@ public class ChildMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_child_main, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        ksLogger.addTag("ChildMainFragment");
+
+        Integer reward = rewardData.getTotalReward();
+
+        ksLogger.debug("取得したデータ: " + reward);
+
+        TextView totalReward = view.findViewById(R.id.totalReward);
+
+        NumberFormat nf = NumberFormat.getNumberInstance();
+
+        totalReward.setText("¥" + nf.format(reward).toString());
     }
 }
