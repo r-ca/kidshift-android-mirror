@@ -1,19 +1,44 @@
 package one.nem.kidshift.feature.parent;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.TaskData;
+import one.nem.kidshift.model.tasks.TaskItemModel;
+import one.nem.kidshift.utils.KSLogger;
+
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ParentMainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+@AndroidEntryPoint
 public class ParentMainFragment extends Fragment {
+
+
+
+
+    @Inject
+    KSLogger ksLogger;
+
+    @Inject
+    TaskData taskData;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +84,34 @@ public class ParentMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_parent_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_parent_main, container, false);
+
+        RecyclerView recyclerView = view.findViewById(R.id.main_recycle_view);
+
+        recyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        List<TaskItemModel> task = taskData.getTasks();
+
+        RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
+        recyclerView.setAdapter(mainAdapter);
+
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ksLogger.addTag("ParentFragment");
+
+        List<TaskItemModel> task = taskData.getTasks();
+
+        ksLogger.debug("取得したデータ: " + task);
+
     }
 }

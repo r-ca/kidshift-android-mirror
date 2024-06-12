@@ -17,15 +17,15 @@ public class RewardDataDummyImpl implements RewardData {
     @Inject
     public RewardDataDummyImpl() {
         faker = new Faker();
-        logger.setTag("RewardDataDummyImpl");
+        //logger.setTag("RewardDataDummyImpl");
 
     }
 
     @Override
     public Integer getTotalReward() {
-        logger.info("getTotalReward called");
+        //logger.info("getTotalReward called");
         Integer reward = faker.number().numberBetween(0, 10000);
-        logger.info("Returning reward: " + reward);
+        //logger.info("Returning reward: " + reward);
         return reward;
     }
 }
