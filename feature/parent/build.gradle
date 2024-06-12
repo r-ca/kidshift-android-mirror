@@ -39,8 +39,4 @@ dependencies {
     // Hilt (DI)
     implementation libs.com.google.dagger.hilt.android
     annotationProcessor libs.com.google.dagger.hilt.compiler
-
-    implementation project(':utils')
-    implementation project(':model')
-    implementation project(':data')
 }
