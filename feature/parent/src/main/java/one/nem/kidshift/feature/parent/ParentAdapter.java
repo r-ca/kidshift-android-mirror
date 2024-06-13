@@ -14,7 +14,7 @@ import one.nem.kidshift.model.tasks.TaskItemModel;
 
 public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MainViewHolder> {
 
-    private List<TaskItemModel> taskDataList;
+    private final List<TaskItemModel> taskDataList;
 
     ParentAdapter(List<TaskItemModel> taskDataList) { this.taskDataList = taskDataList; }
 
