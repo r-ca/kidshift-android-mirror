@@ -67,6 +67,7 @@ public class FeatureFlagImpl implements FeatureFlag {
         setFlag("isBaseEnabled", true, false);
         setFlag("isBetaEnabled", false, false);
         setFlag("isDevelopEnabled", false, false);
+        setFlag("overrideTest", false, true);
     }
 
     private void initBeta() { // 上書き

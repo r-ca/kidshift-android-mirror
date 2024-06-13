@@ -9,17 +9,22 @@ import dagger.hilt.EntryPoint;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.AndroidEntryPoint;
 import dagger.hilt.android.components.FragmentComponent;
+import one.nem.kidshift.utils.FeatureFlag;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.models.LogModel;
+import one.nem.kidshift.utils.models.feature.FeatureFlagItemModel;
 
 public class DebugCommandProcessor {
 
     KSLogger ksLogger;
+    FeatureFlag featureFlag;
 
     public DebugCommandProcessor(
-            KSLogger ksLogger
+            KSLogger ksLogger,
+            FeatureFlag featureFlag
     ) {
         this.ksLogger = ksLogger;
+        this.featureFlag = featureFlag;
     }
 
     public String execute(String command) {
@@ -44,6 +49,8 @@ public class DebugCommandProcessor {
                 return executeEcho(commandArray);
             case "log":
                 return executeLog(commandArray);
+            case "flag":
+                return executeFlag(commandArray);
             default:
                 throw new InvalidCommandException();
         }
@@ -91,6 +98,64 @@ public class DebugCommandProcessor {
             default:
                 return "TODO";
         }
+    }
+
+    private String executeFlag(String[] commandArray) {
+        switch (commandArray[1]) {
+            case "get":
+                if (commandArray.length == 3) {
+                    FeatureFlagItemModel featureFlagItemModel = featureFlag.getFeatureFlagMap().get(commandArray[2]);
+                    return makeFeatureFlagResponse(featureFlagItemModel);
+                } else {
+                    if (commandArray[2].equals("all")) {
+                        StringBuilder featureFlagString = new StringBuilder();
+                        for (FeatureFlagItemModel featureFlagItemModel : featureFlag.getFeatureFlagMap().values()) {
+                            featureFlagString.append(makeFeatureFlagResponse(featureFlagItemModel));
+                            featureFlagString.append("\n");
+                        }
+                        return featureFlagString.toString();
+                    } else {
+                        return "TODO";
+                    }
+                }
+            case "set":
+                if (commandArray.length == 5) {
+                    try {
+                        boolean value = Boolean.parseBoolean(commandArray[4]);
+                        featureFlag.getFeatureFlagMap().get(commandArray[2]).setValue(value);
+                    } catch (IllegalArgumentException e) {
+                        return e.getMessage();
+                    } catch (NullPointerException e) {
+                        return "Feature Flag not found";
+                    } catch (Exception e) {
+                        return "Something went wrong! \n" + e.getMessage();
+                    }
+                    return "Success";
+                } else {
+                    return "TODO";
+                }
+            case "reset":
+                if (commandArray.length == 3) {
+                    featureFlag.getFeatureFlagMap().get(commandArray[2]).setValue(featureFlag.getFeatureFlagMap().get(commandArray[2]).getDefaultValue());
+                    return "Success";
+                } else {
+                    return "TODO";
+                }
+            default:
+                // debug
+                if (this.featureFlag == null) {
+                    return "Feature Flag is null";
+                } else {
+                    return "Feature Flag is not null";
+                }
+        }
+    }
+
+    private String makeFeatureFlagResponse(FeatureFlagItemModel featureFlagItemModel) {
+        return "Key: " + featureFlagItemModel.getKey() + "\n" +
+                "\tValue: " + featureFlagItemModel.getValue() + "\n" +
+                "\tDefault Value: " + featureFlagItemModel.getDefaultValue() + "\n" +
+                "\tIs Override Allowed: " + featureFlagItemModel.getIsOverrideAllowed();
     }
 
     private String executeEcho(String[] commandArray) {
