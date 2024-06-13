@@ -17,7 +17,6 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.feature.debug.adapter.DebugCommandListItemAdapter;
-import one.nem.kidshift.feature.debug.adapter.DebugMenuListItemAdapter;
 import one.nem.kidshift.feature.debug.model.DebugCommandItemModel;
 import one.nem.kidshift.utils.FeatureFlag;
 import one.nem.kidshift.utils.KSLogger;
