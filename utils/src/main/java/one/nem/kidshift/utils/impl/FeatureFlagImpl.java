@@ -127,10 +127,6 @@ public class FeatureFlagImpl implements FeatureFlag {
 
     @Override
     public void resetOverride(String key) throws IllegalArgumentException {
-        // 存在するか, オーバーライド可能か
-        if (!featureFlagMap.containsKey(key) || !Objects.requireNonNull(featureFlagMap.get(key)).getIsOverrideAllowed()) {
-            throw new IllegalArgumentException("Invalid key or not allowed to override");
-        }
         Objects.requireNonNull(featureFlagMap.get(key)).setValue(Objects.requireNonNull(featureFlagMap.get(key)).getDefaultValue());
         sharedPreferences.edit().putBoolean(key, Objects.requireNonNull(featureFlagMap.get(key)).getDefaultValue()).apply();
     }
