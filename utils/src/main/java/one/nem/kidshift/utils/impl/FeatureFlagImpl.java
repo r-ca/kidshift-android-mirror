@@ -42,7 +42,10 @@ public class FeatureFlagImpl implements FeatureFlag {
     public FeatureFlagImpl(@ApplicationContext Context applicationContext) {
         this.applicationContext = applicationContext;
         this.sharedPreferences = applicationContext.getSharedPreferences("feat_flg", Context.MODE_PRIVATE);
+        init();
+    }
 
+    private void init() {
         initBase();
         switch (currentProfile) {
             case DEVELOP:
@@ -54,6 +57,7 @@ public class FeatureFlagImpl implements FeatureFlag {
             case PRODUCTION:
                 break;
         }
+        restoreOverride();
     }
 
     private HashMap<String, FeatureFlagItemModel> featureFlagMap = new HashMap<>();
@@ -129,9 +133,7 @@ public class FeatureFlagImpl implements FeatureFlag {
 
     @Override
     public void resetAllOverrides() {
-        for (String key : featureFlagMap.keySet()) {
-            Objects.requireNonNull(featureFlagMap.get(key)).setValue(Objects.requireNonNull(featureFlagMap.get(key)).getDefaultValue());
-            sharedPreferences.edit().putBoolean(key, Objects.requireNonNull(featureFlagMap.get(key)).getDefaultValue()).apply();
-        }
+        sharedPreferences.edit().clear().apply();
+        init();
     }
 }
