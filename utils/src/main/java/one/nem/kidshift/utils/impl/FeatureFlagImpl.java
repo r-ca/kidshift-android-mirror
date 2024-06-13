@@ -104,7 +104,7 @@ public class FeatureFlagImpl implements FeatureFlag {
 
     @Override
     public Map<String, FeatureFlagItemModel> getFeatureFlagMap() {
-        return null;
+        return featureFlagMap;
     }
 
     @Override
