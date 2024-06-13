@@ -2,6 +2,7 @@ package one.nem.kidshift.feature.debug;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -101,45 +102,38 @@ public class DebugCommandProcessor {
     }
 
     private String executeFlag(String[] commandArray) {
-        switch (commandArray[1]) {
+        commandArray = shiftArray(commandArray);
+        switch (commandArray[0]) {
             case "get":
-                if (commandArray.length == 3) {
-                    FeatureFlagItemModel featureFlagItemModel = featureFlag.getFeatureFlagMap().get(commandArray[2]);
-                    return makeFeatureFlagResponse(featureFlagItemModel);
-                } else {
-                    if (commandArray[2].equals("all")) {
-                        StringBuilder featureFlagString = new StringBuilder();
-                        for (FeatureFlagItemModel featureFlagItemModel : featureFlag.getFeatureFlagMap().values()) {
-                            featureFlagString.append(makeFeatureFlagResponse(featureFlagItemModel));
-                            featureFlagString.append("\n");
-                        }
-                        return featureFlagString.toString();
-                    } else {
-                        return "TODO";
+                commandArray = shiftArray(commandArray);
+                if (Objects.equals(commandArray[0], "all")) {
+                    StringBuilder flagString = new StringBuilder();
+                    for (FeatureFlagItemModel featureFlagItemModel : featureFlag.getFeatureFlagMap().values()) {
+                        flagString.append(makeFeatureFlagResponse(featureFlagItemModel));
+                        flagString.append("\n");
                     }
+                    return flagString.toString();
                 }
+                FeatureFlagItemModel featureFlagItemModel = featureFlag.getFeatureFlagMap().get(commandArray[0]);
+                return makeFeatureFlagResponse(featureFlagItemModel);
             case "set":
-                if (commandArray.length == 5) {
-                    try {
-                        boolean value = Boolean.parseBoolean(commandArray[4]);
-                        featureFlag.getFeatureFlagMap().get(commandArray[2]).setValue(value);
-                    } catch (IllegalArgumentException e) {
-                        return e.getMessage();
-                    } catch (NullPointerException e) {
-                        return "Feature Flag not found";
-                    } catch (Exception e) {
-                        return "Something went wrong! \n" + e.getMessage();
-                    }
-                    return "Success";
-                } else {
-                    return "TODO";
+                commandArray = shiftArray(commandArray);
+                try {
+                    featureFlag.setOverride(commandArray[0], Boolean.parseBoolean(commandArray[1]));
+                    return "Flag set!";
+                } catch (IllegalArgumentException e) {
+                    return e.getMessage();
+                } catch (Exception e) {
+                    return "Something went wrong! \n" + e.getMessage();
                 }
             case "reset":
-                if (commandArray.length == 3) {
-                    featureFlag.getFeatureFlagMap().get(commandArray[2]).setValue(featureFlag.getFeatureFlagMap().get(commandArray[2]).getDefaultValue());
-                    return "Success";
-                } else {
-                    return "TODO";
+                commandArray = shiftArray(commandArray);
+                try {
+                    featureFlag.resetOverride(commandArray[0]);
+                } catch (IllegalArgumentException e) {
+                    return e.getMessage();
+                } catch (Exception e) {
+                    return "Something went wrong! \n" + e.getMessage();
                 }
             default:
                 // debug
@@ -149,6 +143,14 @@ public class DebugCommandProcessor {
                     return "Feature Flag is not null";
                 }
         }
+    }
+
+    private String[] shiftArray(String[] array, int shift) {
+        return Arrays.copyOfRange(array, shift, array.length);
+    }
+
+    private String[] shiftArray(String[] array) {
+        return shiftArray(array, 1);
     }
 
     private String makeFeatureFlagResponse(FeatureFlagItemModel featureFlagItemModel) {
