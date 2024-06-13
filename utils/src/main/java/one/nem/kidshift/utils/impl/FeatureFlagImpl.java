@@ -10,13 +10,14 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import dagger.hilt.android.qualifiers.ApplicationContext;
+import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.models.feature.FeatureFlagItemModel;
 import one.nem.kidshift.utils.FeatureFlag;
 
 public class FeatureFlagImpl implements FeatureFlag {
 
     private final Context applicationContext;
-
+    private final KSLogger logger;
     private final SharedPreferences sharedPreferences;
 
     // ここを書き換えてプロファイルを書き換え
@@ -39,8 +40,10 @@ public class FeatureFlagImpl implements FeatureFlag {
     }
 
     @Inject
-    public FeatureFlagImpl(@ApplicationContext Context applicationContext) {
+    public FeatureFlagImpl(@ApplicationContext Context applicationContext, KSLogger logger) {
         this.applicationContext = applicationContext;
+        this.logger = logger;
+        this.logger.setTag("FeatureFlagImpl");
         this.sharedPreferences = applicationContext.getSharedPreferences("feat_flg", Context.MODE_PRIVATE);
         init();
     }
@@ -64,22 +67,15 @@ public class FeatureFlagImpl implements FeatureFlag {
 
     // init
     private void initBase() { // ベース, (= Production)
-        setFlag("isBaseEnabled", true, false);
-        setFlag("isBetaEnabled", false, false);
-        setFlag("isDevelopEnabled", false, false);
-        setFlag("overrideTest", false, true);
+        setFlag("dynamicColorEnable", true, false);
     }
 
     private void initBeta() { // 上書き
-        setFlag("isBaseEnabled", false, true);
-        setFlag("isBetaEnabled", true, true);
-        setFlag("isDevelopEnabled", false, true);
+        setFlag("dynamicColorEnable", true, true);
     }
 
     private void initDevelop() { // 上書き
-        setFlag("isBaseEnabled", false, true);
-        setFlag("isBetaEnabled", false, true);
-        setFlag("isDevelopEnabled", true, true);
+        setFlag("dynamicColorEnable", true, true);
     }
 
     // utils
@@ -109,7 +105,12 @@ public class FeatureFlagImpl implements FeatureFlag {
 
     @Override
     public boolean isEnabled(String key) {
-        return Objects.requireNonNull(featureFlagMap.get(key)).state();
+        try {
+            return Objects.requireNonNull(featureFlagMap.get(key)).getValue();
+        } catch (NullPointerException e) {
+            logger.error("Invalid key: " + key + "\nReturning false");
+            return false; // 存在しないキーはクラッシュ回避のためfalseを返す
+        }
     }
 
     @Override
