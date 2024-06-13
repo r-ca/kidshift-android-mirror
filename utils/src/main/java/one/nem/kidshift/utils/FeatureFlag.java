@@ -1,4 +1,4 @@
-package one.nem.kidshift.utils.modules;
+package one.nem.kidshift.utils;
 
 import java.util.Map;
 

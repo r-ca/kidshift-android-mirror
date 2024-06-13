@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import one.nem.kidshift.utils.models.feature.FeatureFlagItemModel;
-import one.nem.kidshift.utils.modules.FeatureFlag;
+import one.nem.kidshift.utils.FeatureFlag;
 
 public class FeatureFlagImpl implements FeatureFlag {
 
