@@ -34,7 +34,7 @@ public class KidShiftApplication extends Application {
         logger.setTag("KidShiftApplication");
         logger.info("super.onCreate() completed");
 
-        if(featureFlag.isEnabled("dynamicColorEnabled")) {
+        if(featureFlag.isEnabled("dynamicColorEnable")) {
             if (DynamicColors.isDynamicColorAvailable()) {
                 DynamicColors.applyToActivitiesIfAvailable(this);
                 logger.info("DynamicColors is available and applied to activities.");
