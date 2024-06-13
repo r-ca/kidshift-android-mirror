@@ -2,6 +2,7 @@ package one.nem.kidshift.feature.debug;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -9,17 +10,22 @@ import dagger.hilt.EntryPoint;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.AndroidEntryPoint;
 import dagger.hilt.android.components.FragmentComponent;
+import one.nem.kidshift.utils.FeatureFlag;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.models.LogModel;
+import one.nem.kidshift.utils.models.feature.FeatureFlagItemModel;
 
 public class DebugCommandProcessor {
 
     KSLogger ksLogger;
+    FeatureFlag featureFlag;
 
     public DebugCommandProcessor(
-            KSLogger ksLogger
+            KSLogger ksLogger,
+            FeatureFlag featureFlag
     ) {
         this.ksLogger = ksLogger;
+        this.featureFlag = featureFlag;
     }
 
     public String execute(String command) {
@@ -44,6 +50,8 @@ public class DebugCommandProcessor {
                 return executeEcho(commandArray);
             case "log":
                 return executeLog(commandArray);
+            case "flag":
+                return executeFlag(commandArray);
             default:
                 throw new InvalidCommandException();
         }
@@ -91,6 +99,70 @@ public class DebugCommandProcessor {
             default:
                 return "TODO";
         }
+    }
+
+    private String executeFlag(String[] commandArray) {
+        commandArray = shiftArray(commandArray);
+        switch (commandArray[0]) {
+            case "get":
+                commandArray = shiftArray(commandArray);
+                if (Objects.equals(commandArray[0], "all")) {
+                    StringBuilder flagString = new StringBuilder();
+                    for (FeatureFlagItemModel featureFlagItemModel : featureFlag.getFeatureFlagMap().values()) {
+                        flagString.append(makeFeatureFlagResponse(featureFlagItemModel));
+                        flagString.append("\n");
+                    }
+                    return flagString.toString();
+                }
+                FeatureFlagItemModel featureFlagItemModel = featureFlag.getFeatureFlagMap().get(commandArray[0]);
+                return makeFeatureFlagResponse(featureFlagItemModel);
+            case "set":
+                commandArray = shiftArray(commandArray);
+                try {
+                    featureFlag.setOverride(commandArray[0], Boolean.parseBoolean(commandArray[1]));
+                    return "Flag set!";
+                } catch (IllegalArgumentException e) {
+                    return e.getMessage();
+                } catch (Exception e) {
+                    return "Something went wrong! \n" + e.getMessage();
+                }
+            case "reset":
+                commandArray = shiftArray(commandArray);
+                if (Objects.equals(commandArray[0], "all")) {
+                    featureFlag.resetAllOverrides();
+                    return "All flags reset!";
+                }
+                try {
+                    featureFlag.resetOverride(commandArray[0]);
+                    return "Flag reset!";
+                } catch (IllegalArgumentException e) {
+                    return e.getMessage();
+                } catch (Exception e) {
+                    return "Something went wrong! \n" + e.getMessage();
+                }
+            default:
+                // debug
+                if (this.featureFlag == null) {
+                    return "Feature Flag is null";
+                } else {
+                    return "Feature Flag is not null";
+                }
+        }
+    }
+
+    private String[] shiftArray(String[] array, int shift) {
+        return Arrays.copyOfRange(array, shift, array.length);
+    }
+
+    private String[] shiftArray(String[] array) {
+        return shiftArray(array, 1);
+    }
+
+    private String makeFeatureFlagResponse(FeatureFlagItemModel featureFlagItemModel) {
+        return "Key: " + featureFlagItemModel.getKey() + "\n" +
+                "\tValue: " + featureFlagItemModel.getValue() + "\n" +
+                "\tDefault Value: " + featureFlagItemModel.getDefaultValue() + "\n" +
+                "\tIs Override Allowed: " + featureFlagItemModel.getIsOverrideAllowed();
     }
 
     private String executeEcho(String[] commandArray) {
