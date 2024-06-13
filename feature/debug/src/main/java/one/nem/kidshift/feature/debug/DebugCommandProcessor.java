@@ -128,8 +128,13 @@ public class DebugCommandProcessor {
                 }
             case "reset":
                 commandArray = shiftArray(commandArray);
+                if (Objects.equals(commandArray[0], "all")) {
+                    featureFlag.resetAllOverrides();
+                    return "All flags reset!";
+                }
                 try {
                     featureFlag.resetOverride(commandArray[0]);
+                    return "Flag reset!";
                 } catch (IllegalArgumentException e) {
                     return e.getMessage();
                 } catch (Exception e) {
