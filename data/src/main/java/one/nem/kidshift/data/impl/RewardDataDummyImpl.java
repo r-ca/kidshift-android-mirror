@@ -9,7 +9,7 @@ import one.nem.kidshift.utils.KSLogger;
 
 public class RewardDataDummyImpl implements RewardData {
 
-    private Faker faker;
+    private final Faker faker;
 
     @Inject
     KSLogger logger;
