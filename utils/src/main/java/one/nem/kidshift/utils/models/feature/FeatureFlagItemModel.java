@@ -15,6 +15,7 @@ public class FeatureFlagItemModel {
 
     public FeatureFlagItemModel(String key, boolean defaultValue, boolean isOverrideAllowed) {
         this.key = key;
+        this.value = defaultValue;
         this.defaultValue = defaultValue;
         this.isOverrideAllowed = isOverrideAllowed;
     }
