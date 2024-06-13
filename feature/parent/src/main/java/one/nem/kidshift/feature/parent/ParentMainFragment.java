@@ -55,12 +55,6 @@ public class ParentMainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        ksLogger.addTag("ParentFragment");
-
-        List<TaskItemModel> task = taskData.getTasks();
-
-        ksLogger.debug("取得したデータ: " + task);
-
+        // Do something...
     }
 }
