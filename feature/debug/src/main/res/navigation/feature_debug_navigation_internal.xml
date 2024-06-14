@@ -16,6 +16,12 @@
         <action
             android:id="@+id/action_debugTopMenuFragment_to_debugDebugConsoleFragment"
             app:destination="@id/debugDebugConsoleFragment" />
+        <action
+            android:id="@+id/action_debugTopMenuFragment_to_debugTempLoginFragment"
+            app:destination="@id/debugTempLoginFragment" />
+        <action
+            android:id="@+id/action_debugTopMenuFragment_to_debugTempRegisterFragment"
+            app:destination="@id/debugTempRegisterFragment" />
     </fragment>
     <fragment
         android:id="@+id/debugMockTestFragment"
@@ -27,4 +33,14 @@
         android:name="one.nem.kidshift.feature.debug.DebugDebugConsoleFragment"
         android:label="fragment_debug_debug_console"
         tools:layout="@layout/fragment_debug_debug_console" />
+    <fragment
+        android:id="@+id/debugTempLoginFragment"
+        android:name="one.nem.kidshift.feature.debug.DebugTempLoginFragment"
+        android:label="fragment_debug_temp_login"
+        tools:layout="@layout/fragment_debug_temp_login" />
+    <fragment
+        android:id="@+id/debugTempRegisterFragment"
+        android:name="one.nem.kidshift.feature.debug.DebugTempRegisterFragment"
+        android:label="fragment_debug_temp_register"
+        tools:layout="@layout/fragment_debug_temp_register" />
 </navigation>
