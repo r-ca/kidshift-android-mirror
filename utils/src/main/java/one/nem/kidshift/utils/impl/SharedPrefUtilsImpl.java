@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dagger.assisted.Assisted;
@@ -55,7 +56,7 @@ public class SharedPrefUtilsImpl implements SharedPrefUtils {
     @Override
     public <T> List<T> getObjects(Class<T> clazz) {
         // SharedPreferenceの中身を全て取得
-        List<T> list = null;
+        List<T> list = new ArrayList<>();
         for (String key : sharedPreferences.getAll().keySet()) {
             String json = sharedPreferences.getString(key, null);
             T object = gson.fromJson(json, clazz);
