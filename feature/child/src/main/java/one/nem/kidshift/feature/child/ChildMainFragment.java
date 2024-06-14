@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -89,10 +92,17 @@ public class ChildMainFragment extends Fragment {
 
         ksLogger.debug("取得したデータ: " + reward);
 
-        TextView totalReward = view.findViewById(R.id.totalReward);
+        Calendar cl = Calendar.getInstance();
+        TextView tr = view.findViewById(R.id.totalReward);
+        TextView dv = view.findViewById(R.id.dateView);
+        Date date = new Date();
+
 
         NumberFormat nf = NumberFormat.getNumberInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        sdf.applyPattern("yyyy年MM月");
 
-        totalReward.setText("¥" + nf.format(reward).toString());
+        dv.setText(sdf.format(cl.getTime()) + "  お小遣い総額");
+        tr.setText("¥" + nf.format(reward).toString());
     }
 }
