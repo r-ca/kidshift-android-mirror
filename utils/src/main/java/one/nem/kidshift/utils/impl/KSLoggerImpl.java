@@ -10,18 +10,21 @@ import java.util.List;
 import javax.inject.Inject;
 
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.SharedPrefUtils;
 import one.nem.kidshift.utils.enums.LogLevelEnum;
+import one.nem.kidshift.utils.factory.SharedPrefUtilsFactory;
 import one.nem.kidshift.utils.models.LogModel;
 
 public class KSLoggerImpl implements KSLogger {
 
-    private ArrayList<LogModel> logs = new ArrayList<LogModel>();
-
     private ArrayList<String> tags = new ArrayList<String>();
 
+    private SharedPrefUtils sharedPrefUtils;
+
     @Inject
-    public KSLoggerImpl() {
+    public KSLoggerImpl(SharedPrefUtilsFactory sharedPrefUtilsFactory) {
         tags.add("UNTAGGED");
+        this.sharedPrefUtils = sharedPrefUtilsFactory.create("KSLogger");
     }
 
     public KSLoggerImpl(String tag) {
@@ -54,7 +57,7 @@ public class KSLoggerImpl implements KSLogger {
 
     @Override
     public List<LogModel> getHistory() {
-        return logs;
+        return sharedPrefUtils.getObjects(LogModel.class);
     }
 
     @Override
@@ -93,7 +96,7 @@ public class KSLoggerImpl implements KSLogger {
     }
 
     private void addLog(LogModel log) {
-        logs.add(log);
+        sharedPrefUtils.saveObject(log);
     }
 
     private void outputLog(LogModel log) {
