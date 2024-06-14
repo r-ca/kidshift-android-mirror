@@ -43,6 +43,7 @@ dependencies {
     implementation project(':feature:debug')
     implementation project(':feature:parent')
     implementation project(':feature:child')
+    implementation project(':feature:setting')
 
     implementation project(':shared')
     implementation project(':utils')
