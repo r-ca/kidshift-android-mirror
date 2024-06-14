@@ -58,9 +58,11 @@ public class DebugCommandProcessor {
     }
 
     private String executeLog(String[] commandArray) {
-        switch (commandArray[1]) {
+        commandArray = shiftArray(commandArray);
+        switch (commandArray[0]) {
             case "get":
-                switch (commandArray[2]) {
+                commandArray = shiftArray(commandArray);
+                switch (commandArray[0]) {
                     case "all":
                         List<LogModel> logs = ksLogger.getHistory();
                         StringBuilder logString = new StringBuilder();
@@ -73,8 +75,9 @@ public class DebugCommandProcessor {
                         return "TODO";
                 }
             case "insert":
-                String[] logArray = Arrays.copyOfRange(commandArray, 3, commandArray.length);
-                switch (commandArray[2]) {
+                commandArray = shiftArray(commandArray);
+                String[] logArray = Arrays.copyOfRange(commandArray, 1, commandArray.length);
+                switch (commandArray[0]) {
                     case "info":
                         ksLogger.info(String.join(" ", logArray));
                         return "Log inserted";
