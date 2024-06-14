@@ -1,5 +1,7 @@
 package one.nem.kidshift.model.tasks;
 
+import android.graphics.Color;
+
 import androidx.annotation.NonNull;
 
 import one.nem.kidshift.model.tasks.condition.TaskConditionBaseModel;
@@ -9,10 +11,31 @@ public class TaskItemModel {
     String internalId;
     String attachedChildId;
     String displayName;
+    String iconEmoji;
+    Color bgColor;
     TaskConditionBaseModel condition;
     long reward;
 
     // constructor
+    public TaskItemModel(String internalId, String displayName, String attachedChildId, String iconEmoji, Color bgColor, TaskConditionBaseModel condition, long reward) {
+        this.internalId = internalId;
+        this.attachedChildId = attachedChildId;
+        this.displayName = displayName;
+        this.iconEmoji = iconEmoji;
+        this.condition = condition;
+        this.reward = reward;
+        this.bgColor = bgColor;
+    }
+
+    public TaskItemModel(String internalId, String displayName, String attachedChildId, String iconEmoji, TaskConditionBaseModel condition, long reward) {
+        this.internalId = internalId;
+        this.attachedChildId = attachedChildId;
+        this.displayName = displayName;
+        this.iconEmoji = iconEmoji;
+        this.condition = condition;
+        this.reward = reward;
+    }
+
     public TaskItemModel(String internalId, String displayName, String attachedChildId, TaskConditionBaseModel condition, long reward) {
         this.internalId = internalId;
         this.attachedChildId = attachedChildId;
