@@ -1,5 +1,7 @@
 package one.nem.kidshift.model.tasks;
 
+import android.graphics.Color;
+
 import androidx.annotation.NonNull;
 
 import one.nem.kidshift.model.tasks.condition.TaskConditionBaseModel;
@@ -9,6 +11,8 @@ public class TaskItemModel {
     String internalId;
     String attachedChildId;
     String displayName;
+    String iconEmoji;
+    Color bgColor;
     TaskConditionBaseModel condition;
     long reward;
 
