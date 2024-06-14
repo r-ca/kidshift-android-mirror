@@ -7,4 +7,5 @@
     <include app:graph="@navigation/feature_debug_navigation" />
     <include app:graph="@navigation/feature_child_navigation" />
     <include app:graph="@navigation/feature_parent_navigation" />
+    <include app:graph="@navigation/feature_setting_navigation" />
 </navigation>
