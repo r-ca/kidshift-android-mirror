@@ -44,4 +44,6 @@ dependencies {
     implementation project(':model')
     implementation project(':utils')
     implementation project(':data')
+    implementation 'com.google.android.gms:play-services-cronet:18.0.1'
+
 }
