@@ -4,16 +4,30 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextClock;
+import android.widget.TextView;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.utils.KSLogger;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DebugTempLoginFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 public class DebugTempLoginFragment extends Fragment {
+
+    @Inject
+    KSLogger logger;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +73,29 @@ public class DebugTempLoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_debug_temp_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_debug_temp_login, container, false);
+
+        logger.setTag("Login");
+
+
+        //xmlレイアウトからid取得
+        EditText id = (EditText) view.findViewById(R.id.idtext);
+        EditText pass = (EditText) view.findViewById(R.id.pass);
+
+        //ログインボタンを押したときの処理
+        view.findViewById(R.id.button).setOnClickListener(
+                view1 -> {
+                    //入力された値（id,pass）を取得
+                    Editable getText = id.getText();
+                    Editable getPass = pass.getText();
+                    //入力された値（id,pass）をログに表示
+                    logger.debug(getText.toString());
+                    logger.debug(getPass.toString());
+                }
+        );
+
+
+
+        return view;
     }
 }
