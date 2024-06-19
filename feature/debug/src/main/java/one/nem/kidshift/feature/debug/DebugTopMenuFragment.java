@@ -35,6 +35,7 @@ public class DebugTopMenuFragment extends Fragment {
         debugMenuListItems.add(new DebugMenuListItemModel("Debug console", "デバッグコマンドを実行します", R.id.action_debugTopMenuFragment_to_debugDebugConsoleFragment, true));
         debugMenuListItems.add(new DebugMenuListItemModel("Temp login", "仮置きログイン画面を表示", R.id.action_debugTopMenuFragment_to_debugTempLoginFragment, true));
         debugMenuListItems.add(new DebugMenuListItemModel("Temp register", "仮置き登録画面を表示", R.id.action_debugTopMenuFragment_to_debugTempRegisterFragment, true));
+        debugMenuListItems.add(new DebugMenuListItemModel("Dialog call", "ダイアログの表示テストをします", R.id.action_debugTopMenuFragment_to_debugDialogCallFragment, true));
 
         DebugMenuListItemAdapter adapter = new DebugMenuListItemAdapter(debugMenuListItems);
         recyclerView.setAdapter(adapter);
