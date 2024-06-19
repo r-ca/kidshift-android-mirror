@@ -28,6 +28,8 @@ public class DebugDialogCallFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // ここに書く
+        view.findViewById(R.id.callDialogButton).setOnClickListener(v -> {
+            // ここに書く
+        });
     }
 }
