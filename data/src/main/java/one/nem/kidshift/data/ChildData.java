@@ -22,4 +22,10 @@ public interface ChildData {
      * @param child 子ユーザー情報
      */
     void addChild(ChildModel child);
+
+    /**
+     * 子ユーザー削除
+     * @param childId 子ID
+     */
+    void removeChild(String childId);
 }
