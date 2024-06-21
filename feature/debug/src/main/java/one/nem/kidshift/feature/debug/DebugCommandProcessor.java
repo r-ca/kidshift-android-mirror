@@ -1,5 +1,7 @@
 package one.nem.kidshift.feature.debug;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -57,8 +59,42 @@ public class DebugCommandProcessor {
                 return executeLog(commandArray);
             case "flag":
                 return executeFlag(commandArray);
+            case "setting":
+                return executeSetting(commandArray);
             default:
                 throw new InvalidCommandException();
+        }
+    }
+
+    private String executeSetting(String[] commandArray) {
+        commandArray = shiftArray(commandArray);
+        switch (commandArray[0]) {
+            case "get":
+                commandArray = shiftArray(commandArray);
+                Class<?> settingClazz;
+                // リフレクションで取得
+                try {
+                    // userSettingsのgetterでsettingクラスを取得
+                    Method method = userSettings.getClass().getMethod("get" + commandArray[0]);
+                    settingClazz = method.getReturnType();
+
+                    //settingクラスのgetterで値を取得
+                    Method settingMethod = settingClazz.getMethod("get" + commandArray[1]);
+                    return settingMethod.invoke(userSettings.getTaskSetting()).toString();
+                } catch (NoSuchMethodException e) {
+                    return "Method" + commandArray[0] + " not found \n" + e.getMessage();
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    return "Method" + commandArray[0] + " not accessible \n" + e.getMessage();
+                } catch (Exception e) {
+                    return "Something went wrong! \n" + e.getMessage();
+                }
+            case "set":
+                commandArray = shiftArray(commandArray);
+                return "TODO";
+            default:
+                return "TODO";
         }
     }
 
