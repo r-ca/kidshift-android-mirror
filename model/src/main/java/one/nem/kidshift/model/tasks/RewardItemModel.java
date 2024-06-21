@@ -15,6 +15,14 @@ public class RewardItemModel {
         this.assignedChild = assignedChild;
     }
 
+    public RewardItemModel(String internalId, String displayName, Integer rewardAmount) {
+        this.internalId = internalId;
+        this.displayName = displayName;
+        this.rewardAmount = rewardAmount;
+    }
+
+    // TODO: ChildIdからChildModelを取得できる方法を実装する
+
     public String getInternalId() {
         return internalId;
     }
