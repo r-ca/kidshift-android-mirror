@@ -66,6 +66,7 @@ public class DebugCommandProcessor {
         }
     }
 
+    // TODO: リフレクション処理切り出し, 複数の引数に対応, String以外の引数に対応
     private String executeSetting(String[] commandArray) {
         commandArray = shiftArray(commandArray);
         Class<?> settingClazz;
