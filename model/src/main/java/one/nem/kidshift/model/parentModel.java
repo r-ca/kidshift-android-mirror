@@ -1,5 +1,6 @@
 package one.nem.kidshift.model;
 
+// TODO: parent, childを共通クラスから継承させる
 public class parentModel {
     String internalId;
     String displayName;
