@@ -1,16 +1,27 @@
 package one.nem.kidshift.data.impl;
 
+import javax.inject.Inject;
+
 import one.nem.kidshift.data.UserSettings;
+import one.nem.kidshift.utils.factory.SharedPrefUtilsFactory;
 
 public class UserSettingsImpl implements UserSettings {
+
+    SharedPrefUtilsFactory sharedPrefUtilsFactory;
+
+    @Inject
+    public UserSettingsImpl(SharedPrefUtilsFactory sharedPrefUtilsFactory) {
+        this.sharedPrefUtilsFactory = sharedPrefUtilsFactory;
+    }
+
     @Override
     public ApiSetting getApiSetting() {
-        return null;
+        return new ApiSettingImpl();
     }
 
     @Override
     public TaskSetting getTaskSetting() {
-        return null;
+        return new TaskSettingImpl();
     }
 
     public class ApiSettingImpl implements UserSettings.ApiSetting {
