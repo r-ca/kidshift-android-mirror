@@ -43,6 +43,8 @@ public class UserSettingsImpl implements UserSettings {
             // TODO: リフレクションつかって一括でやる？(プロパティ数があまりにも増えるなら?), 三項演算子やめる?, デフォルト値の設定方法を改善する
             if (apiSetting != null) {
                 apiBaseUrl = apiSetting.apiBaseUrl.isEmpty() ? "https://kidshift-beta.nem.one/" : apiSetting.apiBaseUrl;
+            } else {
+                apiBaseUrl = "https://kidshift-beta.nem.one/";
             }
         }
 
@@ -77,6 +79,9 @@ public class UserSettingsImpl implements UserSettings {
             if (taskSetting != null) {
                 defaultIconColor = taskSetting.getDefaultIconColor() == 0 ? 0 : taskSetting.getDefaultIconColor();
                 defaultIconEmoji = taskSetting.getDefaultIconEmoji().isEmpty() ? "" : taskSetting.getDefaultIconEmoji();
+            } else {
+                defaultIconColor = 0;
+                defaultIconEmoji = "";
             }
         }
 
