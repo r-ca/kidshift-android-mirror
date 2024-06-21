@@ -2,11 +2,14 @@ package one.nem.kidshift.data;
 
 public interface UserSettings {
 
-    interface Api {
+    ApiSetting getApiSetting();
+    TaskSetting getTaskSetting();
+
+    interface ApiSetting {
         String getApiBaseUrl();
     }
 
-    interface Task {
+    interface TaskSetting {
         int getDefaultIconColor();
         String getDefaultIconEmoji();
     }
