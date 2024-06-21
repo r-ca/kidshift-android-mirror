@@ -22,9 +22,9 @@ public interface TaskData {
 
     /**
      * タスクを削除する
-     * @param task タスク
+     * @param taskId タスクID
      */
-    void removeTask(TaskItemModel task);
+    void removeTask(String taskId);
 
     /**
      * タスクを更新する
