@@ -68,19 +68,19 @@ public class DebugCommandProcessor {
 
     private String executeSetting(String[] commandArray) {
         commandArray = shiftArray(commandArray);
+        Class<?> settingClazz;
         switch (commandArray[0]) {
             case "get":
                 commandArray = shiftArray(commandArray);
-                Class<?> settingClazz;
                 // リフレクションで取得
                 try {
                     // userSettingsのgetterでsettingクラスを取得
                     Method method = userSettings.getClass().getMethod("get" + commandArray[0]);
-                    settingClazz = method.getReturnType();
+                    Object setting = method.invoke(userSettings);
 
                     //settingクラスのgetterで値を取得
-                    Method settingMethod = settingClazz.getMethod("get" + commandArray[1]);
-                    return settingMethod.invoke(userSettings.getTaskSetting()).toString();
+                    Method settingMethod = setting.getClass().getMethod("get" + commandArray[1]);
+                    return settingMethod.invoke(setting).toString();
                 } catch (NoSuchMethodException e) {
                     return "Method" + commandArray[0] + " not found \n" + e.getMessage();
                 } catch (InvocationTargetException e) {
@@ -92,7 +92,25 @@ public class DebugCommandProcessor {
                 }
             case "set":
                 commandArray = shiftArray(commandArray);
-                return "TODO";
+                // リフレクションで取得
+                try {
+                    // userSettingsのgetterでsettingクラスを取得
+                    Method method = userSettings.getClass().getMethod("get" + commandArray[0]);
+                    Object setting = method.invoke(userSettings);
+
+                    //settingクラスのsetterで値を設定
+                    Method settingMethod = setting.getClass().getMethod("set" + commandArray[1], String.class); // TODO: String以外の型に対応
+                    settingMethod.invoke(setting, commandArray[2]);
+                    return "Setting set!";
+                } catch (NoSuchMethodException e) {
+                    return "Method" + commandArray[0] + " not found \n" + e.getMessage();
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    return "Method" + commandArray[0] + " not accessible \n" + e.getMessage();
+                } catch (Exception e) {
+                    return "Something went wrong! \n" + e.getMessage();
+                }
             default:
                 return "TODO";
         }
