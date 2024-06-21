@@ -32,6 +32,7 @@ public class UserSettingsImpl implements UserSettings {
 
     public class ApiSettingImpl implements UserSettings.ApiSetting {
 
+        transient
         SharedPrefUtils sharedPrefUtils;
 
         String apiBaseUrl;
@@ -63,6 +64,11 @@ public class UserSettingsImpl implements UserSettings {
     }
 
     public class TaskSettingImpl implements UserSettings.TaskSetting {
+
+        SharedPrefUtils sharedPrefUtils;
+
+        int defaultIconColor;
+
         @Override
         public int getDefaultIconColor() {
             return 0;
