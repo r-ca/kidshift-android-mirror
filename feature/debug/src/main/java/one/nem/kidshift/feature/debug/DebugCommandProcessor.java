@@ -10,6 +10,7 @@ import dagger.hilt.EntryPoint;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.AndroidEntryPoint;
 import dagger.hilt.android.components.FragmentComponent;
+import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.utils.FeatureFlag;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.models.LogModel;
@@ -20,12 +21,16 @@ public class DebugCommandProcessor {
     KSLogger ksLogger;
     FeatureFlag featureFlag;
 
+    UserSettings userSettings;
+
     public DebugCommandProcessor(
             KSLogger ksLogger,
-            FeatureFlag featureFlag
+            FeatureFlag featureFlag,
+            UserSettings userSettings
     ) {
         this.ksLogger = ksLogger;
         this.featureFlag = featureFlag;
+        this.userSettings = userSettings;
     }
 
     public String execute(String command) {
