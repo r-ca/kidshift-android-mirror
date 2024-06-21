@@ -45,4 +45,9 @@ public class ChildDataDummyImpl implements ChildData {
     public void removeChild(String childId) {
 
     }
+
+    @Override
+    public int issueLoginCode(String childId) {
+        return 123456;
+    }
 }
