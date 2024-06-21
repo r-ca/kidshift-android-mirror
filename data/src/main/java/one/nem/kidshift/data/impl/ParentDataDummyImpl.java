@@ -13,7 +13,7 @@ public class ParentDataDummyImpl implements ParentData {
 
     @Override
     public ParentModel getParent(String parentId) {
-        return null;
+        return new ParentModel("ID", "Parent Name", "homeGroupId", "hoge@example.com");
     }
 
     @Override
