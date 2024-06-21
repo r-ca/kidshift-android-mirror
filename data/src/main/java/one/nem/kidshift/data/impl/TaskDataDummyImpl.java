@@ -43,4 +43,36 @@ public class TaskDataDummyImpl implements TaskData {
 //        logger.info("Returning tasks: " + tasks);
         return tasks;
     }
+
+    @Override
+    public void addTask(TaskItemModel task) {
+        logger.info("addTask called");
+        logger.info("Task: " + task);
+    }
+
+    @Override
+    public void removeTask(String taskId) {
+        logger.info("removeTask called");
+        logger.info("Task ID: " + taskId);
+    }
+
+    @Override
+    public void updateTask(TaskItemModel task) {
+        logger.info("updateTask called");
+        logger.info("Task: " + task);
+    }
+
+    @Override
+    public TaskItemModel getTask(String taskId) {
+        List<TaskItemModel> tasks = getTasks();
+        // return random task
+        return tasks.get(faker.number().numberBetween(0, tasks.size()));
+    }
+
+    @Override
+    public void recordTaskCompletion(String taskId, String childId) {
+        logger.info("recordTaskCompletion called");
+        logger.info("Task ID: " + taskId);
+        logger.info("Child ID: " + childId);
+    }
 }
