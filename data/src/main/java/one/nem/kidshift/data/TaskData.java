@@ -34,7 +34,7 @@ public interface TaskData {
 
     // 子側
 
-/**
+    /**
      * タスクの詳細を取得する
      * @param taskId タスクID
      * @return TaskItemModel タスク
