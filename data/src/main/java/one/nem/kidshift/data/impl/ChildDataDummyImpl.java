@@ -3,10 +3,16 @@ package one.nem.kidshift.data.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.model.ChildModel;
 
 public class ChildDataDummyImpl implements ChildData {
+
+    @Inject
+    public ChildDataDummyImpl() {
+    }
 
     @Override
     public ChildModel getChild(String childId) {
