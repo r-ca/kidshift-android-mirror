@@ -1,26 +1,26 @@
 package one.nem.kidshift.model;
 
 // TODO: parent, childを共通クラスから継承させる
-public class parentModel {
+public class ParentModel {
     String internalId;
     String displayName;
     String homeGroupId;
     String email;
 
-    public parentModel(String internalId, String displayName, String homeGroupId, String email) {
+    public ParentModel(String internalId, String displayName, String homeGroupId, String email) {
         this.internalId = internalId;
         this.displayName = displayName;
         this.homeGroupId = homeGroupId;
         this.email = email;
     }
 
-    public parentModel(String internalId, String displayName, String homeGroupId) {
+    public ParentModel(String internalId, String displayName, String homeGroupId) {
         this.internalId = internalId;
         this.displayName = displayName;
         this.homeGroupId = homeGroupId;
     }
 
-    public parentModel(String internalId, String displayName) {
+    public ParentModel(String internalId, String displayName) {
         this.internalId = internalId;
         this.displayName = displayName;
     }
