@@ -2,6 +2,7 @@ package one.nem.kidshift.feature.setting;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -19,7 +21,9 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
+import one.nem.kidshift.data.ParentData;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.ParentModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +35,9 @@ public class SettingMainFragment extends Fragment {
 
     @Inject
     ChildData childData;
+
+    @Inject
+    ParentData parentData;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -78,7 +85,17 @@ public class SettingMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+        //親の名前、アドレス表示
+        ParentModel parent = parentData.getParent("poiuytrew");
+
+        //RecyclerViewの処理
         View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
+
+        TextView username = view.findViewById(R.id.username);
+        TextView useradress = view.findViewById(R.id.useradress);
+
+        username.setText(parent.getDisplayName());
+        useradress.setText(parent.getEmail());
 
         RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
@@ -95,6 +112,7 @@ public class SettingMainFragment extends Fragment {
         LayoutInflater inflater1 = requireActivity().getLayoutInflater();
         View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
 
+        //子供の名前追加のダイアログ
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle("お子様の名前を入力してください。")
                 .setView(view1)

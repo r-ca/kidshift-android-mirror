@@ -21,6 +21,8 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.MainView
         this.childDataList = childDataList;
     }
 
+
+
     static class MainViewHolder extends RecyclerView.ViewHolder{
         TextView childname;
 
