@@ -3,17 +3,35 @@ package one.nem.kidshift.feature.setting;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.ChildData;
+import one.nem.kidshift.model.ChildModel;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SettingMainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 public class SettingMainFragment extends Fragment {
+
+    @Inject
+    ChildData childData;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +77,36 @@ public class SettingMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_setting_main, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
+
+        RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
+
+        recyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        List<ChildModel> child = childData.getChildList();
+
+        RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
+        recyclerView.setAdapter(mainAdapter);
+
+        LayoutInflater inflater1 = requireActivity().getLayoutInflater();
+        View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle("お子様の名前を入力してください。")
+                .setView(view1)
+                .setPositiveButton("追加",null)
+                .setNeutralButton("閉じる",null);
+        builder.create();
+
+        view.findViewById(R.id.addchildname).setOnClickListener(v -> {
+            builder.show();
+        });
+
+
+        return view;
     }
 }
