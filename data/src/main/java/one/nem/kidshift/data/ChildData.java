@@ -36,4 +36,11 @@ public interface ChildData {
      * @param childId 子ID
      */
     void removeChild(String childId);
+
+    /**
+     * 子ユーザーログインコード発行
+     * @param childId 子ID
+     * @return int ログインコード
+     */
+    int issueLoginCode(String childId);
 }
