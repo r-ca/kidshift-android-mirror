@@ -1,5 +1,7 @@
 package one.nem.kidshift.data;
 
+import java.util.List;
+
 import one.nem.kidshift.model.ChildModel;
 
 public interface ChildData {
@@ -10,6 +12,12 @@ public interface ChildData {
      * @return ChildModel 子ユーザー情報
      */
     ChildModel getChild(String childId);
+
+    /**
+     * 子ユーザー一覧取得
+     * @return List<ChildModel> 子ユーザー一覧
+     */
+    List<ChildModel> getChildList();
 
     /**
      * 子ユーザー情報更新
