@@ -28,6 +28,11 @@ public class UserSettingsDummyImpl implements UserSettings {
         public String getApiBaseUrl() {
             return "https://kidshift-beta.nem.one/";
         }
+
+        @Override
+        public void setApiBaseUrl(String url) {
+
+        }
     }
 
     public class TaskSettingImpl implements UserSettings.TaskSetting {
@@ -37,8 +42,18 @@ public class UserSettingsDummyImpl implements UserSettings {
         }
 
         @Override
+        public void setDefaultIconColor(int color) {
+
+        }
+
+        @Override
         public String getDefaultIconEmoji() {
             return "🤔";
+        }
+
+        @Override
+        public void setDefaultIconEmoji(String emoji) {
+
         }
     }
 }
