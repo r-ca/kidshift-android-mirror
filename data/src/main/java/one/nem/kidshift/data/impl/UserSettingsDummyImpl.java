@@ -19,6 +19,11 @@ public class UserSettingsDummyImpl implements UserSettings {
     }
 
     @Override
+    public AppCommonSetting getAppCommon() {
+        return null;
+    }
+
+    @Override
     public UserSettings.ApiSetting getApiSetting() {
         return new ApiSettingImpl();
     }
