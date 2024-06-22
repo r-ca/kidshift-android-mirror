@@ -9,6 +9,9 @@ public interface KSActions {
 
     void syncChildList();
 
+    /**
+     * 親ユーザー情報同期
+     */
     void syncParent();
 
 }
