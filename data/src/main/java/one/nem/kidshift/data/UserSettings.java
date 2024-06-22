@@ -4,6 +4,7 @@ public interface UserSettings {
 
     ApiSetting getApiSetting();
     TaskSetting getTaskSetting();
+    AppCommon getAppCommon();
 
     interface AppCommon {
         boolean isLoggedIn();
