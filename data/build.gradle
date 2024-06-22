@@ -39,7 +39,7 @@ dependencies {
     annotationProcessor libs.com.google.dagger.hilt.compiler
 
     // Java Faker
-    implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation libs.javafaker
 
     implementation project(':model')
     implementation project(':utils')
