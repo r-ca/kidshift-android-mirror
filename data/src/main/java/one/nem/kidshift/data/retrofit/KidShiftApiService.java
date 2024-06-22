@@ -6,6 +6,7 @@ import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface KidShiftApiService {
@@ -14,6 +15,6 @@ public interface KidShiftApiService {
     Call<ParentLoginResponse> parentLogin(@Body ParentLoginRequest request);
 
     @GET("/parent/account")
-    Call<ParentInfoResponse> getParentInfo();
+    Call<ParentInfoResponse> getParentInfo(@Header("Authorization") String token);
 
 }
