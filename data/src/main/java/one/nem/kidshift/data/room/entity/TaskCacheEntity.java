@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey;
 public class TaskCacheEntity {
 
     @PrimaryKey
-    @ColumnInfo(name = "internal_id")
-    private int internalId;
+    @ColumnInfo(name = "id")
+    private int Id;
 
     @ColumnInfo(name = "display_name")
     private String displayName;
