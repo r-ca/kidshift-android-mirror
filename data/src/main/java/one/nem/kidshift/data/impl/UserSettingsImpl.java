@@ -30,6 +30,72 @@ public class UserSettingsImpl implements UserSettings {
         return new TaskSettingImpl();
     }
 
+    @Override
+    public AppCommonSetting getAppCommonSetting() {
+        return new AppCommonSettingImpl();
+    }
+
+    public class AppCommonSettingImpl implements UserSettings.AppCommonSetting {
+
+        transient
+        SharedPrefUtils sharedPrefUtils;
+
+        boolean loggedIn;
+        String accessToken;
+        boolean childMode;
+
+        AppCommonSettingImpl() {
+            sharedPrefUtils = sharedPrefUtilsFactory.create("user_settings");
+            AppCommonSettingImpl appCommonSetting = sharedPrefUtils.getObject("app_common_setting", AppCommonSettingImpl.class);
+            if (appCommonSetting != null) {
+                loggedIn = appCommonSetting.isLoggedIn();
+                accessToken = appCommonSetting.getAccessToken().isEmpty() ? "" : appCommonSetting.getAccessToken();
+                childMode = appCommonSetting.isChildMode();
+            } else {
+                loggedIn = false;
+                accessToken = "";
+                childMode = false;
+            }
+        }
+
+        private void save() {
+            sharedPrefUtils.saveObject("app_common_setting", this);
+        }
+
+        @Override
+        public boolean isLoggedIn() {
+            return loggedIn;
+        }
+
+        @Override
+        public void setLoggedIn(boolean loggedIn) {
+            this.loggedIn = loggedIn;
+            save();
+        }
+
+        @Override
+        public String getAccessToken() {
+            return accessToken;
+        }
+
+        @Override
+        public void setAccessToken(String token) {
+            accessToken = token;
+            save();
+        }
+
+        @Override
+        public boolean isChildMode() {
+            return childMode;
+        }
+
+        @Override
+        public void setChildMode(boolean childMode) {
+            this.childMode = childMode;
+            save();
+        }
+    }
+
     public class ApiSettingImpl implements UserSettings.ApiSetting {
 
         transient

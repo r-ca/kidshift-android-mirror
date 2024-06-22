@@ -1,5 +1,6 @@
 package one.nem.kidshift;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -17,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.utils.KSLogger;
 
 @AndroidEntryPoint
@@ -24,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     KSLogger ksLogger;
+
+    @Inject
+    UserSettings userSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        // Check logged in
+        if (userSettings.getAppCommonSetting().isLoggedIn()) {
+            ksLogger.info("User is logged in!");
+        } else {
+            ksLogger.info("User is not logged in!");
+
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
     }
 }
