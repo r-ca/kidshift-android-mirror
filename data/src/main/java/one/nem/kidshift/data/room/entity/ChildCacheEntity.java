@@ -9,7 +9,7 @@ public class ChildCacheEntity {
 
     @PrimaryKey
     @ColumnInfo(name = "id")
-    private int Id;
+    private String Id;
 
     @ColumnInfo(name = "display_name")
     private String displayName;
