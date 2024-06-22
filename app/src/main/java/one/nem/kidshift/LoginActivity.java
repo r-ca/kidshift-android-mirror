@@ -73,8 +73,11 @@ public class LoginActivity extends AppCompatActivity {
                     logger.info("Login Success");
                     logger.debug("AccessToken: " + response.body().getAccessToken());
 
-                    userSettings.getAppCommonSetting().setLoggedIn(true);
-                    // TODO: Apiキーを保存
+                    UserSettings.AppCommonSetting appCommonSetting = userSettings.getAppCommonSetting();
+                    appCommonSetting.setLoggedIn(true);
+                    appCommonSetting.setAccessToken(response.body().getAccessToken());
+                    appCommonSetting.setChildMode(false);
+
                     finish();
                 } else {
                     logger.error("Login Failed");
