@@ -45,6 +45,8 @@ dependencies {
     implementation project(':feature:child')
     implementation project(':feature:setting')
 
+    implementation project(':data')
+
     implementation project(':shared')
     implementation project(':utils')
 
