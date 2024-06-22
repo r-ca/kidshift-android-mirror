@@ -9,8 +9,10 @@ material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
 nav = "2.7.7"
+retrofit = "2.11.0"
 
 [libraries]
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -26,6 +28,7 @@ com-google-dagger-hilt-compiler = { group="com.google.dagger", name="hilt-compil
 navigation-fragment = { group="androidx.navigation", name="navigation-fragment", version.ref="nav"}
 navigation-ui = { group="androidx.navigation", name="navigation-ui", version.ref="nav"}
 navigation-dynamic-features-fragment = { group="androidx.navigation", name="navigation-dynamic-features-fragment", version.ref="nav"}
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
