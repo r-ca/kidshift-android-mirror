@@ -31,8 +31,8 @@ navigation-ui = { group="androidx.navigation", name="navigation-ui", version.ref
 navigation-dynamic-features-fragment = { group="androidx.navigation", name="navigation-dynamic-features-fragment", version.ref="nav"}
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
-androidx-room-runtime = { group="androidx.room", name="room-runtime", version="room" }
-androidx-room-compiler = { group="androidx.room", name="room-compiler", version="room" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
