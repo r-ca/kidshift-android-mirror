@@ -31,7 +31,7 @@ public class UserSettingsImpl implements UserSettings {
     }
 
     @Override
-    public AppCommonSetting getAppCommon() {
+    public AppCommonSetting getAppCommonSetting() {
         return new AppCommonSettingImpl();
     }
 

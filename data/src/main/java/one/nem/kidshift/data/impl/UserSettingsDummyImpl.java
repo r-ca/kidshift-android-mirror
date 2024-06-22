@@ -19,7 +19,7 @@ public class UserSettingsDummyImpl implements UserSettings {
     }
 
     @Override
-    public AppCommonSetting getAppCommon() {
+    public AppCommonSetting getAppCommonSetting() {
         return null;
     }
 
