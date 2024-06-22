@@ -1,5 +1,7 @@
 package one.nem.kidshift.data;
 
+import one.nem.kidshift.model.ParentModel;
+
 public interface UserSettings {
 
     ApiSetting getApiSetting();
@@ -9,6 +11,12 @@ public interface UserSettings {
     interface AppCommonSetting {
         boolean isLoggedIn();
         void setLoggedIn(boolean loggedIn);
+
+        String getAccessToken();
+        void setAccessToken(String token);
+
+        boolean isChildMode();
+        void setChildMode(boolean childMode);
     }
 
     interface ApiSetting {
