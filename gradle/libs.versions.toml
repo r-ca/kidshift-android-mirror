@@ -10,6 +10,7 @@ activity = "1.9.0"
 constraintlayout = "2.1.4"
 nav = "2.7.7"
 retrofit = "2.11.0"
+room = "2.5.0"
 
 [libraries]
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
@@ -29,6 +30,9 @@ navigation-fragment = { group="androidx.navigation", name="navigation-fragment",
 navigation-ui = { group="androidx.navigation", name="navigation-ui", version.ref="nav"}
 navigation-dynamic-features-fragment = { group="androidx.navigation", name="navigation-dynamic-features-fragment", version.ref="nav"}
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
