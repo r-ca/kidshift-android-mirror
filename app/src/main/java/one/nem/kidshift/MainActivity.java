@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Check logged in
-        if (userSettings.getAppCommon().isLoggedIn()) {
+        if (userSettings.getAppCommonSetting().isLoggedIn()) {
             ksLogger.info("User is logged in!");
         } else {
             ksLogger.info("User is not logged in!");

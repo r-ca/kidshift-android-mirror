@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     logger.info("Login Success");
                     logger.debug("AccessToken: " + response.body().getAccessToken());
 
-                    userSettings.getAppCommon().setLoggedIn(true);
+                    userSettings.getAppCommonSetting().setLoggedIn(true);
                     // TODO: Apiキーを保存
                     finish();
                 } else {
