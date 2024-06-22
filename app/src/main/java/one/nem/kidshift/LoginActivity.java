@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
@@ -50,26 +51,37 @@ public class LoginActivity extends AppCompatActivity {
         EditText passwordEditText = findViewById(R.id.passwordEditText);
 
         findViewById(R.id.loginButton).setOnClickListener(v -> {
-            try {
-                Response<ParentLoginResponse> response = apiService.parentLogin(
-                        new ParentLoginRequest(
-                                emailEditText.getText().toString(),
-                                passwordEditText.getText().toString()
-                        )).execute();
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    Response<ParentLoginResponse> response = apiService.parentLogin(
+                            new ParentLoginRequest(
+                                    emailEditText.getText().toString(),
+                                    passwordEditText.getText().toString()
+                            )).execute();
 
+                    return response;
+                } catch (IOException e) {
+                    logger.error("IOException");
+                    throw new RuntimeException(e);
+                }
+            }).thenAccept(response -> {
                 if (response.isSuccessful()) {
                     logger.info("Login Success");
                     logger.debug("AccessToken: " + response.body().getAccessToken());
                     // ログイン成功時の処理
                 } else {
                     logger.error("Login Failed");
-                    logger.debug("Response: " + response.errorBody().string());
+                    try {
+                        logger.debug("Response: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        logger.error("IOException while reading error body");
+                    }
                     // ログイン失敗時の処理
                 }
-            } catch (IOException e) {
-                logger.error("IOException");
-                throw new RuntimeException(e);
-            }
+            }).exceptionally(e -> {
+                logger.error("Exception occurred: " + e.getMessage());
+                return null;
+            });
         });
 
         // for Debug
