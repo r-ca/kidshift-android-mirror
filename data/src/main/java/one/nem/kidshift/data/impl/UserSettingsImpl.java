@@ -30,6 +30,44 @@ public class UserSettingsImpl implements UserSettings {
         return new TaskSettingImpl();
     }
 
+    @Override
+    public AppCommonSetting getAppCommon() {
+        return new AppCommonSettingImpl();
+    }
+
+    public class AppCommonSettingImpl implements UserSettings.AppCommonSetting {
+
+        transient
+        SharedPrefUtils sharedPrefUtils;
+
+        boolean loggedIn;
+
+        AppCommonSettingImpl() {
+            sharedPrefUtils = sharedPrefUtilsFactory.create("user_settings");
+            AppCommonSettingImpl appCommonSetting = sharedPrefUtils.getObject("app_common_setting", AppCommonSettingImpl.class);
+            if (appCommonSetting != null) {
+                loggedIn = appCommonSetting.isLoggedIn();
+            } else {
+                loggedIn = false;
+            }
+        }
+
+        private void save() {
+            sharedPrefUtils.saveObject("app_common_setting", this);
+        }
+
+        @Override
+        public boolean isLoggedIn() {
+            return loggedIn;
+        }
+
+        @Override
+        public void setLoggedIn(boolean loggedIn) {
+            this.loggedIn = loggedIn;
+            save();
+        }
+    }
+
     public class ApiSettingImpl implements UserSettings.ApiSetting {
 
         transient
