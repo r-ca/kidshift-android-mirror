@@ -5,6 +5,11 @@ public interface UserSettings {
     ApiSetting getApiSetting();
     TaskSetting getTaskSetting();
 
+    interface AppCommon {
+        boolean isLoggedIn();
+        void setLoggedIn(boolean loggedIn);
+    }
+
     interface ApiSetting {
         String getApiBaseUrl();
         void setApiBaseUrl(String url);
