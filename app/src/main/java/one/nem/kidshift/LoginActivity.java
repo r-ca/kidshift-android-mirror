@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginResponse;
@@ -28,6 +29,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @Inject
     KSLogger logger;
+
+    @Inject
+    UserSettings userSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     logger.info("Login Success");
                     logger.debug("AccessToken: " + response.body().getAccessToken());
-                    // ログイン成功時の処理
+
+                    userSettings.getAppCommon().setLoggedIn(true);
+                    // TODO: Apiキーを保存
+                    finish();
                 } else {
                     logger.error("Login Failed");
                     try {
