@@ -1,5 +1,6 @@
 package one.nem.kidshift.data.room.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -9,8 +10,9 @@ public class ChildCacheEntity {
 
     @PrimaryKey
     @ColumnInfo(name = "id")
-    private String Id;
+    @NonNull
+    public String Id;
 
     @ColumnInfo(name = "display_name")
-    private String displayName;
+    public String displayName;
 }
