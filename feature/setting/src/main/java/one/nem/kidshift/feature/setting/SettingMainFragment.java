@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
@@ -24,6 +25,7 @@ import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.ParentData;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
+import one.nem.kidshift.model.callback.ParentModelCallback;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,8 +87,25 @@ public class SettingMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        //親の名前、アドレス表示
-        ParentModel parent = parentData.getParent().join();
+        CompletableFuture<ParentModel> completableFuture = parentData.getParent(new ParentModelCallback() {
+
+            @Override
+            public void onUnchanged() {
+                // TODO
+            }
+
+            @Override
+            public void onUpdated(ParentModel parent) {
+                // TODO
+            }
+
+            @Override
+            public void onFailed(String message) {
+                // TODO
+            }
+        });
+
+        ParentModel parent = completableFuture.join();
 
         if (parent == null) {
             parent = new ParentModel(); // Workaround（非ログインデバッグ用）
