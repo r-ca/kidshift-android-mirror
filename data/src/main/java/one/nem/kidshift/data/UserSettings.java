@@ -7,6 +7,7 @@ public interface UserSettings {
     ApiSetting getApiSetting();
     TaskSetting getTaskSetting();
     AppCommonSetting getAppCommonSetting();
+    SharedPrefCache getCache();
 
     interface AppCommonSetting {
         boolean isLoggedIn();
@@ -17,6 +18,11 @@ public interface UserSettings {
 
         boolean isChildMode();
         void setChildMode(boolean childMode);
+    }
+
+    interface SharedPrefCache {
+        ParentModel getParent();
+        void setParent(ParentModel parent);
     }
 
     interface ApiSetting {
