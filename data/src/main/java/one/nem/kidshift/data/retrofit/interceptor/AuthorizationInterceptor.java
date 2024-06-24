@@ -20,9 +20,12 @@ public class AuthorizationInterceptor implements Interceptor {
     public static final String HEADER_PLACEHOLDER = HEADER_NAME + ": " + HEADER_VALUE;
 
     private final UserSettings userSettings;
+    private final KSLogger logger;
 
-    public AuthorizationInterceptor(UserSettings userSettings) {
+    public AuthorizationInterceptor(UserSettings userSettings, KSLogger logger) {
         this.userSettings = userSettings;
+        this.logger = logger;
+        logger.setTag("Auth_Interceptor");
     }
 
     @NonNull

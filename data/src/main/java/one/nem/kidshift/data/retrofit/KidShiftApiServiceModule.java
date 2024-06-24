@@ -43,10 +43,10 @@ public class KidShiftApiServiceModule {
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient(UserSettings userSettings) {
+    public OkHttpClient provideOkHttpClient(UserSettings userSettings, KSLogger logger) {
         return new OkHttpClient.Builder()
 //                .addInterceptor(provideAuthorizationInterceptor())
-                .addInterceptor(new AuthorizationInterceptor(userSettings))
+                .addInterceptor(new AuthorizationInterceptor(userSettings, logger))
                 .build();
     }
 
