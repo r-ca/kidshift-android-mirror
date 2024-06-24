@@ -49,7 +49,8 @@ public class KidShiftApiServiceModule {
     @Singleton
     public KidShiftApiService provideKidShiftApiService() {
         return new Retrofit.Builder()
-                .baseUrl(userSettings.getApiSetting().getApiBaseUrl())
+//                .baseUrl(userSettings.getApiSetting().getApiBaseUrl())
+                .baseUrl("https://kidshift-beta.nem.one/")
                 .addConverterFactory(GsonConverterFactory.create(provideGson()))
                 .client(provideOkHttpClient())
                 .build()
