@@ -86,7 +86,7 @@ public class SettingMainFragment extends Fragment {
         // Inflate the layout for this fragment
 
         //親の名前、アドレス表示
-        ParentModel parent = parentData.getParent("poiuytrew");
+        ParentModel parent = parentData.getParent().join();
 
         //RecyclerViewの処理
         View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
