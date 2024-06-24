@@ -24,7 +24,7 @@ public class AuthorizationInterceptor implements Interceptor {
     public AuthorizationInterceptor(UserSettings userSettings, KSLogger logger) {
         this.userSettings = userSettings;
         this.logger = logger;
-        logger.setTag("AuthorizationInterceptor")
+        logger.setTag("AuthorizationInterceptor");
     }
 
     @NonNull
