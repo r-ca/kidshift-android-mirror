@@ -30,7 +30,7 @@ public class KidShiftApiServiceModule {
     @Provides
     @Singleton
     public AuthorizationInterceptor provideAuthorizationInterceptor() {
-        return new AuthorizationInterceptor(userSettings, logger);
+        return new AuthorizationInterceptor(userSettings);
     }
 
     // Gson
@@ -43,20 +43,21 @@ public class KidShiftApiServiceModule {
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient() {
+    public OkHttpClient provideOkHttpClient(UserSettings userSettings) {
         return new OkHttpClient.Builder()
-                .addInterceptor(provideAuthorizationInterceptor())
+//                .addInterceptor(provideAuthorizationInterceptor())
+                .addInterceptor(new AuthorizationInterceptor(userSettings))
                 .build();
     }
 
     @Provides
     @Singleton
-    public KidShiftApiService provideKidShiftApiService() {
+    public KidShiftApiService provideKidShiftApiService(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
 //                .baseUrl(userSettings.getApiSetting().getApiBaseUrl())
                 .baseUrl("https://kidshift-beta.nem.one/")
                 .addConverterFactory(GsonConverterFactory.create(provideGson()))
-                .client(provideOkHttpClient())
+                .client(okHttpClient)
                 .build()
                 .create(KidShiftApiService.class);
     }
