@@ -88,6 +88,12 @@ public class SettingMainFragment extends Fragment {
         //親の名前、アドレス表示
         ParentModel parent = parentData.getParent().join();
 
+        if (parent == null) {
+            parent = new ParentModel(); // Workaround（非ログインデバッグ用）
+            parent.setDisplayName("親の名前");
+            parent.setEmail("親のアドレス");
+        }
+
         //RecyclerViewの処理
         View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
 
