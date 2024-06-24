@@ -1,5 +1,7 @@
 package one.nem.kidshift.data.impl;
 
+import java.util.concurrent.CompletableFuture;
+
 import javax.inject.Inject;
 
 import one.nem.kidshift.data.ParentData;
@@ -16,7 +18,7 @@ public class ParentDataImpl implements ParentData {
     }
 
     @Override
-    public ParentModel getParent(String parentId) {
+    public CompletableFuture<ParentModel> getParent() {
         return null;
     }
 
