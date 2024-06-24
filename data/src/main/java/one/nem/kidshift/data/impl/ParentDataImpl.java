@@ -33,15 +33,13 @@ public class ParentDataImpl implements ParentData {
             Response<ParentInfoResponse> parentInfoResponse;
             Call<ParentInfoResponse> response = kidshiftApiService.getParentInfo();
             try {
-                Log.d("ParentDataImpl", "getParent");
-                Log.d("token", userSettings.getAppCommonSetting().getAccessToken());
                 parentInfoResponse = response.execute();
                 ParentInfoResponse responseBody = parentInfoResponse.body();
                 ParentModel parent = new ParentModel();
                 assert parentInfoResponse != null;
                 parent.setInternalId(responseBody.getId());
                 parent.setEmail(responseBody.getEmail());
-                parent.setDisplayName(responseBody.getDisplayName());
+                parent.setDisplayName(responseBody.getDisplayName().isEmpty() ? responseBody.getEmail() : responseBody.getDisplayName());
                 // TODO: 他のプロパティも処理する
                 return parent;
             } catch (IOException e) {
