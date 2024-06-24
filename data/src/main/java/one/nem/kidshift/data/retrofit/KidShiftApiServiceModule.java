@@ -13,6 +13,7 @@ import dagger.hilt.components.SingletonComponent;
 import okhttp3.OkHttpClient;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.interceptor.AuthorizationInterceptor;
+import one.nem.kidshift.utils.KSLogger;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,10 +24,13 @@ public class KidShiftApiServiceModule {
     @Inject
     UserSettings userSettings;
 
+    @Inject
+    KSLogger logger;
+
     @Provides
     @Singleton
     public AuthorizationInterceptor provideAuthorizationInterceptor() {
-        return new AuthorizationInterceptor(userSettings);
+        return new AuthorizationInterceptor(userSettings, logger);
     }
 
     // Gson
