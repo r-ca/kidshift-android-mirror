@@ -39,7 +39,7 @@ public class ParentDataImpl implements ParentData {
                 assert parentInfoResponse != null;
                 parent.setInternalId(responseBody.getId());
                 parent.setEmail(responseBody.getEmail());
-                parent.setDisplayName(responseBody.getDisplayName().isEmpty() ? responseBody.getEmail() : responseBody.getDisplayName());
+                parent.setDisplayName(responseBody.getEmail()); // Workaround
                 // TODO: 他のプロパティも処理する
                 return parent;
             } catch (IOException e) {
