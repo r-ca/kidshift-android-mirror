@@ -67,4 +67,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    /**
+     * 起動時にバックグラウンドで行う各種更新処理とか
+     */
+    private void startup() {
+
+    }
 }
