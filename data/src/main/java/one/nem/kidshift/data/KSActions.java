@@ -1,5 +1,9 @@
 package one.nem.kidshift.data;
 
+import java.util.concurrent.CompletableFuture;
+
+import one.nem.kidshift.model.ParentModel;
+
 /**
  * データの同期など, ユーザーからの操作に基づかない処理を行う
  */
@@ -12,6 +16,6 @@ public interface KSActions {
     /**
      * 親ユーザー情報同期
      */
-    void syncParent();
+    CompletableFuture<ParentModel> syncParent();
 
 }

@@ -8,6 +8,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import one.nem.kidshift.data.UserSettings;
+import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.utils.SharedPrefUtils;
 import one.nem.kidshift.utils.factory.SharedPrefUtilsFactory;
 
@@ -33,6 +34,44 @@ public class UserSettingsImpl implements UserSettings {
     @Override
     public AppCommonSetting getAppCommonSetting() {
         return new AppCommonSettingImpl();
+    }
+
+    @Override
+    public SharedPrefCache getCache() {
+        return new SharedPrefCacheImpl();
+    }
+
+    public class SharedPrefCacheImpl implements UserSettings.SharedPrefCache {
+
+        transient
+        SharedPrefUtils sharedPrefUtils;
+
+        ParentModel parent;
+
+        SharedPrefCacheImpl() {
+            sharedPrefUtils = sharedPrefUtilsFactory.create("user_settings");
+            SharedPrefCacheImpl sharedPrefCache = sharedPrefUtils.getObject("shared_pref_cache", SharedPrefCacheImpl.class);
+            if (sharedPrefCache != null) {
+                parent = sharedPrefCache.getParent();
+            } else {
+                parent = null;
+            }
+        }
+
+        private void save() {
+            sharedPrefUtils.saveObject("shared_pref_cache", this);
+        }
+
+        @Override
+        public ParentModel getParent() {
+            return parent;
+        }
+
+        @Override
+        public void setParent(ParentModel parent) {
+            this.parent = parent;
+            save();
+        }
     }
 
     public class AppCommonSettingImpl implements UserSettings.AppCommonSetting {

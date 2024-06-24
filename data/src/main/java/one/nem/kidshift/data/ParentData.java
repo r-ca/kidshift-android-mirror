@@ -3,6 +3,7 @@ package one.nem.kidshift.data;
 import java.util.concurrent.CompletableFuture;
 
 import one.nem.kidshift.model.ParentModel;
+import one.nem.kidshift.model.callback.ParentModelCallback;
 
 public interface ParentData {
 
@@ -11,7 +12,7 @@ public interface ParentData {
      * 親ユーザー情報取得
      * @return 親ユーザー情報
      */
-    CompletableFuture<ParentModel> getParent();
+    CompletableFuture<ParentModel> getParent(ParentModelCallback callback);
 
     /**
      * 親ユーザー情報更新
