@@ -43,7 +43,7 @@ public class AuthorizationInterceptor implements Interceptor {
             }
 
             return chain.proceed(chain.request().newBuilder()
-                    .header(HEADER_NAME, userSettings.getAppCommonSetting().getAccessToken())
+                    .header(HEADER_NAME, "Barer " + userSettings.getAppCommonSetting().getAccessToken())
                     .build());
         } catch (Exception e) {
             return chain.proceed(chain.request());
