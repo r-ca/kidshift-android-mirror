@@ -22,15 +22,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class KidShiftApiServiceModule {
 
     @Inject
-    UserSettings userSettings;
-
-    @Inject
     KSLogger logger;
 
     @Provides
     @Singleton
-    public AuthorizationInterceptor provideAuthorizationInterceptor() {
-        return new AuthorizationInterceptor(userSettings);
+    public AuthorizationInterceptor provideAuthorizationInterceptor(UserSettings userSettings, KSLogger logger) {
+        return new AuthorizationInterceptor(userSettings, logger);
     }
 
     // Gson
@@ -43,10 +40,9 @@ public class KidShiftApiServiceModule {
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient(UserSettings userSettings, KSLogger logger) {
+    public OkHttpClient provideOkHttpClient(AuthorizationInterceptor authorizationInterceptor) {
         return new OkHttpClient.Builder()
-//                .addInterceptor(provideAuthorizationInterceptor())
-                .addInterceptor(new AuthorizationInterceptor(userSettings, logger))
+                .addInterceptor(authorizationInterceptor)
                 .build();
     }
 
