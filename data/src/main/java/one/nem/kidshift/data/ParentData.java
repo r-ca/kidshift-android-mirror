@@ -6,10 +6,10 @@ import one.nem.kidshift.model.ParentModel;
 
 public interface ParentData {
 
+
     /**
      * 親ユーザー情報取得
-     * @param parentId 親ID
-     * @return ParentModel 親ユーザー情報
+     * @return 親ユーザー情報
      */
     CompletableFuture<ParentModel> getParent();
 
