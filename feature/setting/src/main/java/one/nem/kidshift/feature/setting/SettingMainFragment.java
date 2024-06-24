@@ -105,6 +105,16 @@ public class SettingMainFragment extends Fragment {
             }
         });
 
+        /*
+        TODO:
+            - コールバックの処理を実装
+            - 結果に応じてRecyclerViewを更新する
+            - キャッシュ受け取りの時にjoinでUIスレッドをブロックしないように
+            - Placeholderの表示?
+            - エラーハンドリング
+                - onFailed時にそれを通知
+         */
+
         ParentModel parent = completableFuture.join();
 
         if (parent == null) {
