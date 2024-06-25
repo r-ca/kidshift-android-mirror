@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,6 +37,8 @@ public class ParentMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        //タスク一覧表示
         View view = inflater.inflate(R.layout.fragment_parent_main, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.main_recycle_view);
@@ -48,6 +52,21 @@ public class ParentMainFragment extends Fragment {
 
         RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
         recyclerView.setAdapter(mainAdapter);
+
+        //お手伝い追加ダイアログ
+        LayoutInflater inflater1 = requireActivity().getLayoutInflater();
+        View view1 = inflater1.inflate(R.layout.add_task_list_dialog,null);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle("お手伝い名追加")
+                .setView(view1)
+                .setPositiveButton("追加", null)
+                .setNeutralButton("閉じる",null);
+        builder.create();
+
+        view.findViewById(R.id.addtask).setOnClickListener(v -> {
+            builder.show();
+        });
 
         return view;
     }
