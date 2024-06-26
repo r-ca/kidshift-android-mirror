@@ -2,27 +2,27 @@ package one.nem.kidshift.data.retrofit.model.task;
 
 import java.util.List;
 
-// Request to add a task, with optional attached children
 public class TaskAddRequest extends TaskBaseItem {
     private List<String> attachedChildren;
 
-    // Full
+    // コンストラクタ
+    // 全プロパティ
     public TaskAddRequest(String name, String iconEmoji, String bgColor, int reward, List<String> attachedChildren) {
         super(name, iconEmoji, bgColor, reward);
         this.attachedChildren = attachedChildren;
     }
 
-    // Required
+    // ID, Optionalなフィールドなし (登録時など)
     public TaskAddRequest(String name, int reward, List<String> attachedChildren) {
         super(name, reward);
         this.attachedChildren = attachedChildren;
     }
 
-    // Empty
+    // 空
     public TaskAddRequest() {
     }
 
-    // Extend
+    // baseItemを指定して拡張
     public TaskAddRequest(TaskBaseItem taskBaseItem, List<String> attachedChildren) {
         super(taskBaseItem.getName(), taskBaseItem.getIconEmoji(), taskBaseItem.getBgColor(), taskBaseItem.getReward());
         this.attachedChildren = attachedChildren;

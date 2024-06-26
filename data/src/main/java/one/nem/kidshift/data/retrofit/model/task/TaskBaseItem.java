@@ -1,6 +1,5 @@
 package one.nem.kidshift.data.retrofit.model.task;
 
-// Base class for tasks
 public class TaskBaseItem {
     private String id;
     private String name;
@@ -8,7 +7,8 @@ public class TaskBaseItem {
     private String bgColor;   // Optional
     private int reward;
 
-    // Full
+    // コンストラクタ
+    // 全プロパティ
     public TaskBaseItem(String id, String name, String iconEmoji, String bgColor, int reward) {
         this.id = id;
         this.name = name;
@@ -17,7 +17,7 @@ public class TaskBaseItem {
         this.reward = reward;
     }
 
-    // Without id
+    // IDなし (登録時など)
     public TaskBaseItem(String name, String iconEmoji, String bgColor, int reward) {
         this.name = name;
         this.iconEmoji = iconEmoji;
@@ -25,20 +25,20 @@ public class TaskBaseItem {
         this.reward = reward;
     }
 
-    // Required
+    // Optionalなフィールドなし
     public TaskBaseItem(String id, String name, int reward) {
         this.id = id;
         this.name = name;
         this.reward = reward;
     }
 
-    // Without id and optional fields
+    // ID, Optionalなフィールドなし (登録時など)
     public TaskBaseItem(String name, int reward) {
         this.name = name;
         this.reward = reward;
     }
 
-    // Empty
+    // 空
     public TaskBaseItem() {
     }
 
