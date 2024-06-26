@@ -32,6 +32,12 @@ public class TaskBaseItem {
         this.reward = reward;
     }
 
+    // Without id and optional fields
+    public TaskBaseItem(String name, int reward) {
+        this.name = name;
+        this.reward = reward;
+    }
+
     // Empty
     public TaskBaseItem() {
     }
