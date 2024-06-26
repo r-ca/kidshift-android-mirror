@@ -15,6 +15,13 @@ public interface TaskData {
     List<TaskItemModel> getTasks();
 
     /**
+     * アタッチされている全てのタスクを取得する
+     * @param childId 子ID
+     * @return List<TaskItemModel> タスクリスト
+     */
+    List<TaskItemModel> getTasks(String childId);
+
+    /**
      * タスクを追加する
      * @param task タスク
      */
