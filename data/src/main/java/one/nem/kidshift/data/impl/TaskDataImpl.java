@@ -24,9 +24,6 @@ public class TaskDataImpl implements TaskData {
     public CompletableFuture<List<TaskItemModel>> getTasks() {
         return CompletableFuture.supplyAsync(() -> {
             TaskListResponse data = ksActions.syncTasks().join();
-            if (data == null) {
-                return null;
-            }
             return data.getList().stream().map(task -> {
                 // Convert TaskItemModel
                 TaskItemModel model = new TaskItemModel();
