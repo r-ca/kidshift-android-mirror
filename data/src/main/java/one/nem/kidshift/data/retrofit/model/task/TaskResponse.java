@@ -2,7 +2,6 @@ package one.nem.kidshift.data.retrofit.model.task;
 
 import java.util.List;
 
-// Response for a single task with attached children
 public class TaskResponse extends TaskBaseItem {
     private List<String> attachedChildren;
 
