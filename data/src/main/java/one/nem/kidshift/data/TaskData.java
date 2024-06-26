@@ -1,6 +1,7 @@
 package one.nem.kidshift.data;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import one.nem.kidshift.model.tasks.TaskItemModel;
 
@@ -10,9 +11,16 @@ public interface TaskData {
 
     /**
      * 存在する全てのタスクを取得する
-     * @return List<TaskItemModel> タスクリスト
+     * @return CompletableFuture<List<TaskItemModel>> タスクリスト
      */
-    List<TaskItemModel> getTasks();
+    CompletableFuture<List<TaskItemModel>> getTasks();
+
+    /**
+     * アタッチされている全てのタスクを取得する
+     * @param childId 子ID
+     * @return CompletableFuture<List<TaskItemModel>> タスクリスト
+     */
+    CompletableFuture<List<TaskItemModel>> getTasks(String childId);
 
     /**
      * タスクを追加する

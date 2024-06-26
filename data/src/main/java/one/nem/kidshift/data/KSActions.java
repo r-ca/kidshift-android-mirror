@@ -2,6 +2,7 @@ package one.nem.kidshift.data;
 
 import java.util.concurrent.CompletableFuture;
 
+import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.model.ParentModel;
 
 /**
@@ -9,7 +10,7 @@ import one.nem.kidshift.model.ParentModel;
  */
 public interface KSActions {
 
-    void syncTasks();
+    CompletableFuture<TaskListResponse> syncTasks();
 
     void syncChildList();
 
