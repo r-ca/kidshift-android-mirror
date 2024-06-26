@@ -1,6 +1,5 @@
 package one.nem.kidshift.data.retrofit.model.task;
 
-// Base class for tasks
 public class TaskBaseItem {
     private String id;
     private String name;
