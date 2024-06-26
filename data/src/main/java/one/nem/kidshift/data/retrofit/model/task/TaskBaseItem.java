@@ -8,6 +8,26 @@ public class TaskBaseItem {
     private String bgColor;   // Optional
     private int reward;
 
+    // Full
+    public TaskBaseItem(String id, String name, String iconEmoji, String bgColor, int reward) {
+        this.id = id;
+        this.name = name;
+        this.iconEmoji = iconEmoji;
+        this.bgColor = bgColor;
+        this.reward = reward;
+    }
+
+    // Required
+    public TaskBaseItem(String id, String name, int reward) {
+        this.id = id;
+        this.name = name;
+        this.reward = reward;
+    }
+
+    // Empty
+    public TaskBaseItem() {
+    }
+
     // Getters and setters
     public String getId() {
         return id;
