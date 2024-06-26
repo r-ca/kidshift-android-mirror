@@ -2,7 +2,6 @@ package one.nem.kidshift.data.retrofit.model.task;
 
 import java.util.List;
 
-// Response for a list of tasks
 public class TaskListResponse {
     private List<TaskBaseItem> list;
 
