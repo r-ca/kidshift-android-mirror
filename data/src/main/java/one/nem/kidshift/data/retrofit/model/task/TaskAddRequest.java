@@ -6,6 +6,28 @@ import java.util.List;
 public class TaskAddRequest extends TaskBaseItem {
     private List<String> attachedChildren;
 
+    // Full
+    public TaskAddRequest(String name, String iconEmoji, String bgColor, int reward, List<String> attachedChildren) {
+        super(name, iconEmoji, bgColor, reward);
+        this.attachedChildren = attachedChildren;
+    }
+
+    // Required
+    public TaskAddRequest(String name, int reward, List<String> attachedChildren) {
+        super(name, reward);
+        this.attachedChildren = attachedChildren;
+    }
+
+    // Empty
+    public TaskAddRequest() {
+    }
+
+    // Extend
+    public TaskAddRequest(TaskBaseItem taskBaseItem, List<String> attachedChildren) {
+        super(taskBaseItem.getName(), taskBaseItem.getIconEmoji(), taskBaseItem.getBgColor(), taskBaseItem.getReward());
+        this.attachedChildren = attachedChildren;
+    }
+
     // Getters and setters
     public List<String> getAttachedChildren() {
         return attachedChildren;
