@@ -4,6 +4,7 @@ import one.nem.kidshift.data.retrofit.interceptor.AuthorizationInterceptor;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginResponse;
+import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,4 +21,7 @@ public interface KidShiftApiService {
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ParentInfoResponse> getParentInfo();
 
+    @GET("/parent/task")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<TaskListResponse> getTasks();
 }
