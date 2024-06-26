@@ -1,5 +1,7 @@
 package one.nem.kidshift.data.retrofit.model.child;
 
+import java.util.List;
+
 // Response for a list of children
 public class ChildListResponse {
     private List<ChildResponse> list;
