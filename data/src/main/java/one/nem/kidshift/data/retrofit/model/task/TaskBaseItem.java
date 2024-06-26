@@ -17,6 +17,14 @@ public class TaskBaseItem {
         this.reward = reward;
     }
 
+    // Without id
+    public TaskBaseItem(String name, String iconEmoji, String bgColor, int reward) {
+        this.name = name;
+        this.iconEmoji = iconEmoji;
+        this.bgColor = bgColor;
+        this.reward = reward;
+    }
+
     // Required
     public TaskBaseItem(String id, String name, int reward) {
         this.id = id;
