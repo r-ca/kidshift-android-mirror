@@ -6,6 +6,14 @@ import java.util.List;
 public class ChildListResponse {
     private List<ChildResponse> list;
 
+    // Constructor
+    public ChildListResponse(List<ChildResponse> list) {
+        this.list = list;
+    }
+
+    public ChildListResponse() {
+    }
+
     // Getters and setters
     public List<ChildResponse> getList() {
         return list;
