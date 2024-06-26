@@ -9,7 +9,7 @@ import one.nem.kidshift.model.ParentModel;
  */
 public interface KSActions {
 
-    void syncTasks();
+    CompletableFuture<Void> syncTasks();
 
     void syncChildList();
 

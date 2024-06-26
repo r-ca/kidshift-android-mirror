@@ -28,7 +28,7 @@ public class KSActionsImpl implements KSActions {
     }
 
     @Override
-    public void syncTasks() {
+    public CompletableFuture<Void> syncTasks() {
 
     }
 
