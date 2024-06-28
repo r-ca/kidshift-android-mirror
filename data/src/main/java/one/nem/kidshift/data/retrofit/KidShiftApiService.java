@@ -98,16 +98,22 @@ public interface KidShiftApiService {
     Call<Void> completeTask(@Path("id") String id); // TODO-rca: OK responseをパース
 
     // Child APIs
+
+    /**
+     * 子供一覧取得
+     * @return ChildListResponse
+     */
     @GET("/parent/child")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildListResponse> getChildList();
 
+    /**
+     * 子供追加
+     * @param request ChildAddRequest
+     * @return ChildResponse
+     */
     @POST("/parent/child")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildResponse> addChild(@Body ChildAddRequest request);
-
-    @PUT("/parent/child/{id}")
-    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
-    Call<ChildResponse> updateChild(@Body ChildAddRequest request, @Path("id") String id);
 
 }
