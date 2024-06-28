@@ -48,7 +48,7 @@ public class ChildDataDummyImpl implements ChildData {
     }
 
     @Override
-    public int issueLoginCode(String childId) {
-        return 123456;
+    public CompletableFuture<Integer> issueLoginCode(String childId) {
+        return CompletableFuture.completedFuture(123456);
     }
 }

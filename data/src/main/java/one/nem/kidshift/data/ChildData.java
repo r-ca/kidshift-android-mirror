@@ -43,5 +43,5 @@ public interface ChildData {
      * @param childId 子ID
      * @return int ログインコード
      */
-    int issueLoginCode(String childId);
+    CompletableFuture<Integer> issueLoginCode(String childId);
 }
