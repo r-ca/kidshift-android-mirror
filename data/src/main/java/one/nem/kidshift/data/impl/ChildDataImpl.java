@@ -37,7 +37,7 @@ public class ChildDataImpl implements ChildData {
             Call<ChildListResponse> call = kidShiftApiService.getChildList();
             try {
                 Response<ChildListResponse> response = call.execute();
-                if (!response.isSuccessful()) return null;
+                if (!response.isSuccessful()) return null; // TODO-rca: nullとするかは検討
 
                 ChildListResponse body = response.body();
                 if (body == null) return null;
