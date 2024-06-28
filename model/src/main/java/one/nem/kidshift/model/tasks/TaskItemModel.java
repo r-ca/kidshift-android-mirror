@@ -8,98 +8,44 @@ import one.nem.kidshift.model.tasks.condition.TaskConditionBaseModel;
 
 public class TaskItemModel {
 
-    String internalId;
-    String attachedChildId;
-    String displayName;
-    String iconEmoji;
-    Color bgColor;
-    TaskConditionBaseModel condition;
-    long reward;
+    private String id;
+    private String name;
+    private String iconEmoji; // Optional
+    private String bgColor;   // Optional
+    private int reward;
 
-    // constructor
-    public TaskItemModel(String internalId, String displayName, String attachedChildId, String iconEmoji, Color bgColor, TaskConditionBaseModel condition, long reward) {
-        this.internalId = internalId;
-        this.attachedChildId = attachedChildId;
-        this.displayName = displayName;
+    // コンストラクタ
+    // 全プロパティ
+    public TaskItemModel(String id, String name, String iconEmoji, String bgColor, int reward) {
+        this.id = id;
+        this.name = name;
         this.iconEmoji = iconEmoji;
-        this.condition = condition;
-        this.reward = reward;
         this.bgColor = bgColor;
+        this.reward = reward;
     }
 
-    public TaskItemModel(String internalId, String displayName, String attachedChildId, String iconEmoji, TaskConditionBaseModel condition, long reward) {
-        this.internalId = internalId;
-        this.attachedChildId = attachedChildId;
-        this.displayName = displayName;
+    // IDなし (登録時など)
+    public TaskItemModel(String name, String iconEmoji, String bgColor, int reward) {
+        this.name = name;
         this.iconEmoji = iconEmoji;
-        this.condition = condition;
+        this.bgColor = bgColor;
         this.reward = reward;
     }
 
-    public TaskItemModel(String internalId, String displayName, String attachedChildId, TaskConditionBaseModel condition, long reward) {
-        this.internalId = internalId;
-        this.attachedChildId = attachedChildId;
-        this.displayName = displayName;
-        this.condition = condition;
+    // Optionalなフィールドなし
+    public TaskItemModel(String id, String name, int reward) {
+        this.id = id;
+        this.name = name;
         this.reward = reward;
     }
 
+    // ID, Optionalなフィールドなし (登録時など)
+    public TaskItemModel(String name, int reward) {
+        this.name = name;
+        this.reward = reward;
+    }
+
+    // 空
     public TaskItemModel() {
-
-    }
-
-    // getter setter
-
-    public String getInternalId() {
-        return internalId;
-    }
-
-    public void setInternalId(String internalId) {
-        this.internalId = internalId;
-    }
-
-    public String getAttachedChildId() {
-        return attachedChildId;
-    }
-
-    public void setAttachedChildId(String attachedChildId) {
-        this.attachedChildId = attachedChildId;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public TaskConditionBaseModel getCondition() {
-        return condition;
-    }
-
-    public void setCondition(TaskConditionBaseModel condition) {
-        this.condition = condition;
-    }
-
-    public long getReward() {
-        return reward;
-    }
-
-    public void setReward(long reward) {
-        this.reward = reward;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "TaskItemModel{" + '\n' +
-                "  internalId='" + internalId + '\n' +
-                "  attachedChildId='" + attachedChildId + '\n' +
-                "  displayName='" + displayName + '\n' +
-//                "  condition=" + condition.toString() + '\n' +
-                "  condition=" + "__________" + '\n' +
-                "  reward=" + reward + '\n' +
-                '}';
     }
 }
