@@ -51,7 +51,7 @@ public interface KidShiftApiService {
     /**
      * タスク追加
      * @param request TaskAddRequest
-     * @return TaskListResponse
+     * @return TaskResponse
      */
     @POST("/parent/task")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
@@ -61,7 +61,7 @@ public interface KidShiftApiService {
      * タスク更新
      * @param request TaskAddRequest
      * @param id タスクID
-     * @return TaskListResponse
+     * @return TaskResponse
      */
     @PUT("/parent/task/{id}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
@@ -70,7 +70,7 @@ public interface KidShiftApiService {
     /**
      * タスク削除
      * @param id タスクID
-     * @return TaskListResponse
+     * @return Void
      */
     @DELETE("/parent/task/{id}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
@@ -79,7 +79,7 @@ public interface KidShiftApiService {
     /**
      * タスク詳細取得
      * @param id タスクID
-     * @return TaskListResponse
+     * @return TaskResponse
      */
     @GET("/parent/task/{id}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
@@ -88,7 +88,7 @@ public interface KidShiftApiService {
     /**
      * タスク完了処理
      * @param id タスクID
-     * @return
+     * @return Void
      */
     @POST("/parent/task/{id}/complete")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
