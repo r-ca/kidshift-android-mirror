@@ -2,6 +2,8 @@ package one.nem.kidshift.data.impl;
 
 import com.github.javafaker.Faker;
 
+import java.util.concurrent.CompletableFuture;
+
 import javax.inject.Inject;
 
 import one.nem.kidshift.data.RewardData;
@@ -22,10 +24,7 @@ public class RewardDataDummyImpl implements RewardData {
     }
 
     @Override
-    public Integer getTotalReward() {
-//        logger.info("getTotalReward called");
-        Integer reward = faker.number().numberBetween(0, 10000);
-//        logger.info("Returning reward: " + reward);
-        return reward;
+    public CompletableFuture<Integer> getTotalReward() {
+        return CompletableFuture.supplyAsync(() -> faker.number().numberBetween(0, 1000));
     }
 }
