@@ -57,8 +57,8 @@ public class TaskDataImpl implements TaskData {
     }
 
     @Override
-    public TaskItemModel getTask(String taskId) {
-        return null;
+    public CompletableFuture<TaskItemModel> getTask(String taskId) {
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
