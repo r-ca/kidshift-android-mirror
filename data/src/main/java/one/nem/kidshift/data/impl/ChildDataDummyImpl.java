@@ -2,6 +2,7 @@ package one.nem.kidshift.data.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
@@ -15,8 +16,8 @@ public class ChildDataDummyImpl implements ChildData {
     }
 
     @Override
-    public ChildModel getChild(String childId) {
-        return null;
+    public CompletableFuture<ChildModel> getChild(String childId) {
+        return CompletableFuture.supplyAsync(() -> new ChildModel("1", "子供1", "idididididid"));
     }
 
     @Override
