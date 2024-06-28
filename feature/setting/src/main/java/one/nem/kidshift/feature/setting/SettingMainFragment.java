@@ -131,13 +131,14 @@ public class SettingMainFragment extends Fragment {
 
         // Pull-to-refresh（スワイプで更新）
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        ParentModel finalParent = parent;
         swipeRefreshLayout.setOnRefreshListener(() ->{
 
             TextView username = view.findViewById(R.id.username);
             TextView useradress = view.findViewById(R.id.useradress);
 
-            username.setText(parent.getDisplayName());
-            useradress.setText(parent.getEmail());
+            username.setText(finalParent.getDisplayName());
+            useradress.setText(finalParent.getEmail());
 
             RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
