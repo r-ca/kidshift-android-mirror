@@ -59,7 +59,7 @@ public class KSActionsImpl implements KSActions {
     }
 
     @Override
-    public CompletableFuture<ParentModel> syncParent() {
+    public CompletableFuture<ParentModel> syncParent() { // TODO-rca: null対処, キャッシュ対応
         logger.info("syncParent called and started");
         return CompletableFuture.supplyAsync(() -> {
             logger.info("fetching...");
