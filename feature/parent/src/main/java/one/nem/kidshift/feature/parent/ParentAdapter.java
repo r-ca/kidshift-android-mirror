@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 
 public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MainViewHolder> {
@@ -17,6 +18,8 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MainViewHo
     private final List<TaskItemModel> taskDataList;
 
     ParentAdapter(List<TaskItemModel> taskDataList) { this.taskDataList = taskDataList; }
+
+
 
     static class MainViewHolder extends RecyclerView.ViewHolder{
         TextView taskTitle;

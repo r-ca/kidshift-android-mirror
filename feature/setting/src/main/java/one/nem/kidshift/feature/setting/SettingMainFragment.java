@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,9 +124,38 @@ public class SettingMainFragment extends Fragment {
             parent.setEmail("親のアドレス");
         }
 
-        //RecyclerViewの処理
+
+
+
         View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
 
+        // Pull-to-refresh（スワイプで更新）
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() ->{
+
+            TextView username = view.findViewById(R.id.username);
+            TextView useradress = view.findViewById(R.id.useradress);
+
+            username.setText(parent.getDisplayName());
+            useradress.setText(parent.getEmail());
+
+            RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
+
+            recyclerView.setHasFixedSize(true);
+
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
+
+            List<ChildModel> child = childData.getChildList();
+
+            RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
+            recyclerView.setAdapter(mainAdapter);
+
+            swipeRefreshLayout.setRefreshing(false);
+
+        });
+
+        //RecyclerViewの処理
         TextView username = view.findViewById(R.id.username);
         TextView useradress = view.findViewById(R.id.useradress);
 
@@ -144,10 +174,11 @@ public class SettingMainFragment extends Fragment {
         RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
         recyclerView.setAdapter(mainAdapter);
 
+        //子供の名前追加のダイアログ
         LayoutInflater inflater1 = requireActivity().getLayoutInflater();
         View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
 
-        //子供の名前追加のダイアログ
+
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle("お子様の名前を入力してください。")
                 .setView(view1)
