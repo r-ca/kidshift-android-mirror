@@ -120,7 +120,7 @@ public class SettingMainFragment extends Fragment {
 
         if (parent == null) {
             parent = new ParentModel(); // Workaround（非ログインデバッグ用）
-            parent.setDisplayName("親の名前");
+            parent.setName("親の名前");
             parent.setEmail("親のアドレス");
         }
 
@@ -137,7 +137,7 @@ public class SettingMainFragment extends Fragment {
             TextView username = view.findViewById(R.id.username);
             TextView useradress = view.findViewById(R.id.useradress);
 
-            username.setText(finalParent.getDisplayName());
+            username.setText(finalParent.getName());
             useradress.setText(finalParent.getEmail());
 
             RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
@@ -160,7 +160,7 @@ public class SettingMainFragment extends Fragment {
         TextView username = view.findViewById(R.id.username);
         TextView useradress = view.findViewById(R.id.useradress);
 
-        username.setText(parent.getDisplayName());
+        username.setText(parent.getName());
         useradress.setText(parent.getEmail());
 
         RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
