@@ -45,5 +45,8 @@ public interface KidShiftApiService {
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<TaskListResponse> getTask(@Path("id") String id);
 
+    @POST("/parent/task/{id}/complete")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<TaskListResponse> completeTask(@Path("id") String id);
 
 }
