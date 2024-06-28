@@ -1,12 +1,16 @@
 package one.nem.kidshift.feature.parent;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +35,25 @@ public class ParentMainFragment extends Fragment {
     public ParentMainFragment() {
         // Required empty public constructor
     }
+
+    private void dataRefresh(){
+        SwipeRefreshLayout swipeRefreshLayout = requireView().findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setRefreshing(true);
+
+        RecyclerView recyclerView =requireView().findViewById(R.id.main_recycle_view);
+
+        recyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        List<TaskItemModel> task = taskData.getTasks().join();
+
+        RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
+        recyclerView.setAdapter(mainAdapter);
+
+        swipeRefreshLayout.setRefreshing(false);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +72,8 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
         recyclerView.setAdapter(mainAdapter);
 
+
+
         return view;
     }
 
@@ -56,5 +81,10 @@ public class ParentMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Do something...
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(()->{
+            dataRefresh();
+        });
+
     }
 }

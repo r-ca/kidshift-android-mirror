@@ -144,7 +144,7 @@ public class SettingMainFragment extends Fragment {
         RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
         recyclerView.setAdapter(mainAdapter);
 
-        LayoutInflater inflater1 = requireActivity().getLayoutInflater();
+        LayoutInflater inflater1     = requireActivity().getLayoutInflater();
         View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
 
         //子供の名前追加のダイアログ
