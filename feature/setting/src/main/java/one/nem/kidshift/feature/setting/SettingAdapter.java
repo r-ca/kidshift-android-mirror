@@ -42,7 +42,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.MainView
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position){
         ChildModel childData = this.childDataList.get(position);
-        holder.childname.setText(childData.getDisplayName());
+        holder.childname.setText(childData.getName());
     }
 
     @Override
