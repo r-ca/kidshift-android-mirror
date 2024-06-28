@@ -1,7 +1,7 @@
 package one.nem.kidshift.model;
 
-// TODO: parent, childを共通クラスから継承させる
 public class ParentModel extends UserBaseModel {
+
 
     private String email;
 
