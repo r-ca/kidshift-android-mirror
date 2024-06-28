@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
+import one.nem.kidshift.data.retrofit.model.converter.ChildModelConverter;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.utils.KSLogger;
 import retrofit2.Call;
@@ -41,13 +42,8 @@ public class ChildDataImpl implements ChildData {
 
                 ChildListResponse body = response.body();
                 if (body == null) return null;
-                return body.getList().stream().map(child -> {
-                    ChildModel model = new ChildModel();
-                    model.setDisplayName(child.getName().isEmpty() ? child.getId() : child.getName());
-                    model.setInternalId(child.getId());
-                    // 他のプロパティも処理する
-                    return model;
-                }).collect(Collectors.toList());
+
+                return ChildModelConverter.childListResponseToChildModelList(body);
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 return null;

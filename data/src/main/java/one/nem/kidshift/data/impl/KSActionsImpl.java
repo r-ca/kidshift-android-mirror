@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
+import one.nem.kidshift.data.retrofit.model.converter.ParentModelConverter;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.model.ParentModel;
@@ -58,7 +59,7 @@ public class KSActionsImpl implements KSActions {
     }
 
     @Override
-    public CompletableFuture<ParentModel> syncParent() {
+    public CompletableFuture<ParentModel> syncParent() { // TODO-rca: null対処, キャッシュ対応
         logger.info("syncParent called and started");
         return CompletableFuture.supplyAsync(() -> {
             logger.info("fetching...");
@@ -70,13 +71,7 @@ public class KSActionsImpl implements KSActions {
                     throw new RuntimeException("Error fetching parent info: " + response.errorBody().string());
                 }
                 ParentInfoResponse responseBody = response.body();
-                ParentModel parent = new ParentModel();
-                // TODO: 詰め替えをどこかにまとめる, 他のプロパティも処理する
-                parent.setInternalId(responseBody.getId());
-                parent.setEmail(responseBody.getEmail());
-                parent.setDisplayName(responseBody.getEmail()); // Workaround
-                logger.info("Parent fetched with status: " + response.code());
-                logger.debug("Parent: " + parent);
+                ParentModel parent = ParentModelConverter.parentInfoResponseToParentModel(responseBody);
                 // Save to cache
                 userSettings.getCache().setParent(parent);
                 logger.info("Parent saved to cache");
