@@ -47,7 +47,7 @@ public interface TaskData {
      * @param taskId タスクID
      * @return TaskItemModel タスク
      */
-    TaskItemModel getTask(String taskId);
+    CompletableFuture<TaskItemModel> getTask(String taskId);
 
     /**
      * タスクの完了を記録する
