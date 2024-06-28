@@ -18,7 +18,7 @@ public interface ChildData {
      * 子ユーザー一覧取得
      * @return List<ChildModel> 子ユーザー一覧
      */
-    List<ChildModel> getChildList();
+    CompletableFuture<List<ChildModel>> getChildList();
 
     /**
      * 子ユーザー情報更新

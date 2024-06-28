@@ -21,7 +21,7 @@ public class ChildDataDummyImpl implements ChildData {
     }
 
     @Override
-    public List<ChildModel> getChildList() {
+    public CompletableFuture<List<ChildModel>> getChildList() {
         // 仮置きデータを生成する
         List<ChildModel> childList = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public class ChildDataDummyImpl implements ChildData {
         childList.add(new ChildModel("2", "子供2", "idididididid"));
         childList.add(new ChildModel("3", "子供3", "idididididid"));
 
-        return childList;
+        return CompletableFuture.completedFuture(childList);
     }
 
     @Override
