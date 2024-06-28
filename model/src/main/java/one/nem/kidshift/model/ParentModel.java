@@ -1,63 +1,31 @@
 package one.nem.kidshift.model;
 
 // TODO: parent, childを共通クラスから継承させる
-public class ParentModel {
-    String internalId;
-    String displayName;
-    String homeGroupId;
-    String email;
+public class ParentModel extends UserBaseModel {
 
-    public ParentModel(String internalId, String displayName, String homeGroupId, String email) {
-        this.internalId = internalId;
-        this.displayName = displayName;
-        this.homeGroupId = homeGroupId;
+    private String email;
+
+    public ParentModel(String id, String name, String email) {
+        super(id, name);
         this.email = email;
     }
 
-    public ParentModel(String internalId, String displayName, String homeGroupId) {
-        this.internalId = internalId;
-        this.displayName = displayName;
-        this.homeGroupId = homeGroupId;
+    private ParentModel(UserBaseModel userBaseModel, String email) {
+        super(userBaseModel.getId().isEmpty() ? null : userBaseModel.getId(), userBaseModel.getName());
+        this.email = email;
     }
 
-    public ParentModel(String internalId, String displayName) {
-        this.internalId = internalId;
-        this.displayName = displayName;
+    public ParentModel(String name, String email) {
+        super(name);
+        this.email = email;
     }
 
     public ParentModel() {
     }
 
-    // Getter
-
-    public String getInternalId() {
-        return internalId;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public String getHomeGroupId() {
-        return homeGroupId;
-    }
 
     public String getEmail() {
         return email;
-    }
-
-    // Setter
-
-    public void setInternalId(String internalId) {
-        this.internalId = internalId;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public void setHomeGroupId(String homeGroupId) {
-        this.homeGroupId = homeGroupId;
     }
 
     public void setEmail(String email) {
