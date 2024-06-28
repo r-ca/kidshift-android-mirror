@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.TaskData;
+import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 
@@ -24,15 +25,7 @@ public class TaskDataImpl implements TaskData {
     public CompletableFuture<List<TaskItemModel>> getTasks() {
         return CompletableFuture.supplyAsync(() -> {
             TaskListResponse data = ksActions.syncTasks().join();
-            return data.getList().stream().map(task -> {
-                // Convert TaskItemModel
-                TaskItemModel model = new TaskItemModel();
-                model.setInternalId(task.getId());
-                model.setDisplayName(task.getName());
-                model.setReward(task.getReward());
-
-                return model;
-            }).collect(Collectors.toList());
+            return TaskModelConverter.taskResponseListToTaskItemModelList(data);
         });
     }
 
