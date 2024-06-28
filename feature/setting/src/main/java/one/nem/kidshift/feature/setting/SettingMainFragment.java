@@ -17,6 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
@@ -25,6 +26,7 @@ import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.ParentData;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
+import one.nem.kidshift.model.callback.ParentModelCallback;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,8 +88,41 @@ public class SettingMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        //親の名前、アドレス表示
-        ParentModel parent = parentData.getParent("poiuytrew");
+        CompletableFuture<ParentModel> completableFuture = parentData.getParent(new ParentModelCallback() {
+
+            @Override
+            public void onUnchanged() {
+                // TODO
+            }
+
+            @Override
+            public void onUpdated(ParentModel parent) {
+                // TODO
+            }
+
+            @Override
+            public void onFailed(String message) {
+                // TODO
+            }
+        });
+
+        /*
+        TODO:
+            - コールバックの処理を実装
+            - 結果に応じてRecyclerViewを更新する
+            - キャッシュ受け取りの時にjoinでUIスレッドをブロックしないように
+            - Placeholderの表示?
+            - エラーハンドリング
+                - onFailed時にそれを通知
+         */
+
+        ParentModel parent = completableFuture.join();
+
+        if (parent == null) {
+            parent = new ParentModel(); // Workaround（非ログインデバッグ用）
+            parent.setDisplayName("親の名前");
+            parent.setEmail("親のアドレス");
+        }
 
 
 
@@ -134,7 +169,7 @@ public class SettingMainFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        List<ChildModel> child = childData.getChildList();
+        List<ChildModel> child = childData.getChildList().join();
 
         RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
         recyclerView.setAdapter(mainAdapter);
