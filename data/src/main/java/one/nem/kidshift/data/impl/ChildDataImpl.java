@@ -32,7 +32,7 @@ public class ChildDataImpl implements ChildData {
     }
 
     @Override
-    public CompletableFuture<List<ChildModel>> getChildList() {
+    public CompletableFuture<List<ChildModel>> getChildList() { // TODO-rca: DBにキャッシュするように修正する
         return CompletableFuture.supplyAsync(() -> {
             Call<ChildListResponse> call = kidShiftApiService.getChildList();
             try {
