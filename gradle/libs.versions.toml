@@ -11,11 +11,14 @@ constraintlayout = "2.1.4"
 nav = "2.7.7"
 swiperefreshlayout = "1.1.0"
 retrofit = "2.11.0"
-room = "2.5.0"
+room = "2.6.1"
+javafaker = "1.0.2"
 
 [libraries]
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+javafaker = { module = "com.github.javafaker:javafaker", version.ref = "javafaker" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }

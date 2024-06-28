@@ -71,7 +71,7 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getContext());
         recyclerView1.setLayoutManager(layoutManager1);
 
-        List<ChildModel> child = childData.getChildList();
+        List<ChildModel> child = childData.getChildList().join();
 
         RecyclerView.Adapter mainAdapter1 = new ChildListAdapter(child);
         recyclerView1.setAdapter(mainAdapter1);
