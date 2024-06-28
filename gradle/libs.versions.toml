@@ -9,6 +9,7 @@ material = "1.12.0"
 activity = "1.9.0"
 constraintlayout = "2.1.4"
 nav = "2.7.7"
+swiperefreshlayout = "1.1.0"
 
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
@@ -26,6 +27,7 @@ com-google-dagger-hilt-compiler = { group="com.google.dagger", name="hilt-compil
 navigation-fragment = { group="androidx.navigation", name="navigation-fragment", version.ref="nav"}
 navigation-ui = { group="androidx.navigation", name="navigation-ui", version.ref="nav"}
 navigation-dynamic-features-fragment = { group="androidx.navigation", name="navigation-dynamic-features-fragment", version.ref="nav"}
+swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

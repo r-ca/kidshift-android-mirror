@@ -18,7 +18,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.TaskData;
+import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
 
@@ -29,6 +31,8 @@ public class ParentMainFragment extends Fragment {
     KSLogger ksLogger;
     @Inject
     TaskData taskData;
+    @Inject
+    ChildData childData;
 
     public ParentMainFragment() {
         // Required empty public constructor
@@ -53,9 +57,24 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
         recyclerView.setAdapter(mainAdapter);
 
+
+
         //お手伝い追加ダイアログ
         LayoutInflater inflater1 = requireActivity().getLayoutInflater();
         View view1 = inflater1.inflate(R.layout.add_task_list_dialog,null);
+
+        //子供選択表示
+        RecyclerView recyclerView1 = view1.findViewById(R.id.taskchild);
+
+        recyclerView1.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getContext());
+        recyclerView1.setLayoutManager(layoutManager1);
+
+        List<ChildModel> child = childData.getChildList();
+
+        RecyclerView.Adapter mainAdapter1 = new ChildListAdapter(child);
+        recyclerView1.setAdapter(mainAdapter1);
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle("お手伝い名追加")
