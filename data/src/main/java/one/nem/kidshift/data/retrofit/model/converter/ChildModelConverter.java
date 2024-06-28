@@ -18,12 +18,7 @@ public class ChildModelConverter {
     }
 
     public static List<ChildModel> childListResponseToChildModelList(ChildListResponse childListResponse) {
-        return childListResponse.getList().stream().map(child -> {
-            ChildModel model = new ChildModel();
-            model.setName(child.getName());
-            model.setId(child.getId());
-            return model;
-        }).collect(Collectors.toList());
+        return childListResponse.getList().stream().map(ChildModelConverter::childResponseToChildModel).collect(Collectors.toList());
     }
 
     public static ChildModel childResponseToChildModel(ChildResponse childResponse) {
