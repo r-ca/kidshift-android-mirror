@@ -146,7 +146,7 @@ public class SettingMainFragment extends Fragment {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
 
-            List<ChildModel> child = childData.getChildList();
+            List<ChildModel> child = childData.getChildList().join();
 
             RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
             recyclerView.setAdapter(mainAdapter);
