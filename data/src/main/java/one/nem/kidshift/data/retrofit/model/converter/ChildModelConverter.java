@@ -26,4 +26,8 @@ public class ChildModelConverter {
         }).collect(Collectors.toList());
     }
 
+    public static ChildModel childResponseToChildModel(ChildResponse childResponse) {
+        return new ChildModel(childResponse.getId(), childResponse.getName());
+    }
+
 }
