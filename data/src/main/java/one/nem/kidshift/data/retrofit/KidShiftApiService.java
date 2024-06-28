@@ -1,6 +1,9 @@
 package one.nem.kidshift.data.retrofit;
 
 import one.nem.kidshift.data.retrofit.interceptor.AuthorizationInterceptor;
+import one.nem.kidshift.data.retrofit.model.child.ChildAddRequest;
+import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
+import one.nem.kidshift.data.retrofit.model.child.ChildResponse;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginResponse;
@@ -93,5 +96,18 @@ public interface KidShiftApiService {
     @POST("/parent/task/{id}/complete")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<Void> completeTask(@Path("id") String id); // TODO-rca: OK responseをパース
+
+    // Child APIs
+    @GET("/parent/child")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<ChildListResponse> getChildList();
+
+    @POST("/parent/child")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<ChildResponse> addChild(@Body ChildAddRequest request);
+
+    @PUT("/parent/child/{id}")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<ChildResponse> updateChild(@Body ChildAddRequest request, @Path("id") String id);
 
 }
