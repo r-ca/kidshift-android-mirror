@@ -37,16 +37,23 @@ public class KSActionsImpl implements KSActions {
     }
 
     @Override
-    public CompletableFuture<List<TaskItemModel>> syncTasks() { // TODO-rca: null対処, キャッシュ対応
-        return CompletableFuture.supplyAsync(() -> {
-            return null;
-        });
+    public CompletableFuture<List<TaskItemModel>> syncTasks() {
+        return doSyncTaskChild().thenApply(result -> result.taskList);
     }
 
     @Override
     public CompletableFuture<List<ChildModel>> syncChildList() {
+        return doSyncTaskChild().thenApply(result -> result.childList);
+    }
+
+    private static class TaskSyncResult {
+        public List<TaskItemModel> taskList;
+        public List<ChildModel> childList;
+    }
+
+    private CompletableFuture<TaskSyncResult> doSyncTaskChild() {
         return CompletableFuture.supplyAsync(() -> {
-            return null;
+            return null; // TODO 実装
         });
     }
 
