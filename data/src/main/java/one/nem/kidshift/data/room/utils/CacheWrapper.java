@@ -1,5 +1,6 @@
 package one.nem.kidshift.data.room.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -11,6 +12,7 @@ import dagger.hilt.components.SingletonComponent;
 import one.nem.kidshift.data.room.KidShiftDatabase;
 import one.nem.kidshift.data.room.entity.ChildCacheEntity;
 import one.nem.kidshift.data.room.entity.TaskCacheEntity;
+import one.nem.kidshift.data.room.entity.TaskChildLinkageEntity;
 import one.nem.kidshift.data.room.utils.converter.ChildCacheConverter;
 import one.nem.kidshift.data.room.utils.converter.TaskCacheConverter;
 import one.nem.kidshift.model.ChildModel;
@@ -39,7 +41,16 @@ public class CacheWrapper {
             logger.info("Task list inserted");
 
             // Update Linkage
-            // TODO
+            List<TaskChildLinkageEntity> linkageList = new ArrayList<>(); // TODO-rca: タスク or 子供が追加された場合だけ実行するようにする?
+            for (TaskItemModel task : taskList) {
+                task.getAttachedChildren().forEach(child -> {
+                    TaskChildLinkageEntity linkage = new TaskChildLinkageEntity();
+                    linkage.taskId = task.getId();
+                    linkage.childId = child.getId();
+                    linkageList.add(linkage);
+                });
+            }
+            kidShiftDatabase.taskChildLinkageDao().insertAll(linkageList);
         });
     }
 
