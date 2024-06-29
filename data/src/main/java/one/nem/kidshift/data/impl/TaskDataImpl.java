@@ -27,7 +27,7 @@ public class TaskDataImpl implements TaskData {
 
     @Override
     public CompletableFuture<List<TaskItemModel>> getTasks(TaskItemModelCallback callback) {
-        return CompletableFuture.supplyAsync(() -> {
+        return CompletableFuture.supplyAsync(() -> { // TODO-rca: キャッシュとってきてるだけなので修正
             return cacheWrapper.getTaskList().join();
         });
     }
