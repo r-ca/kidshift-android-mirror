@@ -22,7 +22,7 @@ public class TaskCacheConverter {
     }
 
     public static TaskItemModel taskCacheEntityToTaskModel(TaskCacheEntity entity) {
-        return new TaskItemModel(entity.id, entity.name, entity.iconEmoji, entity.reward);
+        return new TaskItemModel(entity.id, entity.name, entity.iconEmoji, entity.reward, null);
     }
 
     public static List<TaskItemModel> taskCacheEntityListToTaskModelList(List<TaskCacheEntity> entityList) {
