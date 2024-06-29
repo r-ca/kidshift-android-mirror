@@ -29,7 +29,7 @@ public class TaskModelConverter {
         return response;
     }
 
-    public static List<TaskItemModel> taskResponseListToTaskItemModelList(TaskListResponse taskListResponse) {
+    public static List<TaskItemModel> taskListResponseToTaskItemModelList(TaskListResponse taskListResponse) {
         return taskListResponse.getList().stream().map(TaskModelConverter::taskResponseToTaskItemModel).collect(Collectors.toList());
     }
 }
