@@ -13,6 +13,7 @@ import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.data.room.KidShiftDatabase;
+import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
@@ -36,34 +37,17 @@ public class KSActionsImpl implements KSActions {
     }
 
     @Override
-    public CompletableFuture<TaskListResponse> syncTasks() { // TODO-rca: null対処, キャッシュ対応
+    public CompletableFuture<List<TaskItemModel>> syncTasks() { // TODO-rca: null対処, キャッシュ対応
         return CompletableFuture.supplyAsync(() -> {
-            Call<TaskListResponse> call = kidShiftApiService.getTasks();
-            try {
-                Response<TaskListResponse> response = call.execute();
-                if (!response.isSuccessful()) {
-                    logger.error("Error fetching tasks: " + response.errorBody().string());
-                    throw new RuntimeException("Error fetching tasks: " + response.errorBody().string());
-                }
-                TaskListResponse responseBody = response.body();
-                List<TaskItemModel> taskItemModelList = TaskModelConverter.taskResponseListToTaskItemModelList(responseBody);
-
-                logger.debug("Task list fetched: " + taskItemModelList.size() + " items");
-                // Save to cache
-                // TODO: 切り出し
-                kidShiftDatabase.taskCacheDao().insertTaskList(taskItemModelList);
-                logger.info("Task list saved to cache");
-                return responseBody;
-            } catch (Exception e) {
-                logger.error("Error fetching tasks");
-                throw new RuntimeException(e);
-            }
+            return null;
         });
     }
 
     @Override
-    public void syncChildList() {
-
+    public CompletableFuture<List<ChildModel>> syncChildList() {
+        return CompletableFuture.supplyAsync(() -> {
+            return null;
+        });
     }
 
     @Override
