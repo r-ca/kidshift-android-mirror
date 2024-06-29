@@ -11,10 +11,10 @@ public class TaskCacheEntity {
     @PrimaryKey
     @ColumnInfo(name = "id")
     @NonNull
-    public String Id;
+    public String id;
 
-    @ColumnInfo(name = "display_name")
-    public String displayName;
+    @ColumnInfo(name = "name")
+    public String name;
 
     @ColumnInfo(name = "icon_emoji")
     public String iconEmoji;
