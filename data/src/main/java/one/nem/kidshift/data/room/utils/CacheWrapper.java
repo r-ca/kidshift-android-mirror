@@ -43,6 +43,10 @@ public class CacheWrapper {
             // Update Linkage
             List<TaskChildLinkageEntity> linkageList = new ArrayList<>(); // TODO-rca: タスク or 子供が追加された場合だけ実行するようにする?
             for (TaskItemModel task : taskList) {
+                if (task.getAttachedChildren() == null || task.getAttachedChildren().isEmpty()) {
+                    logger.warn("Task " + task.getName() + " has no attached children");
+                    continue;
+                }
                 task.getAttachedChildren().forEach(child -> {
                     TaskChildLinkageEntity linkage = new TaskChildLinkageEntity();
                     linkage.taskId = task.getId();
