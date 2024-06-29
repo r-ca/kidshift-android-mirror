@@ -11,6 +11,8 @@ import dagger.hilt.components.SingletonComponent;
 import one.nem.kidshift.data.room.KidShiftDatabase;
 import one.nem.kidshift.data.room.entity.ChildCacheEntity;
 import one.nem.kidshift.data.room.entity.TaskCacheEntity;
+import one.nem.kidshift.data.room.utils.converter.ChildCacheConverter;
+import one.nem.kidshift.data.room.utils.converter.TaskCacheConverter;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
@@ -34,21 +36,17 @@ public class CacheWrapper {
         });
     }
 
-    private CompletableFuture<List<ChildCacheEntity>> insertChildList(List<ChildModel> childList) {
-        return CompletableFuture.supplyAsync(() -> {
-            // Insert a child into the database
-            return null;
+    private CompletableFuture<Void> insertChildList(List<ChildModel> childList) {
+        return CompletableFuture.runAsync(() -> {
+            kidShiftDatabase.childCacheDao().insertChildList(ChildCacheConverter.childModelListToChildCacheEntityList(childList));
         });
     }
 
-    private CompletableFuture<List<TaskCacheEntity>> insertTaskList(List<TaskItemModel> taskList) {
-        return CompletableFuture.supplyAsync(() -> {
-            // Insert a task into the database
-            return null;
+    private CompletableFuture<Void> insertTaskList(List<TaskItemModel> taskList) {
+        return CompletableFuture.runAsync(() -> {
+            kidShiftDatabase.taskCacheDao().insertTaskList(TaskCacheConverter.taskModelListToTaskCacheEntityList(taskList));
         });
     }
-
-    private CompletableFuture<Void>
 
     public CompletableFuture<List<ChildModel>> getChildList() {
         return CompletableFuture.supplyAsync(() -> {
