@@ -10,15 +10,18 @@ import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.TaskData;
 import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
+import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 
 public class TaskDataImpl implements TaskData {
 
     KSActions ksActions;
+    private CacheWrapper cacheWrapper;
 
     @Inject
-    public TaskDataImpl(KSActions ksActions) {
+    public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper) {
         this.ksActions = ksActions;
+        this.cacheWrapper = cacheWrapper;
     }
 
     @Override
