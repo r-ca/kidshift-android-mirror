@@ -13,16 +13,20 @@ import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
+import one.nem.kidshift.utils.KSLogger;
 
 public class TaskDataImpl implements TaskData {
 
     private KSActions ksActions;
     private CacheWrapper cacheWrapper;
+    private KSLogger logger;
 
     @Inject
-    public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper) {
+    public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLogger logger) {
         this.ksActions = ksActions;
         this.cacheWrapper = cacheWrapper;
+        this.logger = logger;
+        logger.setTag("TaskData");
     }
 
     @Override
