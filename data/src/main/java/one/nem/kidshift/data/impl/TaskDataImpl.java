@@ -44,13 +44,17 @@ public class TaskDataImpl implements TaskData {
             thread.start();
             return cacheWrapper.getTaskList().thenApply((taskList) -> {
                 if (taskList == null) {
+                    logger.debug("Cache is empty");
                     try { // キャッシュされた結果が存在しない場合はスレッドがサーバーから取得してくるまで待機して再取得
+                        logger.debug("Waiting for task list to be updated");
                         thread.join();
+                        logger.debug("Task list updated");
                         return cacheWrapper.getTaskList().join();
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 }
+                logger.debug("Cache found");
                 return taskList;
             }).join();
         });
