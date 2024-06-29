@@ -9,7 +9,6 @@ import androidx.room.Update;
 import java.util.List;
 
 import one.nem.kidshift.data.room.entity.ChildCacheEntity;
-i
 
 @Dao
 public interface ChildCacheDao {
