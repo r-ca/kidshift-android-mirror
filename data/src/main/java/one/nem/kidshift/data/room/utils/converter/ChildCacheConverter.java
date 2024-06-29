@@ -11,4 +11,8 @@ public class ChildCacheConverter {
         entity.name = childModel.getName();
         return entity;
     }
+
+    public static ChildModel childCacheEntityToChildModel(ChildCacheEntity entity) {
+        return new ChildModel(entity.id, entity.name);
+    }
 }
