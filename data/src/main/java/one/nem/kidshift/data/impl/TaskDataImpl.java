@@ -27,8 +27,7 @@ public class TaskDataImpl implements TaskData {
     @Override
     public CompletableFuture<List<TaskItemModel>> getTasks() {
         return CompletableFuture.supplyAsync(() -> {
-            TaskListResponse data = ksActions.syncTasks().join();
-            return TaskModelConverter.taskResponseListToTaskItemModelList(data);
+            return null; // TODO-rca: 実装
         });
     }
 
