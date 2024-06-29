@@ -16,7 +16,7 @@ import one.nem.kidshift.model.tasks.TaskItemModel;
 
 public class TaskDataImpl implements TaskData {
 
-    KSActions ksActions;
+    private KSActions ksActions;
     private CacheWrapper cacheWrapper;
 
     @Inject
