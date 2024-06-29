@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
+import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
+import one.nem.kidshift.data.retrofit.model.converter.ChildModelConverter;
 import one.nem.kidshift.data.retrofit.model.converter.ParentModelConverter;
 import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
@@ -53,8 +55,21 @@ public class KSActionsImpl implements KSActions {
     }
 
     private CompletableFuture<TaskSyncResult> doSyncTaskChild() {
-        return CompletableFuture.supplyAsync(() -> {
-            return null; // TODO 実装
+        return fetchChildListAsync().thenCombine(fetchTaskListAsync(), (childListResponse, taskListResponse) -> {
+            // 別スレッドでキャッシュに保存
+            Thread cacheThread = new Thread(() -> {
+                logger.debug("Updating cache in thread: " + Thread.currentThread().getId());
+                cacheWrapper.updateCache(ChildModelConverter.childListResponseToChildModelList(childListResponse),
+                        TaskModelConverter.taskListResponseToTaskItemModelList(taskListResponse));
+                logger.info("Cache updated");
+            });
+            cacheThread.start();
+            return new TaskSyncResult() {
+                {
+                    taskList = TaskModelConverter.taskListResponseToTaskItemModelList(taskListResponse);
+                    childList = ChildModelConverter.childListResponseToChildModelList(childListResponse);
+                }
+            };
         });
     }
 
@@ -73,6 +88,24 @@ public class KSActionsImpl implements KSActions {
                 logger.error("Error fetching task list");
                 throw new RuntimeException(e);
 
+            }
+        });
+    }
+
+    private CompletableFuture<ChildListResponse> fetchChildListAsync() {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<ChildListResponse> call = kidShiftApiService.getChildList();
+            try {
+                Response<ChildListResponse> response = call.execute();
+                if (!response.isSuccessful()) {
+                    logger.error("Error fetching child list: " + response.errorBody().string());
+                    throw new RuntimeException("Error fetching child list: " + response.errorBody().string());
+                }
+                ChildListResponse responseBody = response.body();
+                return responseBody;
+            } catch (Exception e) {
+                logger.error("Error fetching child list");
+                throw new RuntimeException(e);
             }
         });
     }
