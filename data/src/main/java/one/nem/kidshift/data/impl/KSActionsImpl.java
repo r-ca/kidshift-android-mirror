@@ -58,6 +58,25 @@ public class KSActionsImpl implements KSActions {
         });
     }
 
+    private CompletableFuture<TaskListResponse> fetchTaskListAsync() {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<TaskListResponse> call = kidShiftApiService.getTasks();
+            try {
+                Response<TaskListResponse> response = call.execute();
+                if (!response.isSuccessful()) {
+                    logger.error("Error fetching task list: " + response.errorBody().string());
+                    throw new RuntimeException("Error fetching task list: " + response.errorBody().string());
+                }
+                TaskListResponse responseBody = response.body();
+                return responseBody;
+            } catch (Exception e) {
+                logger.error("Error fetching task list");
+                throw new RuntimeException(e);
+
+            }
+        });
+    }
+
     @Override
     public CompletableFuture<ParentModel> syncParent() {
         logger.info("syncParent called and started");
