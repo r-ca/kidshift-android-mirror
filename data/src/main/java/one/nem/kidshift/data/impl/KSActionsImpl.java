@@ -13,6 +13,7 @@ import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.data.room.KidShiftDatabase;
+import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
@@ -25,14 +26,14 @@ public class KSActionsImpl implements KSActions {
     private UserSettings userSettings;
     private KidShiftApiService kidShiftApiService;
     private KSLogger logger;
-    private KidShiftDatabase kidShiftDatabase;
+    private CacheWrapper cacheWrapper;
 
     @Inject
-    public KSActionsImpl(UserSettings userSettings, KidShiftApiService kidShiftApiService, KSLogger logger, KidShiftDatabase kidShiftDatabase) {
+    public KSActionsImpl(UserSettings userSettings, KidShiftApiService kidShiftApiService, KSLogger logger, CacheWrapper cacheWrapper) {
         this.userSettings = userSettings;
         this.kidShiftApiService = kidShiftApiService;
         this.logger = logger;
-        this.kidShiftDatabase = kidShiftDatabase;
+        this.cacheWrapper = cacheWrapper;
         logger.setTag("KSActions");
     }
 
