@@ -27,7 +27,17 @@ public class TaskDataImpl implements TaskData {
 
     @Override
     public CompletableFuture<List<TaskItemModel>> getTasks(TaskItemModelCallback callback) {
-        return CompletableFuture.supplyAsync(() -> { // TODO-rca: キャッシュとってきてるだけなので修正
+        return CompletableFuture.supplyAsync(() -> {
+            Thread thread = new Thread(() -> {
+                ksActions.syncTasks().thenAccept(taskList -> {
+                    if (taskList != null) {
+                        callback.onUpdated(taskList);
+                    } else {
+                        callback.onFailed("タスクの更新に失敗しました");
+                    }
+                });
+            });
+            thread.start();
             return cacheWrapper.getTaskList().join();
         });
     }
