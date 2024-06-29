@@ -26,6 +26,12 @@ public class CacheWrapper {
         this.logger = logger;
     }
 
+    public CompletableFuture<Void> updateCache(List<ChildModel> childList, List<TaskItemModel> taskList) {
+        return CompletableFuture.runAsync(() -> {
+            // Update the cache
+        });
+    }
+
     public CompletableFuture<Void> insertChildList(List<ChildModel> childList) {
         return CompletableFuture.runAsync(() -> {
             // Insert a child into the database
@@ -51,4 +57,6 @@ public class CacheWrapper {
             return null;
         });
     }
+
+
 }
