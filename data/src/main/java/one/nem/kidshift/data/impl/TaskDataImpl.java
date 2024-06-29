@@ -11,6 +11,7 @@ import one.nem.kidshift.data.TaskData;
 import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
+import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 
 public class TaskDataImpl implements TaskData {
@@ -25,14 +26,14 @@ public class TaskDataImpl implements TaskData {
     }
 
     @Override
-    public CompletableFuture<List<TaskItemModel>> getTasks() {
+    public CompletableFuture<List<TaskItemModel>> getTasks(TaskItemModelCallback callback) {
         return CompletableFuture.supplyAsync(() -> {
             return null; // TODO-rca: 実装
         });
     }
 
     @Override
-    public CompletableFuture<List<TaskItemModel>> getTasks(String childId) {
+    public CompletableFuture<List<TaskItemModel>> getTasks(String childId, TaskItemModelCallback callback) {
         return null;
     }
 
