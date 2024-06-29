@@ -60,7 +60,7 @@ public class KSActionsImpl implements KSActions {
             Thread cacheThread = new Thread(() -> {
                 logger.debug("Updating cache in thread: " + Thread.currentThread().getId());
                 cacheWrapper.updateCache(ChildModelConverter.childListResponseToChildModelList(childListResponse),
-                        TaskModelConverter.taskListResponseToTaskItemModelList(taskListResponse));
+                        TaskModelConverter.taskListResponseToTaskItemModelList(taskListResponse)).join();
                 logger.info("Cache updated");
             });
             cacheThread.start();
