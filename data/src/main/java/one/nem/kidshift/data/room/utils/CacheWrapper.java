@@ -32,7 +32,14 @@ public class CacheWrapper {
 
     public CompletableFuture<Void> updateCache(List<ChildModel> childList, List<TaskItemModel> taskList) {
         return CompletableFuture.runAsync(() -> {
-            // Update the cache
+            logger.debug("Updating cache");
+            insertChildList(childList).join();
+            logger.info("Child list inserted");
+            insertTaskList(taskList).join();
+            logger.info("Task list inserted");
+
+            // Update Linkage
+            // TODO
         });
     }
 
