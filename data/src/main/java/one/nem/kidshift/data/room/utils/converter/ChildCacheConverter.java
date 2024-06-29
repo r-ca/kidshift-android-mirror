@@ -16,7 +16,7 @@ public class ChildCacheConverter {
         return entity;
     }
 
-    public static List<ChildCacheEntity> childModelToChildCacheEntity(List<ChildModel> childList) {
+    public static List<ChildCacheEntity> childModelListToChildCacheEntityList(List<ChildModel> childList) {
         return childList.stream().map(ChildCacheConverter::childModelToChildCacheEntity).collect(Collectors.toList());
     }
 
