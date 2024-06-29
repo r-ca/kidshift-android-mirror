@@ -26,7 +26,7 @@ public class TaskDataImpl implements TaskData {
         this.ksActions = ksActions;
         this.cacheWrapper = cacheWrapper;
         this.logger = logger;
-        logger.setTag("TaskData");
+        this.logger.setTag("TaskDataImpl");
     }
 
     @Override
