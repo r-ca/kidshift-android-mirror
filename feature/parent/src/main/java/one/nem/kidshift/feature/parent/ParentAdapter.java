@@ -41,7 +41,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MainViewHo
 
     public void onBindViewHolder(@NonNull MainViewHolder holder,int position){
         TaskItemModel taskData = this.taskDataList.get(position);
-        holder.taskTitle.setText(taskData.getDisplayName());
+        holder.taskTitle.setText(taskData.getName());
         holder.taskContents.setText(Long.toString(taskData.getReward()));
     }
 
