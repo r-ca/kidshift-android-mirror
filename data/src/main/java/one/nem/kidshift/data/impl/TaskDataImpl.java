@@ -38,7 +38,17 @@ public class TaskDataImpl implements TaskData {
                 });
             });
             thread.start();
-            return cacheWrapper.getTaskList().join();
+            return cacheWrapper.getTaskList().thenApply((taskList) -> {
+                if (taskList == null) {
+                    try { // キャッシュされた結果が存在しない場合はスレッドがサーバーから取得してくるまで待機して再取得
+                        thread.join();
+                        return cacheWrapper.getTaskList().join();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                return taskList;
+            }).join();
         });
     }
 
