@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.TaskData;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
 
@@ -52,7 +53,24 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        List<TaskItemModel> task = taskData.getTasks().join();
+        ksLogger.debug("タスク一覧取得開始");
+        List<TaskItemModel> task = taskData.getTasks(new TaskItemModelCallback() {
+            @Override
+            public void onUnchanged() {
+                // TODO: Do something
+            }
+
+            @Override
+            public void onUpdated(List<TaskItemModel> taskItem) {
+                // TODO: Do something
+            }
+
+            @Override
+            public void onFailed(String message) {
+                // TODO: Do something
+            }
+        }).join();
+        ksLogger.debug("タスク一覧取得完了");
 
         RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
         recyclerView.setAdapter(mainAdapter);
@@ -71,7 +89,9 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getContext());
         recyclerView1.setLayoutManager(layoutManager1);
 
+        ksLogger.debug("子供一覧取得開始");
         List<ChildModel> child = childData.getChildList().join();
+        ksLogger.debug("子供一覧取得完了");
 
         RecyclerView.Adapter mainAdapter1 = new ChildListAdapter(child);
         recyclerView1.setAdapter(mainAdapter1);
