@@ -56,7 +56,6 @@ public class KSActionsImpl implements KSActions {
 
     private CompletableFuture<TaskSyncResult> doSyncTaskChild() {
         return fetchChildListAsync().thenCombine(fetchTaskListAsync(), (childListResponse, taskListResponse) -> {
-            // 別スレッドでキャッシュに保存
             Thread cacheThread = new Thread(() -> {
                 logger.debug("Updating cache in thread: " + Thread.currentThread().getId());
                 cacheWrapper.updateCache(ChildModelConverter.childListResponseToChildModelList(childListResponse),
@@ -64,6 +63,14 @@ public class KSActionsImpl implements KSActions {
                 logger.info("Cache updated");
             });
             cacheThread.start();
+            try {
+                // Workaround:  DBオペレーションを待たずに結果を先に返したいが、
+                //              (現状(呼び出し元が)戻り値をそのままCallbackに渡しているために)
+                //              キャッシュが空の場合のキャッシュ再取得のタイミングが調整できなくなる.
+                cacheThread.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             return new TaskSyncResult() {
                 {
                     taskList = TaskModelConverter.taskListResponseToTaskItemModelList(taskListResponse);
