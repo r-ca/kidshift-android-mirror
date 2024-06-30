@@ -53,6 +53,7 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        ksLogger.debug("タスク一覧取得開始");
         List<TaskItemModel> task = taskData.getTasks(new TaskItemModelCallback() {
             @Override
             public void onUnchanged() {
@@ -69,6 +70,7 @@ public class ParentMainFragment extends Fragment {
                 // TODO: Do something
             }
         }).join();
+        ksLogger.debug("タスク一覧取得完了");
 
         RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
         recyclerView.setAdapter(mainAdapter);
@@ -87,7 +89,9 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getContext());
         recyclerView1.setLayoutManager(layoutManager1);
 
+        ksLogger.debug("子供一覧取得開始");
         List<ChildModel> child = childData.getChildList().join();
+        ksLogger.debug("子供一覧取得完了");
 
         RecyclerView.Adapter mainAdapter1 = new ChildListAdapter(child);
         recyclerView1.setAdapter(mainAdapter1);
