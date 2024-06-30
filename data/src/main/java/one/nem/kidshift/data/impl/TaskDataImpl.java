@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.security.auth.callback.Callback;
 
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.TaskData;
@@ -31,30 +32,23 @@ public class TaskDataImpl implements TaskData {
     @Override
     public CompletableFuture<List<TaskItemModel>> getTasks(TaskItemModelCallback callback) {
         return CompletableFuture.supplyAsync(() -> {
+            logger.debug("タスク取得開始");
             Thread thread = new Thread(() -> {
-                ksActions.syncTasks().thenAccept(taskList -> {
-                    if (taskList != null) {
-                        callback.onUpdated(taskList);
-                    } else {
-                        callback.onFailed("タスクの更新に失敗しました");
-                    }
-                });
+                // TODO-rca: ちゃんと比較して呼ぶ
+                ksActions.syncTasks().thenAccept(callback::onUpdated);
             });
             thread.start();
-            return cacheWrapper.getTaskList().thenApply((taskList) -> {
-                if (taskList == null) {
-                    logger.debug("キャッシュなし");
-                    try { // キャッシュされた結果が存在しない場合はスレッドがサーバーから取得してくるまで待機して再取得
-                        logger.debug("Threadが終了して更新するまで待機中");
+            return cacheWrapper.getTaskList().thenApply(taskList -> {
+                if (taskList == null || taskList.isEmpty()) {
+                    try {
                         thread.join();
-                        logger.debug("Threadが終了しました");
                         return cacheWrapper.getTaskList().join();
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+                } else {
+                    return taskList;
                 }
-                logger.debug("キャッシュあり: " + taskList.size() + "件");
-                return taskList;
             }).join();
         });
     }
