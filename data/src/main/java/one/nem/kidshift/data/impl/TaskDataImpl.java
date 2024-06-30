@@ -48,6 +48,7 @@ public class TaskDataImpl implements TaskData {
                         throw new RuntimeException(e);
                     }
                 } else {
+                    logger.debug("キャッシュ有 (タスク数: " + taskList.size() + ")");
                     return taskList;
                 }
             }).join();
