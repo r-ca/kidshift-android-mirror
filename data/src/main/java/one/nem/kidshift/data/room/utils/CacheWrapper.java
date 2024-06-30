@@ -79,8 +79,8 @@ public class CacheWrapper {
 
     public CompletableFuture<List<TaskItemModel>> getTaskList() {
         return CompletableFuture.supplyAsync(() -> {
-            // Get a list of tasks from the database
-            return null;
+            List<TaskCacheEntity> result = kidShiftDatabase.taskCacheDao().getTaskList();
+            return TaskCacheConverter.taskCacheEntityListToTaskModelList(result);
         });
     }
 
