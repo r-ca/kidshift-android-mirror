@@ -57,10 +57,10 @@ public class KSActionsImpl implements KSActions {
     private CompletableFuture<TaskSyncResult> doSyncTaskChild() {
         return fetchChildListAsync().thenCombine(fetchTaskListAsync(), (childListResponse, taskListResponse) -> {
             Thread cacheThread = new Thread(() -> {
-                logger.debug("Updating cache in thread: " + Thread.currentThread().getId());
+                logger.debug("キャッシュ更新スレッド開始(スレッドID: " + Thread.currentThread().getId() + ")");
                 cacheWrapper.updateCache(ChildModelConverter.childListResponseToChildModelList(childListResponse),
                         TaskModelConverter.taskListResponseToTaskItemModelList(taskListResponse)).join();
-                logger.info("Cache updated");
+                logger.info("キャッシュ更新完了");
             });
             cacheThread.start();
             try {
