@@ -41,6 +41,7 @@ public class TaskDataImpl implements TaskData {
             return cacheWrapper.getTaskList().thenApply(taskList -> {
                 if (taskList == null || taskList.isEmpty()) {
                     try {
+                        logger.debug("キャッシュ無: タスク取得スレッド待機");
                         thread.join();
                         return cacheWrapper.getTaskList().join();
                     } catch (InterruptedException e) {
