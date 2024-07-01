@@ -88,7 +88,7 @@ public class ChildMainFragment extends Fragment {
 
         ksLogger.addTag("ChildMainFragment");
 
-        Integer reward = rewardData.getTotalReward();
+        Integer reward = rewardData.getTotalReward().join();
 
         ksLogger.debug("取得したデータ: " + reward);
 
