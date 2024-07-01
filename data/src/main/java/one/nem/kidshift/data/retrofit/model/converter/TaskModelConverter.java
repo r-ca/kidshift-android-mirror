@@ -9,6 +9,11 @@ import one.nem.kidshift.model.tasks.TaskItemModel;
 
 public class TaskModelConverter {
 
+    /**
+     * TaskResponseをTaskItemModelに変換する
+     * @param taskResponse TaskResponse
+     * @return TaskItemModel
+     */
     public static TaskItemModel taskResponseToTaskItemModel(TaskResponse taskResponse) {
         TaskItemModel model = new TaskItemModel();
         model.setId(taskResponse.getId());
@@ -19,6 +24,11 @@ public class TaskModelConverter {
         return model;
     }
 
+    /**
+     * TaskItemModelをTaskResponseに変換する
+     * @param taskItemModel TaskItemModel
+     * @return TaskResponse
+     */
     public static TaskResponse taskItemModelToTaskResponse(TaskItemModel taskItemModel) {
         TaskResponse response = new TaskResponse();
         response.setId(taskItemModel.getId());
@@ -29,6 +39,11 @@ public class TaskModelConverter {
         return response;
     }
 
+    /**
+     * TaskListResponseをTaskItemModelリストに変換する
+     * @param taskListResponse TaskListResponse
+     * @return TaskItemModelリスト
+     */
     public static List<TaskItemModel> taskListResponseToTaskItemModelList(TaskListResponse taskListResponse) {
         return taskListResponse.getList().stream().map(TaskModelConverter::taskResponseToTaskItemModel).collect(Collectors.toList());
     }
