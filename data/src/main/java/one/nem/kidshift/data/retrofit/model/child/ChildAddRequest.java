@@ -4,7 +4,10 @@ package one.nem.kidshift.data.retrofit.model.child;
 public class ChildAddRequest {
     private String name;
 
-    // Constructor
+    /**
+     * コンストラクタ (全プロパティ)
+     * @param name 子供の名前
+     */
     public ChildAddRequest(String name) {
         this.name = name;
     }
