@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_debugTopMenuFragment_to_debugTempRegisterFragment"
             app:destination="@id/debugTempRegisterFragment" />
+        <action
+            android:id="@+id/action_debugTopMenuFragment_to_debugDialogCallFragment"
+            app:destination="@id/debugDialogCallFragment" />
     </fragment>
     <fragment
         android:id="@+id/debugDebugConsoleFragment"
@@ -35,4 +38,9 @@
         android:name="one.nem.kidshift.feature.debug.DebugTempRegisterFragment"
         android:label="fragment_debug_temp_register"
         tools:layout="@layout/fragment_debug_temp_register" />
+    <fragment
+        android:id="@+id/debugDialogCallFragment"
+        android:name="one.nem.kidshift.feature.debug.DebugDialogCallFragment"
+        android:label="fragment_debug_dialog_call"
+        tools:layout="@layout/fragment_debug_dialog_call" />
 </navigation>
