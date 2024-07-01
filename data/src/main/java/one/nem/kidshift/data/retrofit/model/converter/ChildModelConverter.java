@@ -14,9 +14,9 @@ public class ChildModelConverter {
     // 日本語
 
     /**
-     * 子供モデルを子供追加リクエストに変換する
-     * @param childModel 子供モデル
-     * @return 子供追加リクエスト
+     * ChildModelをChildAddRequestに変換する
+     * @param childModel ChildModel
+     * @return ChildAddRequest
      */
     public static ChildAddRequest childModelToChildAddRequest(ChildModel childModel) {
         ChildAddRequest request = new ChildAddRequest();
@@ -25,9 +25,9 @@ public class ChildModelConverter {
     }
 
     /**
-     * 子供リストレスポンスを子供モデルリストに変換する
-     * @param childListResponse 子供リストレスポンス
-     * @return 子供モデルリスト
+     * ChildListResponseをChildModelリストに変換する
+     * @param childListResponse ChildListResponse
+     * @return ChildModelリスト
      */
     public static List<ChildModel> childListResponseToChildModelList(ChildListResponse childListResponse) {
         return childListResponse.getList().stream().map(ChildModelConverter::childResponseToChildModel).collect(Collectors.toList());
