@@ -107,7 +107,7 @@ public class SettingMainFragment extends Fragment {
                 // TODO
                 //変わってたら
                 requireActivity().runOnUiThread(() -> {
-                    username.setText(parent.getDisplayName());
+                    username.setText(parent.getName());
                     useradress.setText(parent.getEmail());
                 });
             }
