@@ -7,9 +7,6 @@ public class TaskBaseItem {
     private String bgColor;   // Optional
     private int reward;
 
-    // コンストラクタ
-    // 全プロパティ
-
     /**
      * コンストラクタ (全プロパティ)
      * @param id タスクID
@@ -26,7 +23,6 @@ public class TaskBaseItem {
         this.reward = reward;
     }
 
-    // IDなし (登録時など)
     /**
      * コンストラクタ (IDなし)
      * @param name タスク名
@@ -41,7 +37,6 @@ public class TaskBaseItem {
         this.reward = reward;
     }
 
-    // Optionalなフィールドなし
     /**
      * コンストラクタ (Optionalなフィールドなし)
      * @param id タスクID
@@ -54,7 +49,6 @@ public class TaskBaseItem {
         this.reward = reward;
     }
 
-    // ID, Optionalなフィールドなし (登録時など)
     /**
      * コンストラクタ (ID, Optionalなフィールドなし)
      * @param name タスク名
@@ -65,7 +59,6 @@ public class TaskBaseItem {
         this.reward = reward;
     }
 
-    // 空
     /**
      * コンストラクタ (空)
      */
