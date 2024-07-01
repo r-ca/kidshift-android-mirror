@@ -32,6 +32,12 @@ public class CacheWrapper {
         this.logger = logger;
     }
 
+    /**
+     * キャッシュを更新する
+     * @param childList 子供リスト
+     * @param taskList タスクリスト
+     * @return CompletableFuture
+     */
     public CompletableFuture<Void> updateCache(List<ChildModel> childList, List<TaskItemModel> taskList) {
         return CompletableFuture.runAsync(() -> {
             logger.debug("Updating cache");
@@ -58,18 +64,32 @@ public class CacheWrapper {
         });
     }
 
+    /**
+     * 子供リストを挿入する
+     * @param childList 子供リスト
+     * @return CompletableFuture
+     */
     private CompletableFuture<Void> insertChildList(List<ChildModel> childList) {
         return CompletableFuture.runAsync(() -> {
             kidShiftDatabase.childCacheDao().insertChildList(ChildCacheConverter.childModelListToChildCacheEntityList(childList));
         });
     }
 
+    /**
+     * タスクリストを挿入する
+     * @param taskList タスクリスト
+     * @return CompletableFuture
+     */
     private CompletableFuture<Void> insertTaskList(List<TaskItemModel> taskList) {
         return CompletableFuture.runAsync(() -> {
             kidShiftDatabase.taskCacheDao().insertTaskList(TaskCacheConverter.taskModelListToTaskCacheEntityList(taskList));
         });
     }
 
+    /**
+     * 子供リストを取得する
+     * @return CompletableFuture
+     */
     public CompletableFuture<List<ChildModel>> getChildList() {
         return CompletableFuture.supplyAsync(() -> {
             // Get a list of children from the database
@@ -77,6 +97,10 @@ public class CacheWrapper {
         });
     }
 
+    /**
+     * タスクリストを取得する
+     * @return CompletableFuture
+     */
     public CompletableFuture<List<TaskItemModel>> getTaskList() {
         return CompletableFuture.supplyAsync(() -> {
             List<TaskCacheEntity> result = kidShiftDatabase.taskCacheDao().getTaskList();
