@@ -12,6 +12,9 @@ public class ChildAddRequest {
         this.name = name;
     }
 
+    /**
+     * コンストラクタ (空)
+     */
     public ChildAddRequest() {
     }
 
