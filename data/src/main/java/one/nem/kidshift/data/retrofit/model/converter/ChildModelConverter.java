@@ -11,8 +11,6 @@ import one.nem.kidshift.model.ChildModel;
 
 public class ChildModelConverter {
 
-    // 日本語
-
     /**
      * ChildModelをChildAddRequestに変換する
      * @param childModel ChildModel
