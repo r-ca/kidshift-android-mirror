@@ -30,6 +30,9 @@ dependencies {
 
     implementation libs.appcompat
     implementation libs.material
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+    implementation libs.swiperefreshlayout
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -37,4 +40,9 @@ dependencies {
     // Hilt (DI)
     implementation libs.com.google.dagger.hilt.android
     annotationProcessor libs.com.google.dagger.hilt.compiler
+
+    // Project modules
+    implementation project(':model')
+    implementation project(':utils')
+    implementation project(':data')
 }

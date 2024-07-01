@@ -43,8 +43,12 @@ dependencies {
     implementation project(':feature:debug')
     implementation project(':feature:parent')
     implementation project(':feature:child')
+    implementation project(':feature:setting')
+
+    implementation project(':data')
 
     implementation project(':shared')
+    implementation project(':utils')
 
 
     // Hilt (DI)
@@ -55,4 +59,8 @@ dependencies {
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
     implementation libs.navigation.dynamic.features.fragment
+
+    // Retrofit
+    implementation libs.retrofit
+    implementation libs.converter.gson
 }
