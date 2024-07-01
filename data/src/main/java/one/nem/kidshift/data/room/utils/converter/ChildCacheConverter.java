@@ -9,7 +9,6 @@ import one.nem.kidshift.model.ChildModel;
 
 public class ChildCacheConverter {
 
-    // 日本語
     /**
      * ChildModelをChildCacheEntityに変換する
      * @param childModel ChildModel
