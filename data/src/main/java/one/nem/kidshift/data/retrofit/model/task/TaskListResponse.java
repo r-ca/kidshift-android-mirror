@@ -7,11 +7,18 @@ public class TaskListResponse {
 
     // コンストラクタ
     // 全プロパティ
+    /**
+     * コンストラクタ (全プロパティ)
+     * @param list タスクリスト
+     */
     public TaskListResponse(List<TaskResponse> list) {
         this.list = list;
     }
 
     // 空
+    /**
+     * コンストラクタ (空)
+     */
     public TaskListResponse() {
     }
 

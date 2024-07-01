@@ -53,6 +53,10 @@ public class KSActionsImpl implements KSActions {
         public List<ChildModel> childList;
     }
 
+    /**
+     * タスクと子供リストを同期する(ラッパー)
+     * @return CompletableFuture<TaskSyncResult> タスクと子供リスト
+     */
     private CompletableFuture<TaskSyncResult> doSyncTaskChild() {
         return fetchChildListAsync().thenCombine(fetchTaskListAsync(), (childListResponse, taskListResponse) -> {
             Thread cacheThread = new Thread(() -> {
@@ -79,6 +83,10 @@ public class KSActionsImpl implements KSActions {
         });
     }
 
+    /**
+     * バックエンドからタスクリストをFetchする
+     * @return CompletableFuture<TaskListResponse> バックエンドから取得したタスクリスト
+     */
     private CompletableFuture<TaskListResponse> fetchTaskListAsync() {
         return CompletableFuture.supplyAsync(() -> {
             Call<TaskListResponse> call = kidShiftApiService.getTasks();
@@ -98,6 +106,10 @@ public class KSActionsImpl implements KSActions {
         });
     }
 
+    /**
+     * バックエンドから子供リストをFetchする
+     * @return CompletableFuture<ChildListResponse> バックエンドから取得した子供リスト
+     */
     private CompletableFuture<ChildListResponse> fetchChildListAsync() {
         return CompletableFuture.supplyAsync(() -> {
             Call<ChildListResponse> call = kidShiftApiService.getChildList();
