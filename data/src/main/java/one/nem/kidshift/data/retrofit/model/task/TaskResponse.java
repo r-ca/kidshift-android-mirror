@@ -5,8 +5,6 @@ import java.util.List;
 public class TaskResponse extends TaskBaseItem {
     private List<String> attachedChildren;
 
-    // コンストラクタ
-    // 全プロパティ
     /**
      * コンストラクタ (全プロパティ)
      * @param id タスクID
@@ -21,7 +19,6 @@ public class TaskResponse extends TaskBaseItem {
         this.attachedChildren = attachedChildren;
     }
 
-    // 必須プロパティ
     /**
      * コンストラクタ (必須プロパティ)
      * @param id タスクID
@@ -34,14 +31,12 @@ public class TaskResponse extends TaskBaseItem {
         this.attachedChildren = attachedChildren;
     }
 
-    // 空
     /**
      * コンストラクタ (空)
      */
     public TaskResponse() {
     }
 
-    // baseItemを指定して拡張
     /**
      * コンストラクタ (baseItemを指定して拡張)
      * @param taskBaseItem タスクベースアイテム
