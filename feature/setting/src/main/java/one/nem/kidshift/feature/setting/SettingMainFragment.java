@@ -170,7 +170,7 @@ public class SettingMainFragment extends Fragment {
         TextView username = view.findViewById(R.id.username);
         TextView useradress = view.findViewById(R.id.useradress);
 
-            username.setText(parent.getDisplayName());
+            username.setText(parent.getName());
             useradress.setText(parent.getEmail());
         } catch (Exception e) {
             //
