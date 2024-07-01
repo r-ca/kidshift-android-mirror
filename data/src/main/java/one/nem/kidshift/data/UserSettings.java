@@ -4,9 +4,28 @@ import one.nem.kidshift.model.ParentModel;
 
 public interface UserSettings {
 
+    /**
+     * API設定のインスタンスを取得
+     * @return ApiSetting API設定
+     */
     ApiSetting getApiSetting();
+
+    /**
+     * タスク設定のインスタンスを取得
+     * @return TaskSetting タスク設定
+     */
     TaskSetting getTaskSetting();
+
+    /**
+     * アプリ共通設定のインスタンスを取得
+     * @return AppCommonSetting アプリ共通設定
+     */
     AppCommonSetting getAppCommonSetting();
+
+    /**
+     * キャッシュのインスタンスを取得
+     * @return SharedPrefCache キャッシュ
+     */
     SharedPrefCache getCache();
 
     interface AppCommonSetting {
