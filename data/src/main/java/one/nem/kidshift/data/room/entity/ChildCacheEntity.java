@@ -11,8 +11,8 @@ public class ChildCacheEntity {
     @PrimaryKey
     @ColumnInfo(name = "id")
     @NonNull
-    public String Id;
+    public String id;
 
-    @ColumnInfo(name = "display_name")
-    public String displayName;
+    @ColumnInfo(name = "name")
+    public String name;
 }

@@ -1,6 +1,7 @@
 package one.nem.kidshift.data;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import one.nem.kidshift.model.ChildModel;
 
@@ -11,13 +12,13 @@ public interface ChildData {
      * @param childId 子ID
      * @return ChildModel 子ユーザー情報
      */
-    ChildModel getChild(String childId);
+    CompletableFuture<ChildModel> getChild(String childId);
 
     /**
      * 子ユーザー一覧取得
      * @return List<ChildModel> 子ユーザー一覧
      */
-    List<ChildModel> getChildList();
+    CompletableFuture<List<ChildModel>> getChildList();
 
     /**
      * 子ユーザー情報更新
@@ -42,5 +43,5 @@ public interface ChildData {
      * @param childId 子ID
      * @return int ログインコード
      */
-    int issueLoginCode(String childId);
+    CompletableFuture<Integer> issueLoginCode(String childId);
 }

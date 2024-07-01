@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
@@ -136,13 +136,45 @@ public class SettingMainFragment extends Fragment {
 
         ParentModel parent = completableFuture.join();
 
+        if (parent == null) {
+            parent = new ParentModel(); // Workaround（非ログインデバッグ用）
+            parent.setName("親の名前");
+            parent.setEmail("親のアドレス");
+        }
+
+        // Pull-to-refresh（スワイプで更新）
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        ParentModel finalParent = parent;
+        swipeRefreshLayout.setOnRefreshListener(() ->{
+
+            username.setText(finalParent.getName());
+            useradress.setText(finalParent.getEmail());
+
+            RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
+
+            recyclerView.setHasFixedSize(true);
+
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
+
+            List<ChildModel> child = childData.getChildList().join();
+
+            RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
+            recyclerView.setAdapter(mainAdapter);
+
+            swipeRefreshLayout.setRefreshing(false);
+
+        });
+
+        //RecyclerViewの処理
+        TextView username = view.findViewById(R.id.username);
+        TextView useradress = view.findViewById(R.id.useradress);
 
             username.setText(parent.getDisplayName());
             useradress.setText(parent.getEmail());
         } catch (Exception e) {
             //
         }
-
             RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
             recyclerView.setHasFixedSize(true);
@@ -166,15 +198,9 @@ public class SettingMainFragment extends Fragment {
                     .setNeutralButton("閉じる",null);
             builder.create();
 
-            view.findViewById(R.id.addchildname).setOnClickListener(v -> {
-                builder.show();
-            });
-
-
-
-
-        //RecyclerViewの処理
-
+        view.findViewById(R.id.addchildname).setOnClickListener(v -> {
+            builder.show();
+        });
 
 
         return view;

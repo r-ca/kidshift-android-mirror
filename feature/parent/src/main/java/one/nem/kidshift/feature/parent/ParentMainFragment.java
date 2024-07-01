@@ -11,12 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.TaskData;
+import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
 
@@ -27,6 +32,8 @@ public class ParentMainFragment extends Fragment {
     KSLogger ksLogger;
     @Inject
     TaskData taskData;
+    @Inject
+    ChildData childData;
 
     public ParentMainFragment() {
         // Required empty public constructor
@@ -35,6 +42,8 @@ public class ParentMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        //タスク一覧表示
         View view = inflater.inflate(R.layout.fragment_parent_main, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.main_recycle_view);
@@ -44,10 +53,59 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        List<TaskItemModel> task = taskData.getTasks();
+        ksLogger.debug("タスク一覧取得開始");
+        List<TaskItemModel> task = taskData.getTasks(new TaskItemModelCallback() {
+            @Override
+            public void onUnchanged() {
+                // TODO: Do something
+            }
+
+            @Override
+            public void onUpdated(List<TaskItemModel> taskItem) {
+                // TODO: Do something
+            }
+
+            @Override
+            public void onFailed(String message) {
+                // TODO: Do something
+            }
+        }).join();
+        ksLogger.debug("タスク一覧取得完了");
 
         RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
         recyclerView.setAdapter(mainAdapter);
+
+
+
+        //お手伝い追加ダイアログ
+        LayoutInflater inflater1 = requireActivity().getLayoutInflater();
+        View view1 = inflater1.inflate(R.layout.add_task_list_dialog,null);
+
+        //子供選択表示
+        RecyclerView recyclerView1 = view1.findViewById(R.id.taskchild);
+
+        recyclerView1.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getContext());
+        recyclerView1.setLayoutManager(layoutManager1);
+
+        ksLogger.debug("子供一覧取得開始");
+        List<ChildModel> child = childData.getChildList().join();
+        ksLogger.debug("子供一覧取得完了");
+
+        RecyclerView.Adapter mainAdapter1 = new ChildListAdapter(child);
+        recyclerView1.setAdapter(mainAdapter1);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle("お手伝い名追加")
+                .setView(view1)
+                .setPositiveButton("追加", null)
+                .setNeutralButton("閉じる",null);
+        builder.create();
+
+        view.findViewById(R.id.addtask).setOnClickListener(v -> {
+            builder.show();
+        });
 
         return view;
     }
