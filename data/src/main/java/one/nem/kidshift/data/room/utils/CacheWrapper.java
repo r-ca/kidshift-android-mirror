@@ -65,7 +65,7 @@ public class CacheWrapper {
     }
 
     /**
-     * 子供リストを挿入する
+     * 子供リストをDBに挿入する
      * @param childList 子供リスト
      * @return CompletableFuture
      */
@@ -76,7 +76,7 @@ public class CacheWrapper {
     }
 
     /**
-     * タスクリストを挿入する
+     * タスクリストをDBに挿入する
      * @param taskList タスクリスト
      * @return CompletableFuture
      */
