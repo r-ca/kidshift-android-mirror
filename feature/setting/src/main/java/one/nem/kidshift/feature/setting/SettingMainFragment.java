@@ -88,23 +88,40 @@ public class SettingMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+        View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
+
+        TextView username = view.findViewById(R.id.username);
+        TextView useradress = view.findViewById(R.id.useradress);
+
+        try {
         CompletableFuture<ParentModel> completableFuture = parentData.getParent(new ParentModelCallback() {
 
             @Override
             public void onUnchanged() {
                 // TODO
+                //かわってないとき
             }
 
             @Override
             public void onUpdated(ParentModel parent) {
                 // TODO
+                //変わってたら
+                requireActivity().runOnUiThread(() -> {
+                    username.setText(parent.getName());
+                    useradress.setText(parent.getEmail());
+                });
             }
 
             @Override
             public void onFailed(String message) {
                 // TODO
+                requireActivity().runOnUiThread(()->{
+                    username.setText("アドレスを設定してください。");
+                });
+
             }
         });
+
 
         /*
         TODO:
@@ -112,9 +129,10 @@ public class SettingMainFragment extends Fragment {
             - 結果に応じてRecyclerViewを更新する
             - キャッシュ受け取りの時にjoinでUIスレッドをブロックしないように
             - Placeholderの表示?
-            - エラーハンドリング
+            - エラーハンドリング try catch文
                 - onFailed時にそれを通知
          */
+
 
         ParentModel parent = completableFuture.join();
 
@@ -124,18 +142,10 @@ public class SettingMainFragment extends Fragment {
             parent.setEmail("親のアドレス");
         }
 
-
-
-
-        View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
-
         // Pull-to-refresh（スワイプで更新）
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         ParentModel finalParent = parent;
         swipeRefreshLayout.setOnRefreshListener(() ->{
-
-            TextView username = view.findViewById(R.id.username);
-            TextView useradress = view.findViewById(R.id.useradress);
 
             username.setText(finalParent.getName());
             useradress.setText(finalParent.getEmail());
@@ -156,36 +166,33 @@ public class SettingMainFragment extends Fragment {
 
         });
 
-        //RecyclerViewの処理
-        TextView username = view.findViewById(R.id.username);
-        TextView useradress = view.findViewById(R.id.useradress);
+            username.setText(parent.getName());
+            useradress.setText(parent.getEmail());
+        } catch (Exception e) {
+            //
+        }
+            RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
-        username.setText(parent.getName());
-        useradress.setText(parent.getEmail());
+            recyclerView.setHasFixedSize(true);
 
-        RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.setHasFixedSize(true);
+            List<ChildModel> child = childData.getChildList().join();
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+            RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
+            recyclerView.setAdapter(mainAdapter);
 
-        List<ChildModel> child = childData.getChildList().join();
+            LayoutInflater inflater1 = requireActivity().getLayoutInflater();
+            View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
 
-        RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
-        recyclerView.setAdapter(mainAdapter);
-
-        //子供の名前追加のダイアログ
-        LayoutInflater inflater1 = requireActivity().getLayoutInflater();
-        View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
-
-
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        builder.setTitle("お子様の名前を入力してください。")
-                .setView(view1)
-                .setPositiveButton("追加",null)
-                .setNeutralButton("閉じる",null);
-        builder.create();
+            //子供の名前追加のダイアログ
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+            builder.setTitle("お子様の名前を入力してください。")
+                    .setView(view1)
+                    .setPositiveButton("追加",null)
+                    .setNeutralButton("閉じる",null);
+            builder.create();
 
         view.findViewById(R.id.addchildname).setOnClickListener(v -> {
             builder.show();
