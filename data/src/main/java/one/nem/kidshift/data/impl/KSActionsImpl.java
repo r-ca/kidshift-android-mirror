@@ -14,7 +14,6 @@ import one.nem.kidshift.data.retrofit.model.converter.ParentModelConverter;
 import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
-import one.nem.kidshift.data.room.KidShiftDatabase;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
