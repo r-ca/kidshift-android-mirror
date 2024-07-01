@@ -1,10 +1,5 @@
 package one.nem.kidshift.data.impl;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Objects;
-
 import javax.inject.Inject;
 
 import one.nem.kidshift.data.UserSettings;
