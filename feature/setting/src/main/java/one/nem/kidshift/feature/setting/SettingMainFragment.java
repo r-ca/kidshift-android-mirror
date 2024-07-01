@@ -166,10 +166,6 @@ public class SettingMainFragment extends Fragment {
 
         });
 
-        //RecyclerViewの処理
-        TextView username = view.findViewById(R.id.username);
-        TextView useradress = view.findViewById(R.id.useradress);
-
             username.setText(parent.getName());
             useradress.setText(parent.getEmail());
         } catch (Exception e) {
