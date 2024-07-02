@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
@@ -173,7 +174,7 @@ public class SettingMainFragment extends Fragment {
         View childListView = dialogInflater.inflate(R.layout.add_child_list_dialog,null);
 
         //子供の名前追加のダイアログ
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle("お子様の名前を入力してください。")
                 .setView(childListView)
                 .setPositiveButton("追加",null)
