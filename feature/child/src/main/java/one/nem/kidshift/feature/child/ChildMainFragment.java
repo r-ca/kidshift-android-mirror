@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +30,9 @@ import one.nem.kidshift.utils.KSLogger;
 @AndroidEntryPoint
 public class ChildMainFragment extends Fragment {
     @Inject
-    KSLogger ksLogger;
+    KSLoggerFactory loggerFactory;
+
+    private KSLogger logger;
 
     @Inject
     RewardData rewardData;
@@ -72,6 +75,8 @@ public class ChildMainFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        logger = loggerFactory.create("ChildMainFragment");
     }
 
     @Override
@@ -86,11 +91,11 @@ public class ChildMainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        ksLogger.addTag("ChildMainFragment");
+        logger.addTag("ChildMainFragment");
 
         Integer reward = rewardData.getTotalReward().join();
 
-        ksLogger.debug("取得したデータ: " + reward);
+        logger.debug("取得したデータ: " + reward);
 
         Calendar cl = Calendar.getInstance();
         TextView tr = view.findViewById(R.id.totalReward);
