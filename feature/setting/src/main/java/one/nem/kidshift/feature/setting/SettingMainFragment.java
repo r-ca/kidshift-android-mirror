@@ -186,7 +186,6 @@ public class SettingMainFragment extends Fragment {
             builder.show();
         });
 
-
         return view;
     }
 
