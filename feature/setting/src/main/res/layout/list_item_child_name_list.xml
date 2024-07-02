@@ -21,12 +21,12 @@
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:text="ログイン"
-        app:layout_constraintStart_toEndOf="@+id/childname"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="40dp"
         android:backgroundTint="#884899"
-        android:textColor="#fff"/>
+        android:text="ログイン"
+        android:textColor="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
