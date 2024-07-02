@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.HiltAndroidApp;
 import one.nem.kidshift.utils.FeatureFlag;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @HiltAndroidApp
 public class KidShiftApplication extends Application {
@@ -17,13 +18,16 @@ public class KidShiftApplication extends Application {
     FeatureFlag featureFlag;
 
     @Inject
-    KSLogger logger;
+    KSLoggerFactory loggerFactory;
+
+    private KSLogger logger;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        logger.setTag("KidShiftApplication");
+        this.logger = loggerFactory.create("KidShiftApplication");
+
         logger.info("super.onCreate() completed");
 
         if(featureFlag.isEnabled("dynamicColorEnable")) {
