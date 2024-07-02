@@ -3,7 +3,6 @@ package one.nem.kidshift.feature.setting;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -48,7 +46,7 @@ public class SettingMainFragment extends Fragment {
 
     TextView username;
 
-    TextView useradress;
+    TextView userMailAddress;
 
     SettingAdapter mainAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -85,7 +83,7 @@ public class SettingMainFragment extends Fragment {
             }
         }).thenAccept(parentModel -> {
             username.setText(parentModel.getName() != null ? parentModel.getName() : "親の名前");
-            useradress.setText(parentModel.getEmail() != null ? parentModel.getEmail() : "親のアドレス");
+            userMailAddress.setText(parentModel.getEmail() != null ? parentModel.getEmail() : "親のアドレス");
         });
 
     }
@@ -151,7 +149,7 @@ public class SettingMainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
 
         username = view.findViewById(R.id.username);
-        useradress = view.findViewById(R.id.useradress);
+        userMailAddress = view.findViewById(R.id.useradress);
 
         RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
