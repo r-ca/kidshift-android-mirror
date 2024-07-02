@@ -1,5 +1,6 @@
 package one.nem.kidshift.data.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,54 +29,72 @@ public class TaskDataImpl implements TaskData {
 
     @Override
     public CompletableFuture<List<TaskItemModel>> getTasks(TaskItemModelCallback callback) {
-        return CompletableFuture.supplyAsync(() -> {
-            logger.debug("タスク取得開始");
-            AtomicReference<List<TaskItemModel>> taskListTmp = new AtomicReference<>();
-            Thread thread = new Thread(() -> {
-                ksActions.syncTasks().thenAccept(taskList -> {
-                    if (taskListTmp.get() == null || taskListTmp.get().isEmpty()) {
-                        logger.debug("タスク取得完了: キャッシュよりはやく取得完了 or キャッシュ無し");
-                        if (taskList == null || taskList.isEmpty()) {
-                            callback.onUnchanged();
-                        } else {
-                            callback.onUpdated(taskList);
-                        }
-                    } else {
-                        // キャッシュと比較して変更の有無を確認
-                        boolean isChanged =
-                            taskList.size() != taskListTmp.get().size() ||
-                            taskList.stream().anyMatch(task -> taskListTmp.get().stream().noneMatch(taskTmp -> task.getId().equals(taskTmp.getId())));
-                        if (isChanged) {
-                            logger.debug("タスク取得完了: キャッシュと比較して変更あり");
-                            callback.onUpdated(taskList);
-                        } else {
-                            logger.debug("タスク取得完了: キャッシュと比較して変更なし");
-                            callback.onUnchanged();
-                        }
-                    }
-                }).exceptionally(e -> {
-                    logger.error("タスク取得失敗: " + e.getMessage());
-                    callback.onFailed(e.getMessage());
-                    return null;
-                });
-            });
-            thread.start();
-            return cacheWrapper.getTaskList().thenApply(taskList -> {
-                if (taskList == null || taskList.isEmpty()) {
-                    try {
-                        logger.debug("キャッシュ無: タスク取得スレッド待機");
-                        thread.join();
-                        return cacheWrapper.getTaskList().join();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                } else {
-                    logger.debug("キャッシュ有 (タスク数: " + taskList.size() + ")");
-                    taskListTmp.set(taskList);
-                    return taskList;
-                }
-            }).join();
+        logger.debug("タスク取得開始");
+
+        CompletableFuture<List<TaskItemModel>> cachedTasksFuture = cacheWrapper.getTaskList();
+
+        return cachedTasksFuture.thenCompose(cachedTasks -> {
+            if (cachedTasks == null || cachedTasks.isEmpty()) {
+                logger.debug("キャッシュ無: サーバーからタスクを取得");
+                return fetchTasksFromServer(callback);
+            } else {
+                logger.debug("キャッシュ有 (タスク数: " + cachedTasks.size() + ")");
+                return checkForUpdates(cachedTasks, callback);
+            }
         });
+    }
+
+    private CompletableFuture<List<TaskItemModel>> fetchTasksFromServer(TaskItemModelCallback callback) {
+        return ksActions.syncTasks().thenApply(serverTasks -> {
+            if (serverTasks == null || serverTasks.isEmpty()) {
+                callback.onUnchanged();
+            } else {
+                callback.onUpdated(serverTasks);
+            }
+            return serverTasks;
+        }).exceptionally(e -> {
+            logger.error("タスク取得失敗: " + e.getMessage());
+            callback.onFailed(e.getMessage());
+            return Collections.emptyList();
+        });
+    }
+
+    private CompletableFuture<List<TaskItemModel>> checkForUpdates(List<TaskItemModel> cachedTasks, TaskItemModelCallback callback) {
+        return ksActions.syncTasks().thenApply(serverTasks -> {
+            if (serverTasks == null || serverTasks.isEmpty()) {
+                callback.onUnchanged();
+                return cachedTasks;
+            } else {
+                boolean isChanged = isTaskListChanged(cachedTasks, serverTasks);
+                if (isChanged) {
+                    logger.debug("タスク取得完了: キャッシュと比較して変更あり");
+                    callback.onUpdated(serverTasks);
+                    return serverTasks;
+                } else {
+                    logger.debug("タスク取得完了: キャッシュと比較して変更なし");
+                    callback.onUnchanged();
+                    return cachedTasks;
+                }
+            }
+        }).exceptionally(e -> {
+            logger.error("タスク取得失敗: " + e.getMessage());
+            callback.onFailed(e.getMessage());
+            return cachedTasks;
+        });
+    }
+
+    private boolean isTaskListChanged(List<TaskItemModel> cachedTasks, List<TaskItemModel> serverTasks) {
+        if (cachedTasks.size() != serverTasks.size()) {
+            return true;
+        }
+
+        for (TaskItemModel serverTask : serverTasks) {
+            boolean exists = cachedTasks.stream().anyMatch(cachedTask -> serverTask.getId().equals(cachedTask.getId()));
+            if (!exists) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
