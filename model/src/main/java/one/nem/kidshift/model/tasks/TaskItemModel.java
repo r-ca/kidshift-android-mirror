@@ -44,6 +44,10 @@ public class TaskItemModel {
         this.reward = reward;
     }
 
+    public TaskItemModel() {
+
+    }
+
     // getter setter
 
     public String getInternalId() {

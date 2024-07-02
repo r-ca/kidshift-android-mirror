@@ -25,6 +25,9 @@ public class ParentModel {
         this.displayName = displayName;
     }
 
+    public ParentModel() {
+    }
+
     // Getter
 
     public String getInternalId() {

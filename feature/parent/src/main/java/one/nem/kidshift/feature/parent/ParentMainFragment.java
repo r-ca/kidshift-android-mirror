@@ -52,7 +52,7 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        List<TaskItemModel> task = taskData.getTasks();
+        List<TaskItemModel> task = taskData.getTasks().join();
 
         RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
         recyclerView.setAdapter(mainAdapter);

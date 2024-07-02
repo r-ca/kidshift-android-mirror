@@ -1,7 +1,5 @@
 package one.nem.kidshift.utils;
 
-import android.content.SharedPreferences;
-
 import java.util.List;
 
 public interface SharedPrefUtils {
