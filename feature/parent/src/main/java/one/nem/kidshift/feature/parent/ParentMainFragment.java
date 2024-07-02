@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,40 @@ public class ParentMainFragment extends Fragment {
     public ParentMainFragment() {
         // Required empty public constructor
     }
+
+    private void dataRefresh(){
+        SwipeRefreshLayout swipeRefreshLayout = requireView().findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setRefreshing(true);
+
+        RecyclerView recyclerView =requireView().findViewById(R.id.main_recycle_view);
+
+        recyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        List<TaskItemModel> task = taskData.getTasks(new TaskItemModelCallback() {
+            @Override
+            public void onUnchanged() {
+                // TODO
+            }
+
+            @Override
+            public void onUpdated(List<TaskItemModel> taskItem) {
+                // TODO
+            }
+
+            @Override
+            public void onFailed(String message) {
+                // TODO
+            }
+        }).join();
+
+        RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
+        recyclerView.setAdapter(mainAdapter);
+
+        swipeRefreshLayout.setRefreshing(false);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,37 +81,6 @@ public class ParentMainFragment extends Fragment {
 
         //タスク一覧表示
         View view = inflater.inflate(R.layout.fragment_parent_main, container, false);
-
-        RecyclerView recyclerView = view.findViewById(R.id.main_recycle_view);
-
-        recyclerView.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        ksLogger.debug("タスク一覧取得開始");
-        List<TaskItemModel> task = taskData.getTasks(new TaskItemModelCallback() {
-            @Override
-            public void onUnchanged() {
-                // TODO: Do something
-            }
-
-            @Override
-            public void onUpdated(List<TaskItemModel> taskItem) {
-                // TODO: Do something
-            }
-
-            @Override
-            public void onFailed(String message) {
-                // TODO: Do something
-            }
-        }).join();
-        ksLogger.debug("タスク一覧取得完了");
-
-        RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
-        recyclerView.setAdapter(mainAdapter);
-
-
 
         //お手伝い追加ダイアログ
         LayoutInflater inflater1 = requireActivity().getLayoutInflater();
@@ -114,5 +119,10 @@ public class ParentMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Do something...
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(()->{
+            dataRefresh();
+        });
+
     }
 }

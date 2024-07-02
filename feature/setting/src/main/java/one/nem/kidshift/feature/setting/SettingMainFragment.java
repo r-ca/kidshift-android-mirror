@@ -80,7 +80,6 @@ public class SettingMainFragment extends Fragment {
             }
         });
 
-
         /*
         TODO:
             - コールバックの処理を実装
@@ -90,7 +89,6 @@ public class SettingMainFragment extends Fragment {
             - エラーハンドリング try catch文
                 - onFailed時にそれを通知
          */
-
 
         ParentModel parent = completableFuture.join();
 

@@ -1,6 +1,7 @@
 [versions]
 agp = "8.3.2"
 gson = "2.11.0"
+javafaker = "1.0.2"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -12,7 +13,6 @@ nav = "2.7.7"
 swiperefreshlayout = "1.1.0"
 retrofit = "2.11.0"
 room = "2.6.1"
-javafaker = "1.0.2"
 
 [libraries]
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
@@ -32,11 +32,11 @@ com-google-dagger-hilt-compiler = { group="com.google.dagger", name="hilt-compil
 navigation-fragment = { group="androidx.navigation", name="navigation-fragment", version.ref="nav"}
 navigation-ui = { group="androidx.navigation", name="navigation-ui", version.ref="nav"}
 navigation-dynamic-features-fragment = { group="androidx.navigation", name="navigation-dynamic-features-fragment", version.ref="nav"}
-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
