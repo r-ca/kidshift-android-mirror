@@ -26,6 +26,7 @@ import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.ParentData;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
+import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.ParentModelCallback;
 
 @AndroidEntryPoint
@@ -113,7 +114,22 @@ public class SettingMainFragment extends Fragment {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
 
-            List<ChildModel> child = childData.getChildList().join();
+            List<ChildModel> child = childData.getChildList(new ChildModelCallback() {
+                @Override
+                public void onUnchanged() {
+
+                }
+
+                @Override
+                public void onUpdated(List<ChildModel> childModelList) {
+
+                }
+
+                @Override
+                public void onFailed(String message) {
+
+                }
+            }).join();
 
             RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
             recyclerView.setAdapter(mainAdapter);
