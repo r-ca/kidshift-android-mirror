@@ -111,10 +111,6 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
         recyclerView.setAdapter(mainAdapter);
 
-
-
-
-
         //お手伝い追加ダイアログ
         LayoutInflater inflater1 = requireActivity().getLayoutInflater();
         View view1 = inflater1.inflate(R.layout.add_task_list_dialog,null);
