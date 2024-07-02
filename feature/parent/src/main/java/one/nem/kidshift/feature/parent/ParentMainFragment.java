@@ -26,12 +26,16 @@ import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
 public class ParentMainFragment extends Fragment {
 
     @Inject
-    KSLogger ksLogger;
+    KSLoggerFactory loggerFactory;
+
+    private KSLogger ksLogger;
+
     @Inject
     TaskData taskData;
     @Inject
@@ -39,6 +43,12 @@ public class ParentMainFragment extends Fragment {
 
     public ParentMainFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ksLogger = loggerFactory.create("ParentMain");
     }
 
     private void dataRefresh(){
