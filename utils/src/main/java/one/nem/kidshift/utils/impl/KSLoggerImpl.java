@@ -5,10 +5,12 @@ import static one.nem.kidshift.utils.enums.LogLevelEnum.INFO;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.assisted.Assisted;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.SharedPrefUtils;
 import one.nem.kidshift.utils.enums.LogLevelEnum;
@@ -22,31 +24,10 @@ public class KSLoggerImpl implements KSLogger {
     private SharedPrefUtils sharedPrefUtils;
 
     @Inject
-    public KSLoggerImpl(SharedPrefUtilsFactory sharedPrefUtilsFactory) {
-        tags.add("UNTAGGED");
-        this.sharedPrefUtils = sharedPrefUtilsFactory.create("KSLogger");
-    }
-
-    public KSLoggerImpl(String tag) {
-        tags.add(tag);
-    }
-
-    @Override
-    public KSLogger getChildLogger(String tag) {
-        tags.add(tag);
-        return this;
-    }
-
-    @Override
-    public KSLogger get(String tag) {
-        return new KSLoggerImpl(tag);
-    }
-
-    @Override
-    public KSLogger setTag(String tag) {
+    public KSLoggerImpl(SharedPrefUtilsFactory sharedPrefUtilsFactory, @Assisted String name) {
+        sharedPrefUtils = sharedPrefUtilsFactory.create("KSLogger");
         tags.clear();
-        tags.add(tag);
-        return this;
+        tags.add(name);
     }
 
     @Override
