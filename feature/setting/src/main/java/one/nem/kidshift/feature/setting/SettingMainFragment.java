@@ -148,27 +148,27 @@ public class SettingMainFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
 
+        // ビューの取得
         username = view.findViewById(R.id.username);
         userMailAddress = view.findViewById(R.id.useradress);
-
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
+        // RecyclerViewの設定
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
         mainAdapter = new SettingAdapter();
         recyclerView.setAdapter(mainAdapter);
 
-        // Pull-to-refresh（スワイプで更新）
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-
-
+        // ユーザー情報の更新(初回)
         updateInfo();
 
+        // スワイプリフレッシュのリスナー
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            updateInfo();
+            updateInfo(); // ユーザー情報の更新
         });
 
+        // ダイアログの設定
         LayoutInflater inflater1 = requireActivity().getLayoutInflater();
         View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
 
@@ -180,6 +180,7 @@ public class SettingMainFragment extends Fragment {
                 .setNeutralButton("閉じる",null);
         builder.create();
 
+        // ダイアログの表示
         view.findViewById(R.id.addchildname).setOnClickListener(v -> {
             builder.show();
         });
