@@ -11,6 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.SharedPrefUtils;
 import one.nem.kidshift.utils.enums.LogLevelEnum;
@@ -23,7 +24,7 @@ public class KSLoggerImpl implements KSLogger {
 
     private SharedPrefUtils sharedPrefUtils;
 
-    @Inject
+    @AssistedInject
     public KSLoggerImpl(SharedPrefUtilsFactory sharedPrefUtilsFactory, @Assisted String name) {
         sharedPrefUtils = sharedPrefUtilsFactory.create("KSLogger");
         tags.clear();
