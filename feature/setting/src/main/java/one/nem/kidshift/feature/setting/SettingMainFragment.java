@@ -151,38 +151,38 @@ public class SettingMainFragment extends Fragment {
 
         try {
 
-        /*
-        TODO:
-            - コールバックの処理を実装
-            - 結果に応じてRecyclerViewを更新する
-            - キャッシュ受け取りの時にjoinでUIスレッドをブロックしないように
-            - Placeholderの表示?
-            - エラーハンドリング try catch文
-                - onFailed時にそれを通知
-         */
-
-        updateInfo();
-
-        swipeRefreshLayout.setOnRefreshListener(() ->{
+            /*
+            TODO:
+                - コールバックの処理を実装
+                - 結果に応じてRecyclerViewを更新する
+                - キャッシュ受け取りの時にjoinでUIスレッドをブロックしないように
+                - Placeholderの表示?
+                - エラーハンドリング try catch文
+                    - onFailed時にそれを通知
+             */
 
             updateInfo();
 
-        });
+            swipeRefreshLayout.setOnRefreshListener(() ->{
+
+                updateInfo();
+
+            });
 
         } catch (Exception e) {
             //
         }
 
-            LayoutInflater inflater1 = requireActivity().getLayoutInflater();
-            View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
+        LayoutInflater inflater1 = requireActivity().getLayoutInflater();
+        View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
 
-            //子供の名前追加のダイアログ
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-            builder.setTitle("お子様の名前を入力してください。")
-                    .setView(view1)
-                    .setPositiveButton("追加",null)
-                    .setNeutralButton("閉じる",null);
-            builder.create();
+        //子供の名前追加のダイアログ
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle("お子様の名前を入力してください。")
+                .setView(view1)
+                .setPositiveButton("追加",null)
+                .setNeutralButton("閉じる",null);
+        builder.create();
 
         view.findViewById(R.id.addchildname).setOnClickListener(v -> {
             builder.show();
