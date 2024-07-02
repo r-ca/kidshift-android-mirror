@@ -7,9 +7,11 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import one.nem.kidshift.data.ChildData;
+import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
 import one.nem.kidshift.data.retrofit.model.converter.ChildModelConverter;
+import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
@@ -18,13 +20,14 @@ import retrofit2.Response;
 
 public class ChildDataImpl implements ChildData {
 
-    private KidShiftApiService kidShiftApiService;
-
-    private KSLogger logger;
+    private final KSActions ksActions;
+    private final CacheWrapper cacheWrapper;
+    private final KSLogger logger;
 
     @Inject
-    public ChildDataImpl(KidShiftApiService kidShiftApiService, KSLoggerFactory loggerFactory) {
-        this.kidShiftApiService = kidShiftApiService;
+    public ChildDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
+        this.ksActions = ksActions;
+        this.cacheWrapper = cacheWrapper;
         this.logger = loggerFactory.create("ChildDataImpl");
     }
 
