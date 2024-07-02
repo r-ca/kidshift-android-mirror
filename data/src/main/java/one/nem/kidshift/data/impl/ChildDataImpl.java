@@ -1,5 +1,6 @@
 package one.nem.kidshift.data.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
 import one.nem.kidshift.data.retrofit.model.converter.ChildModelConverter;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import retrofit2.Call;
@@ -37,22 +39,61 @@ public class ChildDataImpl implements ChildData {
     }
 
     @Override
-    public CompletableFuture<List<ChildModel>> getChildList() { // TODO-rca: DBにキャッシュするように修正する
-        return CompletableFuture.supplyAsync(() -> {
-            Call<ChildListResponse> call = kidShiftApiService.getChildList();
-            try {
-                Response<ChildListResponse> response = call.execute();
-                if (!response.isSuccessful()) return null; // TODO-rca: nullとするかは検討
+    public CompletableFuture<List<ChildModel>> getChildList() {
+        logger.debug("子供リスト取得開始");
 
-                ChildListResponse body = response.body();
-                if (body == null) return null;
+        CompletableFuture<List<ChildModel>> cachedChildListFuture = cacheWrapper.getChildList();
 
-                return ChildModelConverter.childListResponseToChildModelList(body);
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-                return null;
+        // TODO
+    }
+
+    private CompletableFuture<List<ChildModel>> fetchChildListFromServer(ChildModelCallback callback) {
+        return ksActions.syncChildList().thenApply(serverChildList -> {
+            if (serverChildList == null || serverChildList.isEmpty()) {
+                callback.onUnchanged();
+            } else {
+                callback.onUpdated(serverChildList);
+            }
+            return serverChildList;
+        }).exceptionally(e -> {
+            logger.error("子供リスト取得失敗: " + e.getMessage());
+            callback.onFailed(e.getMessage());
+            return Collections.emptyList();
+        });
+    }
+
+    private CompletableFuture<List<ChildModel>> checkForUpdates(List<ChildModel> cachedChildList, ChildModelCallback callback) {
+        return ksActions.syncChildList().thenApply(serverChildList -> {
+            if (serverChildList == null || serverChildList.isEmpty()) {
+                callback.onUnchanged();
+                return cachedChildList;
+            } else {
+                boolean isChanged = isChildListChanged(cachedChildList, serverChildList);
+                if (isChanged) {
+                    logger.debug("子供リスト取得完了: キャッシュと比較して更新あり");
+                    callback.onUpdated(serverChildList);
+                    return serverChildList;
+                } else {
+                    logger.debug("子供リスト取得完了: キャッシュと比較して変更なし");
+                    callback.onUnchanged();
+                    return cachedChildList;
+                }
             }
         });
+    }
+
+    private boolean isChildListChanged(List<ChildModel> cachedChildList, List<ChildModel> serverChildList) {
+        if (cachedChildList.size() != serverChildList.size()) {
+            return true;
+        }
+
+        for (ChildModel serverChild : serverChildList) {
+            boolean exists = cachedChildList.stream().anyMatch(cachedChild -> serverChild.getId().equals(cachedChild.getId()));
+            if (!exists) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
