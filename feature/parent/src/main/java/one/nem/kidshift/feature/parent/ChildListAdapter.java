@@ -41,7 +41,7 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.Main
 
     public void onBindViewHolder(@NonNull MainViewHolder holder,int position){
         ChildModel childData = this.childDataList.get(position);
-        holder.childname.setText(childData.getDisplayName());
+        holder.childname.setText(childData.getName());
     }
 
     @Override

@@ -7,8 +7,14 @@ public class TaskBaseItem {
     private String bgColor;   // Optional
     private int reward;
 
-    // コンストラクタ
-    // 全プロパティ
+    /**
+     * コンストラクタ (全プロパティ)
+     * @param id タスクID
+     * @param name タスク名
+     * @param iconEmoji アイコン絵文字
+     * @param bgColor 背景色
+     * @param reward 報酬
+     */
     public TaskBaseItem(String id, String name, String iconEmoji, String bgColor, int reward) {
         this.id = id;
         this.name = name;
@@ -17,7 +23,13 @@ public class TaskBaseItem {
         this.reward = reward;
     }
 
-    // IDなし (登録時など)
+    /**
+     * コンストラクタ (IDなし)
+     * @param name タスク名
+     * @param iconEmoji アイコン絵文字
+     * @param bgColor 背景色
+     * @param reward 報酬
+     */
     public TaskBaseItem(String name, String iconEmoji, String bgColor, int reward) {
         this.name = name;
         this.iconEmoji = iconEmoji;
@@ -25,20 +37,31 @@ public class TaskBaseItem {
         this.reward = reward;
     }
 
-    // Optionalなフィールドなし
+    /**
+     * コンストラクタ (Optionalなフィールドなし)
+     * @param id タスクID
+     * @param name タスク名
+     * @param reward 報酬
+     */
     public TaskBaseItem(String id, String name, int reward) {
         this.id = id;
         this.name = name;
         this.reward = reward;
     }
 
-    // ID, Optionalなフィールドなし (登録時など)
+    /**
+     * コンストラクタ (ID, Optionalなフィールドなし)
+     * @param name タスク名
+     * @param reward 報酬
+     */
     public TaskBaseItem(String name, int reward) {
         this.name = name;
         this.reward = reward;
     }
 
-    // 空
+    /**
+     * コンストラクタ (空)
+     */
     public TaskBaseItem() {
     }
 

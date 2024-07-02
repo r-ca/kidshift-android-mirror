@@ -4,6 +4,11 @@ public class ParentLoginRequest {
     private String email;
     private String password;
 
+    /**
+     * コンストラクタ (全プロパティ)
+     * @param email メールアドレス
+     * @param password パスワード
+     */
     public ParentLoginRequest(String email, String password) {
         this.email = email;
         this.password = password;

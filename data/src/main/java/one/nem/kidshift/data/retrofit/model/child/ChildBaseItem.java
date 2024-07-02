@@ -5,12 +5,19 @@ public class ChildBaseItem {
     private String id;
     private String name;
 
-    // Constructor
+    /**
+     * コンストラクタ (全プロパティ)
+     * @param id 子供ID
+     * @param name 子供の名前
+     */
     public ChildBaseItem(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * コンストラクタ (空)
+     */
     public ChildBaseItem() {
     }
 
