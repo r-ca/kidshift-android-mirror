@@ -43,32 +43,32 @@ public class KSLoggerImpl implements KSLogger {
 
     @Override
     public void info(String message) {
-        log(new LogModel(LogLevelEnum.INFO, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.INFO, tags.toArray(new String[0]), message));
     }
 
     @Override
     public void warn(String message) {
-        log(new LogModel(LogLevelEnum.WARN, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.WARN, tags.toArray(new String[0]), message));
     }
 
     @Override
     public void error(String message) {
-        log(new LogModel(LogLevelEnum.ERROR, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.ERROR, tags.toArray(new String[0]), message));
     }
 
     @Override
     public void debug(String message) {
-        log(new LogModel(LogLevelEnum.DEBUG, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.DEBUG, tags.toArray(new String[0]), message));
     }
 
     @Override
     public void trace(String message) {
-        log(new LogModel(LogLevelEnum.TRACE, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.TRACE, tags.toArray(new String[0]), message));
     }
 
     @Override
     public void fatal(String message) {
-        log(new LogModel(LogLevelEnum.FATAL, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.FATAL, tags.toArray(new String[0]), message));
     }
 
     private void log(LogModel log) {
