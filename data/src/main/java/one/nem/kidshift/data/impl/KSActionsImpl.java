@@ -24,10 +24,10 @@ import retrofit2.Response;
 
 public class KSActionsImpl implements KSActions {
 
-    private UserSettings userSettings;
-    private KidShiftApiService kidShiftApiService;
-    private KSLogger logger;
-    private CacheWrapper cacheWrapper;
+    private final UserSettings userSettings;
+    private final KidShiftApiService kidShiftApiService;
+    private final KSLogger logger;
+    private final CacheWrapper cacheWrapper;
 
     @Inject
     public KSActionsImpl(UserSettings userSettings, KidShiftApiService kidShiftApiService, KSLogger logger, CacheWrapper cacheWrapper) {
