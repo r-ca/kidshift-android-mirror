@@ -11,6 +11,7 @@ import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.callback.ParentModelCallback;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 public class ParentDataImpl implements ParentData {
 
@@ -21,12 +22,10 @@ public class ParentDataImpl implements ParentData {
     private final KSActions ksActions;
 
     @Inject
-    public ParentDataImpl(KidShiftApiService kidshiftApiService, UserSettings userSettings, KSLogger logger, KSActions ksActions) {
+    public ParentDataImpl(KidShiftApiService kidshiftApiService, UserSettings userSettings, KSLoggerFactory ksLoggerFactory, KSActions ksActions) {
         this.userSettings = userSettings;
-        this.logger = logger;
+        this.logger = ksLoggerFactory.create("ParentDataImpl");
         this.ksActions = ksActions;
-
-        logger.setTag("ParentData");
     }
 
     // 一旦キャッシュを返して, その後非同期でAPIから取得→更新があればコールバックで通知
