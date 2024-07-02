@@ -1,8 +1,5 @@
 package one.nem.kidshift.data.impl;
 
-import android.util.Log;
-
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
@@ -11,12 +8,9 @@ import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.ParentData;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
-import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.callback.ParentModelCallback;
 import one.nem.kidshift.utils.KSLogger;
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class ParentDataImpl implements ParentData {
 

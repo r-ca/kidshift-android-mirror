@@ -5,39 +5,58 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.security.auth.callback.Callback;
 
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.TaskData;
+import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
+import one.nem.kidshift.data.room.utils.CacheWrapper;
+import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
+import one.nem.kidshift.utils.KSLogger;
 
 public class TaskDataImpl implements TaskData {
 
-    KSActions ksActions;
+    private KSActions ksActions;
+    private CacheWrapper cacheWrapper;
+    private KSLogger logger;
 
     @Inject
-    public TaskDataImpl(KSActions ksActions) {
+    public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLogger logger) {
         this.ksActions = ksActions;
+        this.cacheWrapper = cacheWrapper;
+        this.logger = logger.setTag("TaskDataImpl");
     }
 
     @Override
-    public CompletableFuture<List<TaskItemModel>> getTasks() {
+    public CompletableFuture<List<TaskItemModel>> getTasks(TaskItemModelCallback callback) {
         return CompletableFuture.supplyAsync(() -> {
-            TaskListResponse data = ksActions.syncTasks().join();
-            return data.getList().stream().map(task -> {
-                // Convert TaskItemModel
-                TaskItemModel model = new TaskItemModel();
-                model.setInternalId(task.getId());
-                model.setDisplayName(task.getName());
-                model.setReward(task.getReward());
-
-                return model;
-            }).collect(Collectors.toList());
+            logger.debug("タスク取得開始");
+            Thread thread = new Thread(() -> {
+                // TODO-rca: ちゃんと比較して呼ぶ
+                ksActions.syncTasks().thenAccept(callback::onUpdated);
+            });
+            thread.start();
+            return cacheWrapper.getTaskList().thenApply(taskList -> {
+                if (taskList == null || taskList.isEmpty()) {
+                    try {
+                        logger.debug("キャッシュ無: タスク取得スレッド待機");
+                        thread.join();
+                        return cacheWrapper.getTaskList().join();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    logger.debug("キャッシュ有 (タスク数: " + taskList.size() + ")");
+                    return taskList;
+                }
+            }).join();
         });
     }
 
     @Override
-    public CompletableFuture<List<TaskItemModel>> getTasks(String childId) {
+    public CompletableFuture<List<TaskItemModel>> getTasks(String childId, TaskItemModelCallback callback) {
         return null;
     }
 

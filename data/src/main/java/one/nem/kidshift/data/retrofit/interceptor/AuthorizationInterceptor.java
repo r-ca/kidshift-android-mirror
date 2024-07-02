@@ -13,6 +13,9 @@ import okhttp3.Response;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.utils.KSLogger;
 
+/**
+ * Authorization placeholderが指定されている場合にアクセストークンで置換するインターセプター
+ */
 public class AuthorizationInterceptor implements Interceptor {
 
     private static final String HEADER_NAME = "Authorization";

@@ -6,6 +6,12 @@ public class ParentInfoResponse {
     private String email;
     private String displayName;
 
+    /**
+     * コンストラクタ (全プロパティ)
+     * @param id 親ID
+     * @param email メールアドレス
+     * @param displayName 表示名
+     */
     public ParentInfoResponse(String id, String email, String displayName) {
         this.id = id;
         this.email = email;

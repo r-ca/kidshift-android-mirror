@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +28,6 @@ import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.callback.ParentModelCallback;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingMainFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 @AndroidEntryPoint
 public class SettingMainFragment extends Fragment {
 
@@ -41,45 +37,8 @@ public class SettingMainFragment extends Fragment {
     @Inject
     ParentData parentData;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public SettingMainFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SettingMainFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SettingMainFragment newInstance(String param1, String param2) {
-        SettingMainFragment fragment = new SettingMainFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -87,21 +46,37 @@ public class SettingMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+        View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
+
+        TextView username = view.findViewById(R.id.username);
+        TextView useradress = view.findViewById(R.id.useradress);
+
+        try {
         CompletableFuture<ParentModel> completableFuture = parentData.getParent(new ParentModelCallback() {
 
             @Override
             public void onUnchanged() {
                 // TODO
+                //かわってないとき
             }
 
             @Override
             public void onUpdated(ParentModel parent) {
                 // TODO
+                //変わってたら
+                requireActivity().runOnUiThread(() -> {
+                    username.setText(parent.getName());
+                    useradress.setText(parent.getEmail());
+                });
             }
 
             @Override
             public void onFailed(String message) {
                 // TODO
+                requireActivity().runOnUiThread(()->{
+                    username.setText("アドレスを設定してください。");
+                });
+
             }
         });
 
@@ -111,7 +86,7 @@ public class SettingMainFragment extends Fragment {
             - 結果に応じてRecyclerViewを更新する
             - キャッシュ受け取りの時にjoinでUIスレッドをブロックしないように
             - Placeholderの表示?
-            - エラーハンドリング
+            - エラーハンドリング try catch文
                 - onFailed時にそれを通知
          */
 
@@ -119,41 +94,61 @@ public class SettingMainFragment extends Fragment {
 
         if (parent == null) {
             parent = new ParentModel(); // Workaround（非ログインデバッグ用）
-            parent.setDisplayName("親の名前");
+            parent.setName("親の名前");
             parent.setEmail("親のアドレス");
         }
 
-        //RecyclerViewの処理
-        View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
+        // Pull-to-refresh（スワイプで更新）
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        ParentModel finalParent = parent;
+        swipeRefreshLayout.setOnRefreshListener(() ->{
 
-        TextView username = view.findViewById(R.id.username);
-        TextView useradress = view.findViewById(R.id.useradress);
+            username.setText(finalParent.getName());
+            useradress.setText(finalParent.getEmail());
 
-        username.setText(parent.getDisplayName());
-        useradress.setText(parent.getEmail());
+            RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
-        RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
+            recyclerView.setHasFixedSize(true);
 
-        recyclerView.setHasFixedSize(true);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+            List<ChildModel> child = childData.getChildList().join();
 
-        List<ChildModel> child = childData.getChildList().join();
+            RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
+            recyclerView.setAdapter(mainAdapter);
 
-        RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
-        recyclerView.setAdapter(mainAdapter);
+            swipeRefreshLayout.setRefreshing(false);
 
-        LayoutInflater inflater1     = requireActivity().getLayoutInflater();
-        View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
+        });
 
-        //子供の名前追加のダイアログ
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        builder.setTitle("お子様の名前を入力してください。")
-                .setView(view1)
-                .setPositiveButton("追加",null)
-                .setNeutralButton("閉じる",null);
-        builder.create();
+            username.setText(parent.getName());
+            useradress.setText(parent.getEmail());
+        } catch (Exception e) {
+            //
+        }
+            RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
+
+            recyclerView.setHasFixedSize(true);
+
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
+
+            List<ChildModel> child = childData.getChildList().join();
+
+            RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
+            recyclerView.setAdapter(mainAdapter);
+
+            LayoutInflater inflater1 = requireActivity().getLayoutInflater();
+            View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
+
+            //子供の名前追加のダイアログ
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+            builder.setTitle("お子様の名前を入力してください。")
+                    .setView(view1)
+                    .setPositiveButton("追加",null)
+                    .setNeutralButton("閉じる",null);
+            builder.create();
 
         view.findViewById(R.id.addchildname).setOnClickListener(v -> {
             builder.show();
