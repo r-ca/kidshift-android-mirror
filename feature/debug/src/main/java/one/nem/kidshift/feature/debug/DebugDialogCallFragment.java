@@ -40,7 +40,7 @@ public class DebugDialogCallFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view1 =inflater.inflate(R.layout.fragment_debug_dialog_view,null);
-        int loginCode = childData.issueLoginCode("543256");
+        int loginCode = childData.issueLoginCode("543256").join();
         TextView loginCodeTextView = view1.findViewById(R.id.loginCode);
         new StringBuilder(Integer.toString(loginCode)).insert(3,"-");
 
