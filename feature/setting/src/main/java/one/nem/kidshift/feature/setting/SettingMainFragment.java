@@ -161,6 +161,8 @@ public class SettingMainFragment extends Fragment {
                 - onFailed時にそれを通知
          */
 
+        updateInfo();
+
         swipeRefreshLayout.setOnRefreshListener(() ->{
 
             updateInfo();
