@@ -30,6 +30,7 @@ import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.ParentModelCallback;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
 public class SettingMainFragment extends Fragment {
@@ -41,7 +42,9 @@ public class SettingMainFragment extends Fragment {
     ParentData parentData;
 
     @Inject
-    KSLogger logger;
+    KSLoggerFactory ksLoggerFactory;
+
+    private KSLogger logger;
 
     TextView username;
 
@@ -52,6 +55,12 @@ public class SettingMainFragment extends Fragment {
 
     public SettingMainFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        logger = ksLoggerFactory.create("SettingMainFragment");
     }
 
     private CompletableFuture<Void> updateParentInfo(){
