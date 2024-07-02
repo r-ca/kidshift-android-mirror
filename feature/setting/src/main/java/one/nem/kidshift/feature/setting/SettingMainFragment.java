@@ -125,6 +125,10 @@ public class SettingMainFragment extends Fragment {
         updateParent.thenCombine(updateChildList, (res1, res2) -> null).thenRun(() -> {
             logger.debug("アップデート完了");
             swipeRefreshLayout.setRefreshing(false);
+        }).exceptionally(e -> {
+            logger.error("アップデート失敗: " + e.getMessage());
+            swipeRefreshLayout.setRefreshing(false);
+            return null;
         });
     }
 
@@ -149,29 +153,12 @@ public class SettingMainFragment extends Fragment {
         // Pull-to-refresh（スワイプで更新）
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
-        try {
 
-            /*
-            TODO:
-                - コールバックの処理を実装
-                - 結果に応じてRecyclerViewを更新する
-                - キャッシュ受け取りの時にjoinでUIスレッドをブロックしないように
-                - Placeholderの表示?
-                - エラーハンドリング try catch文
-                    - onFailed時にそれを通知
-             */
+        updateInfo();
 
+        swipeRefreshLayout.setOnRefreshListener(() -> {
             updateInfo();
-
-            swipeRefreshLayout.setOnRefreshListener(() ->{
-
-                updateInfo();
-
-            });
-
-        } catch (Exception e) {
-            //
-        }
+        });
 
         LayoutInflater inflater1 = requireActivity().getLayoutInflater();
         View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
@@ -190,5 +177,11 @@ public class SettingMainFragment extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // TODO: 更新する?
     }
 }
