@@ -1,5 +1,6 @@
 package one.nem.kidshift.feature.setting;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.ParentModelCallback;
+import one.nem.kidshift.utils.KSLogger;
 
 @AndroidEntryPoint
 public class SettingMainFragment extends Fragment {
@@ -38,8 +40,68 @@ public class SettingMainFragment extends Fragment {
     @Inject
     ParentData parentData;
 
+    @Inject
+    KSLogger logger;
+
+    TextView username;
+
+    TextView useradress;
+
+    SettingAdapter mainAdapter;
+    SwipeRefreshLayout swipeRefreshLayout;
+
     public SettingMainFragment() {
         // Required empty public constructor
+    }
+
+    private CompletableFuture<Void> updateParentInfo(){
+        return parentData.getParent(new ParentModelCallback() {
+            @Override
+            public void onUnchanged() {
+
+            }
+
+            @Override
+            public void onUpdated(ParentModel parent) {
+
+            }
+
+            @Override
+            public void onFailed(String message) {
+
+            }
+        }).thenAccept(parentModel -> {
+            username.setText(parentModel.getName() != null ? parentModel.getName() : "親の名前");
+            useradress.setText(parentModel.getEmail() != null ? parentModel.getEmail() : "親のアドレス");
+        });
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private CompletableFuture<Void> updateChildInfo(){
+        return childData.getChildList().thenAccept(childModels -> {
+            mainAdapter.setChildDataList(childModels);
+
+            requireActivity().runOnUiThread(() -> {
+                mainAdapter.notifyDataSetChanged();
+            });
+
+        });
+    }
+
+    private void updateInfo() {
+        CompletableFuture<Void> updateParent = updateParentInfo();
+        CompletableFuture<Void> updateChildList = updateChildInfo();
+
+        logger.debug(String.valueOf((swipeRefreshLayout == null)));
+
+        swipeRefreshLayout.setRefreshing(true);
+
+        logger.debug("アップデート開始");
+        updateParent.thenCombine(updateChildList, (res1, res2) -> null).thenRun(() -> {
+            logger.debug("アップデート完了");
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 
     @Override
@@ -49,37 +111,15 @@ public class SettingMainFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
 
-        TextView username = view.findViewById(R.id.username);
-        TextView useradress = view.findViewById(R.id.useradress);
+        username = view.findViewById(R.id.username);
+        useradress = view.findViewById(R.id.useradress);
+
+        RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
+
+        // Pull-to-refresh（スワイプで更新）
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
         try {
-        CompletableFuture<ParentModel> completableFuture = parentData.getParent(new ParentModelCallback() {
-
-            @Override
-            public void onUnchanged() {
-                // TODO
-                //かわってないとき
-            }
-
-            @Override
-            public void onUpdated(ParentModel parent) {
-                // TODO
-                //変わってたら
-                requireActivity().runOnUiThread(() -> {
-                    username.setText(parent.getName());
-                    useradress.setText(parent.getEmail());
-                });
-            }
-
-            @Override
-            public void onFailed(String message) {
-                // TODO
-                requireActivity().runOnUiThread(()->{
-                    username.setText("アドレスを設定してください。");
-                });
-
-            }
-        });
 
         /*
         TODO:
@@ -91,84 +131,15 @@ public class SettingMainFragment extends Fragment {
                 - onFailed時にそれを通知
          */
 
-        ParentModel parent = completableFuture.join();
-
-        if (parent == null) {
-            parent = new ParentModel(); // Workaround（非ログインデバッグ用）
-            parent.setName("親の名前");
-            parent.setEmail("親のアドレス");
-        }
-
-        // Pull-to-refresh（スワイプで更新）
-        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-        ParentModel finalParent = parent;
         swipeRefreshLayout.setOnRefreshListener(() ->{
 
-            username.setText(finalParent.getName());
-            useradress.setText(finalParent.getEmail());
-
-            RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
-
-            recyclerView.setHasFixedSize(true);
-
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView.setLayoutManager(layoutManager);
-
-            List<ChildModel> child = childData.getChildList(new ChildModelCallback() {
-                @Override
-                public void onUnchanged() {
-
-                }
-
-                @Override
-                public void onUpdated(List<ChildModel> childModelList) {
-
-                }
-
-                @Override
-                public void onFailed(String message) {
-
-                }
-            }).join();
-
-            RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
-            recyclerView.setAdapter(mainAdapter);
-
-            swipeRefreshLayout.setRefreshing(false);
+            updateInfo();
 
         });
 
-            username.setText(parent.getName());
-            useradress.setText(parent.getEmail());
         } catch (Exception e) {
             //
         }
-            RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
-
-            recyclerView.setHasFixedSize(true);
-
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView.setLayoutManager(layoutManager);
-
-            List<ChildModel> child = childData.getChildList(new ChildModelCallback() {
-                @Override
-                public void onUnchanged() {
-
-                }
-
-                @Override
-                public void onUpdated(List<ChildModel> childModelList) {
-
-                }
-
-                @Override
-                public void onFailed(String message) {
-
-                }
-            }).join();
-
-            RecyclerView.Adapter mainAdapter = new SettingAdapter(child);
-            recyclerView.setAdapter(mainAdapter);
 
             LayoutInflater inflater1 = requireActivity().getLayoutInflater();
             View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
