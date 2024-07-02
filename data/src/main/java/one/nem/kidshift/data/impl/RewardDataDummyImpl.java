@@ -14,9 +14,6 @@ public class RewardDataDummyImpl implements RewardData {
     private final Faker faker;
 
     @Inject
-    KSLogger logger;
-
-    @Inject
     public RewardDataDummyImpl() {
         faker = new Faker();
 //        logger.setTag("RewardDataDummyImpl");
