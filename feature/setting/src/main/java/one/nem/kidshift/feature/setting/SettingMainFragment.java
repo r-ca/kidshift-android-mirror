@@ -63,6 +63,10 @@ public class SettingMainFragment extends Fragment {
         logger = ksLoggerFactory.create("SettingMainFragment");
     }
 
+    /**
+     * 親情報を更新する
+     * @return CompletableFuture<Void>
+     */
     private CompletableFuture<Void> updateParentInfo(){
         return parentData.getParent(new ParentModelCallback() {
             @Override
@@ -86,6 +90,10 @@ public class SettingMainFragment extends Fragment {
 
     }
 
+    /**
+     * 子供情報を更新する
+     * @return CompletableFuture<Void>
+     */
     @SuppressLint("NotifyDataSetChanged")
     private CompletableFuture<Void> updateChildInfo(){
         return childData.getChildList(new ChildModelCallback() {
@@ -113,6 +121,9 @@ public class SettingMainFragment extends Fragment {
         });
     }
 
+    /**
+     * ユーザー情報を更新するラッパー
+     */
     private void updateInfo() {
         CompletableFuture<Void> updateParent = updateParentInfo();
         CompletableFuture<Void> updateChildList = updateChildInfo();
