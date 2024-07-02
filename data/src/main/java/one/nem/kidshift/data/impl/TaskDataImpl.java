@@ -30,7 +30,6 @@ public class TaskDataImpl implements TaskData {
     public CompletableFuture<List<TaskItemModel>> getTasks(TaskItemModelCallback callback) {
         return CompletableFuture.supplyAsync(() -> {
             logger.debug("タスク取得開始");
-            // 引数付きThreadを生成
             AtomicReference<List<TaskItemModel>> taskListTmp = new AtomicReference<>();
             Thread thread = new Thread(() -> {
                 ksActions.syncTasks().thenAccept(taskList -> {
