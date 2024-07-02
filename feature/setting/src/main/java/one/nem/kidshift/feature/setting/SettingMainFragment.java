@@ -140,6 +140,12 @@ public class SettingMainFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        mainAdapter = new SettingAdapter();
+        recyclerView.setAdapter(mainAdapter);
+
         // Pull-to-refresh（スワイプで更新）
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
