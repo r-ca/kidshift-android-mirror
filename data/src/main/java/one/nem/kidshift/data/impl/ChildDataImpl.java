@@ -12,6 +12,7 @@ import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
 import one.nem.kidshift.data.retrofit.model.converter.ChildModelConverter;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -22,9 +23,9 @@ public class ChildDataImpl implements ChildData {
     private KSLogger logger;
 
     @Inject
-    public ChildDataImpl(KidShiftApiService kidShiftApiService, KSLogger logger) {
+    public ChildDataImpl(KidShiftApiService kidShiftApiService, KSLoggerFactory loggerFactory) {
         this.kidShiftApiService = kidShiftApiService;
-        this.logger = logger;
+        this.logger = loggerFactory.create("ChildDataImpl");
     }
 
     @Override
