@@ -14,17 +14,14 @@ import one.nem.kidshift.utils.KSLogger;
 
 public class ParentDataImpl implements ParentData {
 
-    private KidShiftApiService kidshiftApiService;
+    private final UserSettings userSettings;
 
-    private UserSettings userSettings;
+    private final KSLogger logger;
 
-    private KSLogger logger;
-
-    private KSActions ksActions;
+    private final KSActions ksActions;
 
     @Inject
     public ParentDataImpl(KidShiftApiService kidshiftApiService, UserSettings userSettings, KSLogger logger, KSActions ksActions) {
-        this.kidshiftApiService = kidshiftApiService;
         this.userSettings = userSettings;
         this.logger = logger;
         this.ksActions = ksActions;
