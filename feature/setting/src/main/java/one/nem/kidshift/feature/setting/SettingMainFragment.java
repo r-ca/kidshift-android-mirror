@@ -88,10 +88,7 @@ public class SettingMainFragment extends Fragment {
 
         //親の名前、アドレス表示
         ParentModel parent = parentData.getParent("poiuytrew");
-
-
-
-
+        
         View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
 
         // Pull-to-refresh（スワイプで更新）
