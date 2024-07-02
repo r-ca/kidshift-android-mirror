@@ -17,10 +17,13 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.MainView
 
     private List<ChildModel> childDataList;
 
-    SettingAdapter(List<ChildModel> childDataList){
-        this.childDataList = childDataList;
+    SettingAdapter() {
+
     }
 
+    public void setChildDataList(List<ChildModel> childDataList) {
+        this.childDataList = childDataList;
+    }
 
 
     static class MainViewHolder extends RecyclerView.ViewHolder{
@@ -47,6 +50,6 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.MainView
 
     @Override
     public int getItemCount(){
-        return childDataList.size();
+        return childDataList != null ? childDataList.size() : 0;
     }
 }
