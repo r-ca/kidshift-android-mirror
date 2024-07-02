@@ -79,7 +79,22 @@ public class SettingMainFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private CompletableFuture<Void> updateChildInfo(){
-        return childData.getChildList().thenAccept(childModels -> {
+        return childData.getChildList(new ChildModelCallback() {
+            @Override
+            public void onUnchanged() {
+
+            }
+
+            @Override
+            public void onUpdated(List<ChildModel> childModelList) {
+
+            }
+
+            @Override
+            public void onFailed(String message) {
+
+            }
+        }).thenAccept(childModels -> {
             mainAdapter.setChildDataList(childModels);
 
             requireActivity().runOnUiThread(() -> {
