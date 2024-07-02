@@ -16,9 +16,9 @@ import one.nem.kidshift.utils.KSLogger;
 
 public class TaskDataImpl implements TaskData {
 
-    private KSActions ksActions;
-    private CacheWrapper cacheWrapper;
-    private KSLogger logger;
+    private final KSActions ksActions;
+    private final CacheWrapper cacheWrapper;
+    private final KSLogger logger;
 
     @Inject
     public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLogger logger) {
