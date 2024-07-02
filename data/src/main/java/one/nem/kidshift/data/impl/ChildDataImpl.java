@@ -40,7 +40,7 @@ public class ChildDataImpl implements ChildData {
     }
 
     @Override
-    public CompletableFuture<List<ChildModel>> getChildList(ChildModelCallback callback) {
+    public CompletableFuture<List<ChildModel>> getChildList(ChildModelCallback callback) { // TODO: リファクタリング
         return CompletableFuture.supplyAsync(() -> {
             logger.debug("子供リスト取得開始");
             AtomicReference<List<ChildModel>> childListTmp = new AtomicReference<>();
