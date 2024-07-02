@@ -12,15 +12,24 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
 public class DebugMainFragment extends Fragment {
 
     @Inject
-    KSLogger ksLogger;
+    KSLoggerFactory loggerFactory;
+
+    private KSLogger logger;
 
     public DebugMainFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        logger = loggerFactory.create("DebugMain");
     }
 
     @Override

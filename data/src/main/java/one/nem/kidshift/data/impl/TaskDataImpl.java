@@ -13,6 +13,7 @@ import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 public class TaskDataImpl implements TaskData {
 
@@ -21,10 +22,10 @@ public class TaskDataImpl implements TaskData {
     private final KSLogger logger;
 
     @Inject
-    public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLogger logger) {
+    public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
         this.ksActions = ksActions;
         this.cacheWrapper = cacheWrapper;
-        this.logger = logger.setTag("TaskDataImpl");
+        this.logger = loggerFactory.create("TaskDataImpl");
     }
 
     @Override

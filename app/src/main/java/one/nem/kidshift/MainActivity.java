@@ -20,12 +20,15 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     @Inject
-    KSLogger ksLogger;
+    KSLoggerFactory loggerFactory;
+
+    private KSLogger logger;
 
     @Inject
     UserSettings userSettings;
@@ -41,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        ksLogger.info("MainActivity started!");
+        logger = loggerFactory.create("MainActivity");
+
+        logger.info("MainActivity started!");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 
@@ -59,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Check logged in
         if (userSettings.getAppCommonSetting().isLoggedIn()) {
-            ksLogger.info("User is logged in!");
+            logger.info("User is logged in!");
         } else {
-            ksLogger.info("User is not logged in!");
+            logger.info("User is not logged in!");
 
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
