@@ -1,5 +1,6 @@
 package one.nem.kidshift.feature.parent;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
@@ -42,6 +44,35 @@ public class ParentMainFragment extends Fragment {
     @Inject
     ChildData childData;
 
+    ParentAdapter parentAdapter;
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    @SuppressLint("DatasetChange")
+    private void updateTaskInfo(){
+        taskData.getTasks(new TaskItemModelCallback() {
+            @Override
+            public void onUnchanged() {
+
+            }
+
+            @Override
+            public void onUpdated(List<TaskItemModel> taskItem) {
+
+            }
+
+            @Override
+            public void onFailed(String message) {
+
+            }
+        }).thenAccept(taskItemModel -> {
+            requireActivity().runOnUiThread(()->{
+                parentAdapter.notifyDataSetChanged();
+            });
+        }).thenRun(() -> {
+           swipeRefreshLayout.setRefreshing(false);
+        });
+    }
+
     public ParentMainFragment() {
         // Required empty public constructor
     }
@@ -53,7 +84,7 @@ public class ParentMainFragment extends Fragment {
     }
 
     private void dataRefresh(){
-        SwipeRefreshLayout swipeRefreshLayout = requireView().findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout = requireView().findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setRefreshing(true);
 
         RecyclerView recyclerView =requireView().findViewById(R.id.main_recycle_view);
