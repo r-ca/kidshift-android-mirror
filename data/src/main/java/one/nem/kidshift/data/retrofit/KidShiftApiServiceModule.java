@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.interceptor.AuthorizationInterceptor;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -22,12 +23,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class KidShiftApiServiceModule {
 
     @Inject
-    KSLogger logger;
+    KSLoggerFactory ksLoggerFactory;
 
     @Provides
     @Singleton
-    public AuthorizationInterceptor provideAuthorizationInterceptor(UserSettings userSettings, KSLogger logger) {
-        return new AuthorizationInterceptor(userSettings, logger);
+    public AuthorizationInterceptor provideAuthorizationInterceptor(UserSettings userSettings, KSLoggerFactory ksLoggerFactory) {
+        return new AuthorizationInterceptor(userSettings, ksLoggerFactory);
     }
 
     // Gson

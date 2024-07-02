@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import one.nem.kidshift.utils.models.feature.FeatureFlagItemModel;
 import one.nem.kidshift.utils.FeatureFlag;
 
@@ -40,10 +41,9 @@ public class FeatureFlagImpl implements FeatureFlag {
     }
 
     @Inject
-    public FeatureFlagImpl(@ApplicationContext Context applicationContext, KSLogger logger) {
+    public FeatureFlagImpl(@ApplicationContext Context applicationContext, KSLoggerFactory loggerFactory) {
         this.applicationContext = applicationContext;
-        this.logger = logger;
-        this.logger.setTag("FeatureFlagImpl");
+        this.logger = loggerFactory.create("FeatureFlag");
         this.sharedPreferences = applicationContext.getSharedPreferences("feat_flg", Context.MODE_PRIVATE);
         init();
     }

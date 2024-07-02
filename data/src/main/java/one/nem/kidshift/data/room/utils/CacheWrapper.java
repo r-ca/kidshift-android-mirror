@@ -18,6 +18,7 @@ import one.nem.kidshift.data.room.utils.converter.TaskCacheConverter;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @Module
 @InstallIn(SingletonComponent.class)
@@ -27,9 +28,9 @@ public class CacheWrapper {
     private KSLogger logger;
 
     @Inject
-    public CacheWrapper(KidShiftDatabase kidShiftDatabase, KSLogger logger) {
+    public CacheWrapper(KidShiftDatabase kidShiftDatabase, KSLoggerFactory loggerFactory) {
         this.kidShiftDatabase = kidShiftDatabase;
-        this.logger = logger;
+        this.logger = loggerFactory.create("CacheWrapper");
     }
 
     /**
@@ -92,8 +93,8 @@ public class CacheWrapper {
      */
     public CompletableFuture<List<ChildModel>> getChildList() {
         return CompletableFuture.supplyAsync(() -> {
-            // Get a list of children from the database
-            return null;
+            List<ChildCacheEntity> result = kidShiftDatabase.childCacheDao().getChildList();
+            return ChildCacheConverter.childCacheEntityListToChildModelList(result);
         });
     }
 

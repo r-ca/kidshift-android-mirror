@@ -19,23 +19,23 @@ import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import retrofit2.Call;
 import retrofit2.Response;
 
 public class KSActionsImpl implements KSActions {
 
-    private UserSettings userSettings;
-    private KidShiftApiService kidShiftApiService;
-    private KSLogger logger;
-    private CacheWrapper cacheWrapper;
+    private final UserSettings userSettings;
+    private final KidShiftApiService kidShiftApiService;
+    private final KSLogger logger;
+    private final CacheWrapper cacheWrapper;
 
     @Inject
-    public KSActionsImpl(UserSettings userSettings, KidShiftApiService kidShiftApiService, KSLogger logger, CacheWrapper cacheWrapper) {
+    public KSActionsImpl(UserSettings userSettings, KidShiftApiService kidShiftApiService, KSLoggerFactory ksLoggerFactory, CacheWrapper cacheWrapper) {
         this.userSettings = userSettings;
         this.kidShiftApiService = kidShiftApiService;
-        this.logger = logger;
+        this.logger = ksLoggerFactory.create("KSActionsImpl");
         this.cacheWrapper = cacheWrapper;
-        logger.setTag("KSActions");
     }
 
     @Override

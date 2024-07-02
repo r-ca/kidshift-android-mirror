@@ -21,12 +21,16 @@ import one.nem.kidshift.feature.debug.adapter.DebugCommandListItemAdapter;
 import one.nem.kidshift.feature.debug.model.DebugCommandItemModel;
 import one.nem.kidshift.utils.FeatureFlag;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
 public class DebugDebugConsoleFragment extends Fragment {
 
     @Inject
-    KSLogger ksLogger;
+    KSLoggerFactory loggerFactory;
+
+    private KSLogger ksLogger;
+
     @Inject
     FeatureFlag featureFlag;
 
@@ -38,6 +42,12 @@ public class DebugDebugConsoleFragment extends Fragment {
 
     public DebugDebugConsoleFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ksLogger = loggerFactory.create("DebugConsole");
     }
 
     @Override

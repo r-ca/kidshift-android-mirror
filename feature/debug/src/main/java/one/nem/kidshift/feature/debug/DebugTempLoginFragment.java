@@ -32,6 +32,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,7 +43,9 @@ import one.nem.kidshift.utils.KSLogger;
 public class DebugTempLoginFragment extends Fragment {
 
     @Inject
-    KSLogger logger;
+    KSLoggerFactory loggerFactory;
+
+    private KSLogger logger;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -91,8 +94,8 @@ public class DebugTempLoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_debug_temp_login, container, false);
 
-        logger.setTag("Login");
 
+        this.logger = loggerFactory.create("DebugTempLoginFragment");
 
         //xmlレイアウトからid取得
         EditText id = (EditText) view.findViewById(R.id.idtext);

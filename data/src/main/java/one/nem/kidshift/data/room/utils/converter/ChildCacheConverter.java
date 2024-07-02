@@ -38,4 +38,12 @@ public class ChildCacheConverter {
     public static ChildModel childCacheEntityToChildModel(ChildCacheEntity entity) {
         return new ChildModel(entity.id, entity.name);
     }
+
+    public static List<ChildModel> childCacheEntityListToChildModelList(List<ChildCacheEntity> result) {
+        List<ChildModel> childList = new ArrayList<>();
+        for (ChildCacheEntity entity : result) {
+            childList.add(childCacheEntityToChildModel(entity));
+        }
+        return childList;
+    }
 }

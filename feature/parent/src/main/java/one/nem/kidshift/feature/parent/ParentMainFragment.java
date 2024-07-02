@@ -25,15 +25,20 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.TaskData;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
 public class ParentMainFragment extends Fragment {
 
     @Inject
-    KSLogger ksLogger;
+    KSLoggerFactory loggerFactory;
+
+    private KSLogger ksLogger;
+
     @Inject
     TaskData taskData;
     @Inject
@@ -72,6 +77,11 @@ public class ParentMainFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ksLogger = loggerFactory.create("ParentMain");
+    }
 
     private void dataRefresh(){
         swipeRefreshLayout = requireView().findViewById(R.id.swipe_refresh_layout);
@@ -127,7 +137,22 @@ public class ParentMainFragment extends Fragment {
         recyclerView1.setLayoutManager(layoutManager1);
 
         ksLogger.debug("子供一覧取得開始");
-        List<ChildModel> child = childData.getChildList().join();
+        List<ChildModel> child = childData.getChildList(new ChildModelCallback() {
+            @Override
+            public void onUnchanged() {
+
+            }
+
+            @Override
+            public void onUpdated(List<ChildModel> childModelList) {
+
+            }
+
+            @Override
+            public void onFailed(String message) {
+
+            }
+        }).join();
         ksLogger.debug("子供一覧取得完了");
 
         RecyclerView.Adapter mainAdapter1 = new ChildListAdapter(child);
