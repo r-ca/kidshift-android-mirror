@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.callback.ChildModelCallback;
 
 public interface ChildData {
 
@@ -18,7 +19,7 @@ public interface ChildData {
      * 子ユーザー一覧取得
      * @return List<ChildModel> 子ユーザー一覧
      */
-    CompletableFuture<List<ChildModel>> getChildList();
+    CompletableFuture<List<ChildModel>> getChildList(ChildModelCallback callback);
 
     /**
      * 子ユーザー情報更新
