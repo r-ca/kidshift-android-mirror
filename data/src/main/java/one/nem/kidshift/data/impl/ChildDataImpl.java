@@ -3,6 +3,7 @@ package one.nem.kidshift.data.impl;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -39,61 +40,54 @@ public class ChildDataImpl implements ChildData {
     }
 
     @Override
-    public CompletableFuture<List<ChildModel>> getChildList() {
-        logger.debug("子供リスト取得開始");
-
-        CompletableFuture<List<ChildModel>> cachedChildListFuture = cacheWrapper.getChildList();
-
-        // TODO
-    }
-
-    private CompletableFuture<List<ChildModel>> fetchChildListFromServer(ChildModelCallback callback) {
-        return ksActions.syncChildList().thenApply(serverChildList -> {
-            if (serverChildList == null || serverChildList.isEmpty()) {
-                callback.onUnchanged();
-            } else {
-                callback.onUpdated(serverChildList);
-            }
-            return serverChildList;
-        }).exceptionally(e -> {
-            logger.error("子供リスト取得失敗: " + e.getMessage());
-            callback.onFailed(e.getMessage());
-            return Collections.emptyList();
-        });
-    }
-
-    private CompletableFuture<List<ChildModel>> checkForUpdates(List<ChildModel> cachedChildList, ChildModelCallback callback) {
-        return ksActions.syncChildList().thenApply(serverChildList -> {
-            if (serverChildList == null || serverChildList.isEmpty()) {
-                callback.onUnchanged();
-                return cachedChildList;
-            } else {
-                boolean isChanged = isChildListChanged(cachedChildList, serverChildList);
-                if (isChanged) {
-                    logger.debug("子供リスト取得完了: キャッシュと比較して更新あり");
-                    callback.onUpdated(serverChildList);
-                    return serverChildList;
+    public CompletableFuture<List<ChildModel>> getChildList(ChildModelCallback callback) {
+        return CompletableFuture.supplyAsync(() -> {
+            logger.debug("子供リスト取得開始");
+            AtomicReference<List<ChildModel>> childListTmp = new AtomicReference<>();
+            Thread thread = new Thread(() -> {
+                ksActions.syncChildList().thenAccept(childList -> {
+                    if (childListTmp.get() == null || childListTmp.get().isEmpty()) {
+                        logger.debug("子供リスト取得完了: キャッシュよりはやく取得完了 or キャッシュ無し");
+                        if (childList == null || childList.isEmpty()) {
+                            callback.onUnchanged();
+                        } else {
+                            callback.onUpdated(childList);
+                        }
+                    } else {
+                        boolean isChanged =
+                                childList.size() != childListTmp.get().size() ||
+                                        childList.stream().anyMatch(child -> childListTmp.get().stream().noneMatch(childTmp -> child.getId().equals(childTmp.getId())));
+                        if (isChanged) {
+                            logger.debug("子供リスト取得完了: キャッシュと比較して変更あり");
+                            callback.onUpdated(childList);
+                        } else {
+                            logger.debug("子供リスト取得完了: キャッシュと比較して変更なし");
+                            callback.onUnchanged();
+                        }
+                    }
+                }).exceptionally(e -> {
+                    logger.error("子供リスト取得失敗: " + e.getMessage());
+                    callback.onFailed(e.getMessage());
+                    return null;
+                });
+            });
+            thread.start();
+            return cacheWrapper.getChildList().thenApply(childList -> {
+                if (childList == null || childList.isEmpty()) {
+                    try {
+                        logger.debug("キャッシュ無: 子供リスト取得スレッド待機");
+                        thread.join();
+                        return cacheWrapper.getChildList().join();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 } else {
-                    logger.debug("子供リスト取得完了: キャッシュと比較して変更なし");
-                    callback.onUnchanged();
-                    return cachedChildList;
+                    logger.debug("キャッシュ有 (子供数: " + childList.size() + ")");
+                    childListTmp.set(childList);
+                    return childList;
                 }
-            }
+            }).join();
         });
-    }
-
-    private boolean isChildListChanged(List<ChildModel> cachedChildList, List<ChildModel> serverChildList) {
-        if (cachedChildList.size() != serverChildList.size()) {
-            return true;
-        }
-
-        for (ChildModel serverChild : serverChildList) {
-            boolean exists = cachedChildList.stream().anyMatch(cachedChild -> serverChild.getId().equals(cachedChild.getId()));
-            if (!exists) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
