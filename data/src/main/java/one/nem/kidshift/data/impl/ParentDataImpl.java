@@ -16,11 +16,11 @@ public class ParentDataImpl implements ParentData {
 
     private KidShiftApiService kidshiftApiService;
 
-    private UserSettings userSettings;
+    private final UserSettings userSettings;
 
-    private KSLogger logger;
+    private final KSLogger logger;
 
-    private KSActions ksActions;
+    private final KSActions ksActions;
 
     @Inject
     public ParentDataImpl(KidShiftApiService kidshiftApiService, UserSettings userSettings, KSLogger logger, KSActions ksActions) {
