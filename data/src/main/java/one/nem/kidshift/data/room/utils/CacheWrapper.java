@@ -93,8 +93,8 @@ public class CacheWrapper {
      */
     public CompletableFuture<List<ChildModel>> getChildList() {
         return CompletableFuture.supplyAsync(() -> {
-            // Get a list of children from the database
-            return null;
+            List<ChildCacheEntity> result = kidShiftDatabase.childCacheDao().getChildList();
+            return ChildCacheConverter.childCacheEntityListToChildModelList(result);
         });
     }
 
