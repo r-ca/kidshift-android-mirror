@@ -52,7 +52,22 @@ public class ParentMainFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        List<TaskItemModel> task = taskData.getTasks().join();
+        List<TaskItemModel> task = taskData.getTasks(new TaskItemModelCallback() {
+            @Override
+            public void onUnchanged() {
+                // TODO
+            }
+
+            @Override
+            public void onUpdated(List<TaskItemModel> taskItem) {
+                // TODO
+            }
+
+            @Override
+            public void onFailed(String message) {
+                // TODO
+            }
+        }).join();
 
         RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
         recyclerView.setAdapter(mainAdapter);
