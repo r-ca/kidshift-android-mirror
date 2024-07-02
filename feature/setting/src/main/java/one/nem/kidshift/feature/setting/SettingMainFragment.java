@@ -169,13 +169,13 @@ public class SettingMainFragment extends Fragment {
         });
 
         // ダイアログの設定
-        LayoutInflater inflater1 = requireActivity().getLayoutInflater();
-        View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
+        LayoutInflater dialogInflater = requireActivity().getLayoutInflater();
+        View childListView = dialogInflater.inflate(R.layout.add_child_list_dialog,null);
 
         //子供の名前追加のダイアログ
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle("お子様の名前を入力してください。")
-                .setView(view1)
+                .setView(childListView)
                 .setPositiveButton("追加",null)
                 .setNeutralButton("閉じる",null);
         builder.create();
