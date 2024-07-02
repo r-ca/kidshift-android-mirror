@@ -82,35 +82,6 @@ public class ParentMainFragment extends Fragment {
         //タスク一覧表示
         View view = inflater.inflate(R.layout.fragment_parent_main, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.main_recycle_view);
-
-        recyclerView.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        ksLogger.debug("タスク一覧取得開始");
-        List<TaskItemModel> task = taskData.getTasks(new TaskItemModelCallback() {
-            @Override
-            public void onUnchanged() {
-                // TODO: Do something
-            }
-
-            @Override
-            public void onUpdated(List<TaskItemModel> taskItem) {
-                // TODO: Do something
-            }
-
-            @Override
-            public void onFailed(String message) {
-                // TODO: Do something
-            }
-        }).join();
-        ksLogger.debug("タスク一覧取得完了");
-
-        RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
-        recyclerView.setAdapter(mainAdapter);
-
         //お手伝い追加ダイアログ
         LayoutInflater inflater1 = requireActivity().getLayoutInflater();
         View view1 = inflater1.inflate(R.layout.add_task_list_dialog,null);
