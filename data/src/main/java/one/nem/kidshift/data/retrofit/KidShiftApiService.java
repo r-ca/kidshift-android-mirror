@@ -20,6 +20,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface KidShiftApiService {
 
@@ -96,7 +97,7 @@ public interface KidShiftApiService {
      */
     @POST("/parent/task/{id}/complete")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
-    Call<Void> completeTask(@Path("id") String id); // TODO-rca: OK responseをパース
+    Call<Void> completeTask(@Path("id") String id, @Query("childId") String childId);
 
     // Child APIs
 
