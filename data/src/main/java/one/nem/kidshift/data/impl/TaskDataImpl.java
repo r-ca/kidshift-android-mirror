@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.TaskData;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
+import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
+import one.nem.kidshift.data.retrofit.model.task.TaskResponse;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
@@ -100,8 +102,23 @@ public class TaskDataImpl implements TaskData {
     }
 
     @Override
-    public void updateTask(TaskItemModel task) {
-
+    public CompletableFuture<Void> updateTask(TaskItemModel task) {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<TaskResponse> call = kidShiftApiService.updateTask(TaskModelConverter.taskItemModelToTaskAddRequest(task), task.getId());
+            try {
+                Response<TaskResponse> response = call.execute();
+                if (response.isSuccessful()) {
+                    logger.info("タスク更新成功(taskId: " + task.getId() + ")");
+//                    return response.body();
+                    return null;
+                } else {
+                    logger.error("タスク更新失敗: HTTP Status: " + response.code());
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
