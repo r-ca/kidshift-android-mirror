@@ -39,7 +39,7 @@ public interface TaskData {
      * タスクを更新する
      * @param task タスク
      */
-    void updateTask(TaskItemModel task);
+    CompletableFuture<Void> updateTask(TaskItemModel task);
 
     // 子側
 

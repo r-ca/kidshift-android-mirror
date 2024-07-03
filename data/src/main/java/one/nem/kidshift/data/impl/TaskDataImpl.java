@@ -100,7 +100,7 @@ public class TaskDataImpl implements TaskData {
     }
 
     @Override
-    public void updateTask(TaskItemModel task) {
+    public CompletableFuture<Void> updateTask(TaskItemModel task) {
 
     }
 
