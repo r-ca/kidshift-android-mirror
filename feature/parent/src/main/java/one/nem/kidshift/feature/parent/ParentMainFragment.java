@@ -44,6 +44,7 @@ public class ParentMainFragment extends Fragment {
 
     @SuppressLint("DatasetChange")
     private void updateTaskInfo(){
+        swipeRefreshLayout.setRefreshing(true);
         taskData.getTasks(new TaskItemModelCallback() {
             @Override
             public void onUnchanged() {
@@ -60,6 +61,7 @@ public class ParentMainFragment extends Fragment {
 
             }
         }).thenAccept(taskItemModel -> {
+            parentAdapter.setTaskDataList(taskItemModel);
             requireActivity().runOnUiThread(()->{
                 parentAdapter.notifyDataSetChanged();
             });
@@ -72,40 +74,6 @@ public class ParentMainFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    private void dataRefresh(){
-        swipeRefreshLayout = requireView().findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setRefreshing(true);
-
-        RecyclerView recyclerView =requireView().findViewById(R.id.main_recycle_view);
-
-        recyclerView.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        List<TaskItemModel> task = taskData.getTasks(new TaskItemModelCallback() {
-            @Override
-            public void onUnchanged() {
-                // TODO
-            }
-
-            @Override
-            public void onUpdated(List<TaskItemModel> taskItem) {
-                // TODO
-            }
-
-            @Override
-            public void onFailed(String message) {
-                // TODO
-            }
-        }).join();
-
-        RecyclerView.Adapter mainAdapter = new ParentAdapter(task);
-        recyclerView.setAdapter(mainAdapter);
-
-        swipeRefreshLayout.setRefreshing(false);
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -113,6 +81,32 @@ public class ParentMainFragment extends Fragment {
 
         //タスク一覧表示
         View view = inflater.inflate(R.layout.fragment_parent_main, container, false);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+
+        RecyclerView recyclerView = view.findViewById(R.id.main_recycle_view);
+
+        recyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        parentAdapter = new ParentAdapter();
+        recyclerView.setAdapter(parentAdapter);
+        updateTaskInfo();
+
+        //Pull-to-refresh（スワイプで更新）
+        try {
+
+            swipeRefreshLayout.setOnRefreshListener(() ->{
+                updateTaskInfo();
+            });
+        } catch (Exception e){
+        }
+
+
+
+
 
         //お手伝い追加ダイアログ
         LayoutInflater inflater1 = requireActivity().getLayoutInflater();
@@ -125,6 +119,8 @@ public class ParentMainFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getContext());
         recyclerView1.setLayoutManager(layoutManager1);
+
+
 
         ksLogger.debug("子供一覧取得開始");
         List<ChildModel> child = childData.getChildList().join();
@@ -151,10 +147,6 @@ public class ParentMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Do something...
-        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(()->{
-            dataRefresh();
-        });
 
     }
 }
