@@ -39,34 +39,32 @@ public class TaskDataImpl implements TaskData {
         return CompletableFuture.supplyAsync(() -> {
             logger.debug("タスク取得開始");
             AtomicReference<List<TaskItemModel>> taskListTmp = new AtomicReference<>();
-            Thread thread = new Thread(() -> {
-                ksActions.syncTasks().thenAccept(taskList -> {
-                    if (taskListTmp.get() == null || taskListTmp.get().isEmpty()) {
-                        logger.debug("タスク取得完了: キャッシュよりはやく取得完了 or キャッシュ無し");
-                        if (taskList == null || taskList.isEmpty()) {
-                            callback.onUnchanged();
-                        } else {
-                            callback.onUpdated(taskList);
-                        }
+            Thread thread = new Thread(() -> ksActions.syncTasks().thenAccept(taskList -> {
+                if (taskListTmp.get() == null || taskListTmp.get().isEmpty()) {
+                    logger.debug("タスク取得完了: キャッシュよりはやく取得完了 or キャッシュ無し");
+                    if (taskList == null || taskList.isEmpty()) {
+                        callback.onUnchanged();
                     } else {
-                        // キャッシュと比較して変更の有無を確認
-                        boolean isChanged =
-                            taskList.size() != taskListTmp.get().size() ||
-                            taskList.stream().anyMatch(task -> taskListTmp.get().stream().noneMatch(taskTmp -> task.getId().equals(taskTmp.getId())));
-                        if (isChanged) {
-                            logger.debug("タスク取得完了: キャッシュと比較して変更あり");
-                            callback.onUpdated(taskList);
-                        } else {
-                            logger.debug("タスク取得完了: キャッシュと比較して変更なし");
-                            callback.onUnchanged();
-                        }
+                        callback.onUpdated(taskList);
                     }
-                }).exceptionally(e -> {
-                    logger.error("タスク取得失敗: " + e.getMessage());
-                    callback.onFailed(e.getMessage());
-                    return null;
-                });
-            });
+                } else {
+                    // キャッシュと比較して変更の有無を確認
+                    boolean isChanged =
+                        taskList.size() != taskListTmp.get().size() ||
+                        taskList.stream().anyMatch(task -> taskListTmp.get().stream().noneMatch(taskTmp -> task.getId().equals(taskTmp.getId())));
+                    if (isChanged) {
+                        logger.debug("タスク取得完了: キャッシュと比較して変更あり");
+                        callback.onUpdated(taskList);
+                    } else {
+                        logger.debug("タスク取得完了: キャッシュと比較して変更なし");
+                        callback.onUnchanged();
+                    }
+                }
+            }).exceptionally(e -> {
+                logger.error("タスク取得失敗: " + e.getMessage());
+                callback.onFailed(e.getMessage());
+                return null;
+            }));
             thread.start();
             return cacheWrapper.getTaskList().thenApply(taskList -> {
                 if (taskList == null || taskList.isEmpty()) {
@@ -98,6 +96,7 @@ public class TaskDataImpl implements TaskData {
             try {
                 Response<TaskResponse> response = call.execute();
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     logger.info("タスク追加成功(taskId: " + response.body().getId() + ")");
                     return TaskModelConverter.taskResponseToTaskItemModel(response.body());
                 } else {
