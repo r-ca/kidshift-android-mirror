@@ -22,13 +22,14 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class ChildDataImpl implements ChildData {
-
+    private final KidShiftApiService kidShiftApiService;
     private final KSActions ksActions;
     private final CacheWrapper cacheWrapper;
     private final KSLogger logger;
 
     @Inject
-    public ChildDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
+    public ChildDataImpl(KidShiftApiService kidShiftApiService, KSActions ksActions, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
+        this.kidShiftApiService = kidShiftApiService;
         this.ksActions = ksActions;
         this.cacheWrapper = cacheWrapper;
         this.logger = loggerFactory.create("ChildDataImpl");
