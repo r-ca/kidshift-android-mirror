@@ -92,8 +92,22 @@ public class TaskDataImpl implements TaskData {
     }
 
     @Override
-    public void addTask(TaskItemModel task) {
-
+    public CompletableFuture<TaskItemModel> addTask(TaskItemModel task) {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<TaskResponse> call = kidShiftApiService.addTask(TaskModelConverter.taskItemModelToTaskAddRequest(task));
+            try {
+                Response<TaskResponse> response = call.execute();
+                if (response.isSuccessful()) {
+                    logger.info("タスク追加成功(taskId: " + response.body().getId() + ")");
+                    return TaskModelConverter.taskResponseToTaskItemModel(response.body());
+                } else {
+                    logger.error("タスク追加失敗: HTTP Status: " + response.code());
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override

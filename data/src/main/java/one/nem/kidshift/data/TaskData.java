@@ -27,7 +27,7 @@ public interface TaskData {
      * タスクを追加する
      * @param task タスク
      */
-    void addTask(TaskItemModel task);
+    CompletableFuture<TaskItemModel> addTask(TaskItemModel task);
 
     /**
      * タスクを削除する
