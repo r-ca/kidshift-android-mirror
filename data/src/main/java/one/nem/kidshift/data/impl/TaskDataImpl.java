@@ -98,6 +98,7 @@ public class TaskDataImpl implements TaskData {
             try {
                 Response<TaskResponse> response = call.execute();
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     logger.info("タスク追加成功(taskId: " + response.body().getId() + ")");
                     return TaskModelConverter.taskResponseToTaskItemModel(response.body());
                 } else {
