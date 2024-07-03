@@ -1,19 +1,15 @@
 package one.nem.kidshift.data.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
-import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
 import one.nem.kidshift.data.retrofit.model.child.ChildLoginCodeResponse;
-import one.nem.kidshift.data.retrofit.model.converter.ChildModelConverter;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.callback.ChildModelCallback;
