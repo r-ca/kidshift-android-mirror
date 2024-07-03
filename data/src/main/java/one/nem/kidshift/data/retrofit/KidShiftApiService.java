@@ -117,6 +117,11 @@ public interface KidShiftApiService {
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildResponse> addChild(@Body ChildAddRequest request);
 
+    /**
+     * 子供ログインコード発行
+     * @param id 子供ID
+     * @return ChildLoginCodeResponse
+     */
     @POST("/parent/child/{id}/login")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildLoginCodeResponse> issueLoginCode(@Path("id") String id);
