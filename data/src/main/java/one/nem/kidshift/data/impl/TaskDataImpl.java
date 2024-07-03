@@ -8,21 +8,26 @@ import javax.inject.Inject;
 
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.TaskData;
+import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class TaskDataImpl implements TaskData {
 
     private final KSActions ksActions;
+    private final KidShiftApiService kidShiftApiService;
     private final CacheWrapper cacheWrapper;
     private final KSLogger logger;
 
     @Inject
-    public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
+    public TaskDataImpl(KSActions ksActions, KidShiftApiService kidShiftApiService, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
         this.ksActions = ksActions;
+        this.kidShiftApiService = kidShiftApiService;
         this.cacheWrapper = cacheWrapper;
         this.logger = loggerFactory.create("TaskDataImpl");
     }
@@ -106,6 +111,19 @@ public class TaskDataImpl implements TaskData {
 
     @Override
     public CompletableFuture<Void> recordTaskCompletion(String taskId, String childId) {
-
+        return CompletableFuture.supplyAsync(() -> {
+            Call<Void> call = kidShiftApiService.completeTask(taskId, childId);
+            try {
+                Response<Void> response = call.execute();
+                if (response.isSuccessful()) {
+                    logger.info("タスク完了処理成功(taskId: " + taskId + ", childId: " + childId + ")");
+                    return null;
+                } else {
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
