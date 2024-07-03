@@ -55,5 +55,5 @@ public interface TaskData {
      * @param taskId タスクID
      * @param childId 子ID
      */
-    void recordTaskCompletion(String taskId, String childId);
+    CompletableFuture<Void> recordTaskCompletion(String taskId, String childId);
 }
