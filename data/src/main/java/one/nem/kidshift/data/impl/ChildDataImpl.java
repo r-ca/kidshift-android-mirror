@@ -12,6 +12,7 @@ import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
+import one.nem.kidshift.data.retrofit.model.child.ChildLoginCodeResponse;
 import one.nem.kidshift.data.retrofit.model.converter.ChildModelConverter;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.ChildModel;
@@ -22,13 +23,14 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class ChildDataImpl implements ChildData {
-
+    private final KidShiftApiService kidShiftApiService;
     private final KSActions ksActions;
     private final CacheWrapper cacheWrapper;
     private final KSLogger logger;
 
     @Inject
-    public ChildDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
+    public ChildDataImpl(KidShiftApiService kidShiftApiService, KSActions ksActions, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
+        this.kidShiftApiService = kidShiftApiService;
         this.ksActions = ksActions;
         this.cacheWrapper = cacheWrapper;
         this.logger = loggerFactory.create("ChildDataImpl");
@@ -107,6 +109,19 @@ public class ChildDataImpl implements ChildData {
 
     @Override
     public CompletableFuture<Integer> issueLoginCode(String childId) {
-        return null;
+        return CompletableFuture.supplyAsync(() -> {
+            Call<ChildLoginCodeResponse> call = kidShiftApiService.issueLoginCode(childId);
+            try {
+                Response<ChildLoginCodeResponse> response = call.execute();
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    return response.body().getCode();
+                } else {
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
