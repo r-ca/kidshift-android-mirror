@@ -105,7 +105,7 @@ public class TaskDataImpl implements TaskData {
     }
 
     @Override
-    public void recordTaskCompletion(String taskId, String childId) {
+    public CompletableFuture<Void> recordTaskCompletion(String taskId, String childId) {
 
     }
 }
