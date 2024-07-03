@@ -3,6 +3,7 @@ package one.nem.kidshift.data.retrofit;
 import one.nem.kidshift.data.retrofit.interceptor.AuthorizationInterceptor;
 import one.nem.kidshift.data.retrofit.model.child.ChildAddRequest;
 import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
+import one.nem.kidshift.data.retrofit.model.child.ChildLoginCodeResponse;
 import one.nem.kidshift.data.retrofit.model.child.ChildResponse;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginRequest;
@@ -115,5 +116,9 @@ public interface KidShiftApiService {
     @POST("/parent/child")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildResponse> addChild(@Body ChildAddRequest request);
+
+    @POST("/parent/child/{id}/login")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<ChildLoginCodeResponse> issueLoginCode(@Path("id") String id);
 
 }
