@@ -119,6 +119,7 @@ public class TaskDataImpl implements TaskData {
                     logger.info("タスク完了処理成功(taskId: " + taskId + ", childId: " + childId + ")");
                     return null;
                 } else {
+                    logger.error("タスク完了処理失敗: HTTP Status: " + response.code());
                     throw new RuntimeException("HTTP Status: " + response.code());
                 }
             } catch (Exception e) {
