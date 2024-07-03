@@ -33,7 +33,7 @@ public interface TaskData {
      * タスクを削除する
      * @param taskId タスクID
      */
-    void removeTask(String taskId);
+    CompletableFuture<Void> removeTask(String taskId);
 
     /**
      * タスクを更新する

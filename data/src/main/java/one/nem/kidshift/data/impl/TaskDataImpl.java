@@ -111,8 +111,22 @@ public class TaskDataImpl implements TaskData {
     }
 
     @Override
-    public void removeTask(String taskId) {
-
+    public CompletableFuture<Void> removeTask(String taskId) {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<Void> call = kidShiftApiService.removeTask(taskId);
+            try {
+                Response<Void> response = call.execute();
+                if (response.isSuccessful()) {
+                    logger.info("タスク削除成功(taskId: " + taskId + ")");
+                    return null;
+                } else {
+                    logger.error("タスク削除失敗: HTTP Status: " + response.code());
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
