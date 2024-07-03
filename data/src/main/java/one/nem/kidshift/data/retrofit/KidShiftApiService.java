@@ -122,7 +122,7 @@ public interface KidShiftApiService {
      * @param id 子供ID
      * @return ChildLoginCodeResponse
      */
-    @POST("/parent/child/{id}/login")
+    @GET("/parent/child/{id}/login")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildLoginCodeResponse> issueLoginCode(@Path("id") String id);
 

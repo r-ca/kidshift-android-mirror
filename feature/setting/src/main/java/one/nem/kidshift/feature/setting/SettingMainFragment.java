@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -64,9 +65,10 @@ public class SettingMainFragment extends Fragment {
 
     /**
      * 親情報を更新する
+     *
      * @return CompletableFuture<Void>
      */
-    private CompletableFuture<Void> updateParentInfo(){
+    private CompletableFuture<Void> updateParentInfo() {
         return parentData.getParent(new ParentModelCallback() {
             @Override
             public void onUnchanged() {
@@ -91,10 +93,11 @@ public class SettingMainFragment extends Fragment {
 
     /**
      * 子供情報を更新する
+     *
      * @return CompletableFuture<Void>
      */
     @SuppressLint("NotifyDataSetChanged")
-    private CompletableFuture<Void> updateChildInfo(){
+    private CompletableFuture<Void> updateChildInfo() {
         return childData.getChildList(new ChildModelCallback() {
             @Override
             public void onUnchanged() {
@@ -171,19 +174,64 @@ public class SettingMainFragment extends Fragment {
 
         // ダイアログの設定
         LayoutInflater dialogInflater = requireActivity().getLayoutInflater();
-        View childListView = dialogInflater.inflate(R.layout.add_child_list_dialog,null);
+        View childListView = dialogInflater.inflate(R.layout.add_child_list_dialog, null);
+        View addChildDialogView = dialogInflater.inflate(R.layout.fragment_login_dialog_view, null);
+
+        View childListItemView = inflater.inflate(R.layout.list_item_child_name_list, container, false);
+
+        mainAdapter.setLoginButtonCallback(new SettingAdapter.LoginButtonCallback() {
+            @Override
+            public void onLoginButtonClicked(String childId) {
+//                Toast.makeText(getContext(), "ボタンがクリックされました(" + childId + ")", Toast.LENGTH_LONG).show();
+                int loginCode = childData.issueLoginCode(childId).join();
+                TextView loginCodeTextView = addChildDialogView.findViewById(R.id.loginCode);
+                new StringBuilder(Integer.toString(loginCode)).insert(3, "-");
+
+                loginCodeTextView.setText(
+                        new StringBuilder(Integer.toString(loginCode)).insert(3, "-")
+                );
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+                builder.setTitle("ログインコード")
+                        .setView(addChildDialogView)
+                        .setNeutralButton("閉じる", null);
+                builder.create();
+
+//                childListItemView.findViewById(R.id.loginButton).setOnClickListener(v -> {
+                builder.show();
+//                });
+            }
+        });
+
+//        int loginCode = childData.issueLoginCode("543256").join();
+//        TextView loginCodeTextView = addChildDialogView.findViewById(R.id.loginCode);
+//        new StringBuilder(Integer.toString(loginCode)).insert(3,"-");
+//
+//        loginCodeTextView.setText(
+//                new StringBuilder(Integer.toString(loginCode)).insert(3,"-"));
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle("ログインコード")
+                .setView(addChildDialogView)
+                .setNeutralButton("閉じる", null);
+        builder.create();
+//
+//        childListItemView.findViewById(R.id.loginButton).setOnClickListener(v -> {
+//            builder.show();
+//        });
+
 
         //子供の名前追加のダイアログ
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle("お子様の名前を入力してください。")
+        MaterialAlertDialogBuilder addChildBuilder = new MaterialAlertDialogBuilder(requireContext());
+        addChildBuilder.setTitle("お子様の名前を入力してください。")
                 .setView(childListView)
-                .setPositiveButton("追加",null)
-                .setNeutralButton("閉じる",null);
-        builder.create();
+                .setPositiveButton("追加", null)
+                .setNeutralButton("閉じる", null);
+        addChildBuilder.create();
 
         // ダイアログの表示
         view.findViewById(R.id.addchildname).setOnClickListener(v -> {
-            builder.show();
+            addChildBuilder.show();
         });
 
         return view;
