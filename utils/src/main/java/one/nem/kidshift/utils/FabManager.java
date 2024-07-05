@@ -42,6 +42,11 @@ public class FabManager {
         fab.hide();
     }
 
+    public boolean isShown() {
+        checkFab();
+        return fab.isShown();
+    }
+
     public void setFabEventCallback(FabEventCallback callback) {
         checkFab();
         fab.setOnClickListener(v -> callback.onClicked());
