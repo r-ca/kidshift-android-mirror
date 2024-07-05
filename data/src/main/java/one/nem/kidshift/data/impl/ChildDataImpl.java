@@ -10,6 +10,8 @@ import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.retrofit.model.child.ChildLoginCodeResponse;
+import one.nem.kidshift.data.retrofit.model.child.ChildResponse;
+import one.nem.kidshift.data.retrofit.model.converter.ChildModelConverter;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.callback.ChildModelCallback;
@@ -92,8 +94,22 @@ public class ChildDataImpl implements ChildData {
     }
 
     @Override
-    public void addChild(ChildModel child) {
-
+    public CompletableFuture<ChildModel> addChild(ChildModel child) {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<ChildResponse> call = kidShiftApiService.addChild(ChildModelConverter.childModelToChildAddRequest(child));
+            try {
+                Response<ChildResponse> response = call.execute();
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    logger.info("子供追加成功(childId: " + response.body().getId() + ")");
+                    return ChildModelConverter.childResponseToChildModel(response.body());
+                } else {
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override

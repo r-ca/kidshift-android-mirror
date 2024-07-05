@@ -31,7 +31,7 @@ public interface ChildData {
      * 子ユーザー追加
      * @param child 子ユーザー情報
      */
-    void addChild(ChildModel child);
+    CompletableFuture<ChildModel> addChild(ChildModel child);
 
     /**
      * 子ユーザー削除
