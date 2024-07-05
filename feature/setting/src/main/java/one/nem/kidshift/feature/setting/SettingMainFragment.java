@@ -251,11 +251,6 @@ public class SettingMainFragment extends Fragment {
             public void onLongClicked() {
                 // Do nothing
             }
-
-            @Override
-            public void onSwiped() {
-
-            }
         });
 
         return view;
