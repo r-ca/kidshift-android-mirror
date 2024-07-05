@@ -29,6 +29,7 @@ import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.ParentModelCallback;
+import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
@@ -43,6 +44,9 @@ public class SettingMainFragment extends Fragment {
 
     @Inject
     KSLoggerFactory ksLoggerFactory;
+
+    @Inject
+    FabManager fabManager;
 
     private KSLogger logger;
 

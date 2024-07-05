@@ -14,11 +14,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.UserSettings;
+import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
@@ -28,7 +30,12 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     KSLoggerFactory loggerFactory;
 
+    @Inject
+    FabManager fabManager;
+
     private KSLogger logger;
+
+    private FloatingActionButton fab;
 
     @Inject
     UserSettings userSettings;
@@ -71,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
+
+        fab = findViewById(R.id.mainFab);
+        fabManager.setFab(fab);
     }
 
     /**
