@@ -5,10 +5,13 @@ import static one.nem.kidshift.utils.enums.LogLevelEnum.INFO;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.SharedPrefUtils;
 import one.nem.kidshift.utils.enums.LogLevelEnum;
@@ -21,32 +24,11 @@ public class KSLoggerImpl implements KSLogger {
 
     private SharedPrefUtils sharedPrefUtils;
 
-    @Inject
-    public KSLoggerImpl(SharedPrefUtilsFactory sharedPrefUtilsFactory) {
-        tags.add("UNTAGGED");
-        this.sharedPrefUtils = sharedPrefUtilsFactory.create("KSLogger");
-    }
-
-    public KSLoggerImpl(String tag) {
-        tags.add(tag);
-    }
-
-    @Override
-    public KSLogger getChildLogger(String tag) {
-        tags.add(tag);
-        return this;
-    }
-
-    @Override
-    public KSLogger get(String tag) {
-        return new KSLoggerImpl(tag);
-    }
-
-    @Override
-    public KSLogger setTag(String tag) {
+    @AssistedInject
+    public KSLoggerImpl(SharedPrefUtilsFactory sharedPrefUtilsFactory, @Assisted String name) {
+        sharedPrefUtils = sharedPrefUtilsFactory.create("KSLogger");
         tags.clear();
-        tags.add(tag);
-        return this;
+        tags.add(name);
     }
 
     @Override
@@ -62,32 +44,32 @@ public class KSLoggerImpl implements KSLogger {
 
     @Override
     public void info(String message) {
-        log(new LogModel(LogLevelEnum.INFO, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.INFO, tags.toArray(new String[0]), message));
     }
 
     @Override
     public void warn(String message) {
-        log(new LogModel(LogLevelEnum.WARN, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.WARN, tags.toArray(new String[0]), message));
     }
 
     @Override
     public void error(String message) {
-        log(new LogModel(LogLevelEnum.ERROR, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.ERROR, tags.toArray(new String[0]), message));
     }
 
     @Override
     public void debug(String message) {
-        log(new LogModel(LogLevelEnum.DEBUG, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.DEBUG, tags.toArray(new String[0]), message));
     }
 
     @Override
     public void trace(String message) {
-        log(new LogModel(LogLevelEnum.TRACE, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.TRACE, tags.toArray(new String[0]), message));
     }
 
     @Override
     public void fatal(String message) {
-        log(new LogModel(LogLevelEnum.FATAL, new String[]{}, message));
+        log(new LogModel(LogLevelEnum.FATAL, tags.toArray(new String[0]), message));
     }
 
     private void log(LogModel log) {

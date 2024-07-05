@@ -19,7 +19,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
@@ -29,8 +28,10 @@ import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.ParentData;
 import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
+import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.ParentModelCallback;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
 public class SettingMainFragment extends Fragment {
@@ -42,7 +43,9 @@ public class SettingMainFragment extends Fragment {
     ParentData parentData;
 
     @Inject
-    KSLogger logger;
+    KSLoggerFactory ksLoggerFactory;
+
+    private KSLogger logger;
 
     TextView username;
 
@@ -54,6 +57,12 @@ public class SettingMainFragment extends Fragment {
 
     public SettingMainFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        logger = ksLoggerFactory.create("SettingMainFragment");
     }
 
     private CompletableFuture<Void> updateParentInfo(){
@@ -81,7 +90,22 @@ public class SettingMainFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private CompletableFuture<Void> updateChildInfo(){
-        return childData.getChildList().thenAccept(childModels -> {
+        return childData.getChildList(new ChildModelCallback() {
+            @Override
+            public void onUnchanged() {
+
+            }
+
+            @Override
+            public void onUpdated(List<ChildModel> childModelList) {
+
+            }
+
+            @Override
+            public void onFailed(String message) {
+
+            }
+        }).thenAccept(childModels -> {
             mainAdapter.setChildDataList(childModels);
 
             requireActivity().runOnUiThread(() -> {
@@ -107,66 +131,49 @@ public class SettingMainFragment extends Fragment {
     }
 
     @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
 
-            View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
 
-            username = view.findViewById(R.id.username);
-            useradress = view.findViewById(R.id.useradress);
+        username = view.findViewById(R.id.username);
+        useradress = view.findViewById(R.id.useradress);
 
-            RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
+        RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
-            // Pull-to-refresh（スワイプで更新）
-            swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
 
+        mainAdapter = new SettingAdapter();
+        recyclerView.setAdapter(mainAdapter);
 
-        recyclerView.setHasFixedSize(true);
+        // Pull-to-refresh（スワイプで更新）
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView.setLayoutManager(layoutManager);
+        try {
 
-//            List<ChildModel> child = childData.getChildList().join();
+        /*
+        TODO:
+            - コールバックの処理を実装
+            - 結果に応じてRecyclerViewを更新する
+            - キャッシュ受け取りの時にjoinでUIスレッドをブロックしないように
+            - Placeholderの表示?
+            - エラーハンドリング try catch文
+                - onFailed時にそれを通知
+         */
 
-            mainAdapter = new SettingAdapter();
-            recyclerView.setAdapter(mainAdapter);
+        updateInfo();
 
+        swipeRefreshLayout.setOnRefreshListener(() ->{
 
-            try {
+            updateInfo();
 
-            /*
-            TODO:
-                - コールバックの処理を実装
-                - 結果に応じてRecyclerViewを更新する
-                - キャッシュ受け取りの時にjoinでUIスレッドをブロックしないように
-                - Placeholderの表示?
-                - エラーハンドリング try catch文
-                    - onFailed時にそれを通知
-             */
+        });
 
-//                updateParentInfo();
-//                updateChildInfo();
-
-                updateInfo();
-
-            swipeRefreshLayout.setOnRefreshListener(() ->{
-
-//                updateParentInfo();
-//
-//                updateChildInfo();
-
-                updateInfo();
-//
-//                swipeRefreshLayout.setRefreshing(false);
-
-            });
-
-    //            username.setText(parent.getName());
-    //            useradress.setText(parent.getEmail());
-            } catch (Exception e) {
-
-            }
+        } catch (Exception e) {
+            //
+        }
 
             LayoutInflater inflater1 = requireActivity().getLayoutInflater();
             View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);

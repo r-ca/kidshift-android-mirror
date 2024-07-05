@@ -12,6 +12,7 @@ import okhttp3.Interceptor;
 import okhttp3.Response;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 /**
  * Authorization placeholderが指定されている場合にアクセストークンで置換するインターセプター
@@ -25,10 +26,9 @@ public class AuthorizationInterceptor implements Interceptor {
     private final UserSettings userSettings;
     private final KSLogger logger;
 
-    public AuthorizationInterceptor(UserSettings userSettings, KSLogger logger) {
+    public AuthorizationInterceptor(UserSettings userSettings, KSLoggerFactory loggerFactory) {
         this.userSettings = userSettings;
-        this.logger = logger;
-        logger.setTag("Auth_Interceptor");
+        this.logger = loggerFactory.create("Auth_Interceptor");
     }
 
     @NonNull

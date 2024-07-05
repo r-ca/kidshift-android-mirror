@@ -2,40 +2,63 @@ package one.nem.kidshift.data.impl;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
-import javax.security.auth.callback.Callback;
 
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.TaskData;
-import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
-import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 public class TaskDataImpl implements TaskData {
 
-    private KSActions ksActions;
-    private CacheWrapper cacheWrapper;
-    private KSLogger logger;
+    private final KSActions ksActions;
+    private final CacheWrapper cacheWrapper;
+    private final KSLogger logger;
 
     @Inject
-    public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLogger logger) {
+    public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
         this.ksActions = ksActions;
         this.cacheWrapper = cacheWrapper;
-        this.logger = logger.setTag("TaskDataImpl");
+        this.logger = loggerFactory.create("TaskDataImpl");
     }
 
     @Override
     public CompletableFuture<List<TaskItemModel>> getTasks(TaskItemModelCallback callback) {
         return CompletableFuture.supplyAsync(() -> {
             logger.debug("タスク取得開始");
+            AtomicReference<List<TaskItemModel>> taskListTmp = new AtomicReference<>();
             Thread thread = new Thread(() -> {
-                // TODO-rca: ちゃんと比較して呼ぶ
-                ksActions.syncTasks().thenAccept(callback::onUpdated);
+                ksActions.syncTasks().thenAccept(taskList -> {
+                    if (taskListTmp.get() == null || taskListTmp.get().isEmpty()) {
+                        logger.debug("タスク取得完了: キャッシュよりはやく取得完了 or キャッシュ無し");
+                        if (taskList == null || taskList.isEmpty()) {
+                            callback.onUnchanged();
+                        } else {
+                            callback.onUpdated(taskList);
+                        }
+                    } else {
+                        // キャッシュと比較して変更の有無を確認
+                        boolean isChanged =
+                            taskList.size() != taskListTmp.get().size() ||
+                            taskList.stream().anyMatch(task -> taskListTmp.get().stream().noneMatch(taskTmp -> task.getId().equals(taskTmp.getId())));
+                        if (isChanged) {
+                            logger.debug("タスク取得完了: キャッシュと比較して変更あり");
+                            callback.onUpdated(taskList);
+                        } else {
+                            logger.debug("タスク取得完了: キャッシュと比較して変更なし");
+                            callback.onUnchanged();
+                        }
+                    }
+                }).exceptionally(e -> {
+                    logger.error("タスク取得失敗: " + e.getMessage());
+                    callback.onFailed(e.getMessage());
+                    return null;
+                });
             });
             thread.start();
             return cacheWrapper.getTaskList().thenApply(taskList -> {
@@ -49,6 +72,7 @@ public class TaskDataImpl implements TaskData {
                     }
                 } else {
                     logger.debug("キャッシュ有 (タスク数: " + taskList.size() + ")");
+                    taskListTmp.set(taskList);
                     return taskList;
                 }
             }).join();

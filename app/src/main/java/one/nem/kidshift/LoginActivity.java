@@ -20,6 +20,7 @@ import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginResponse;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -28,7 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LoginActivity extends AppCompatActivity {
 
     @Inject
-    KSLogger logger;
+    KSLoggerFactory loggerFactory;
+
+    private KSLogger logger;
 
     @Inject
     UserSettings userSettings;
@@ -43,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        logger = loggerFactory.create("LoginActivity");
 
         // Retrofit init
         KidShiftApiService apiService = new Retrofit.Builder()
