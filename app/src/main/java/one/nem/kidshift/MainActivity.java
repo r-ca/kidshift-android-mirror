@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     KSLoggerFactory loggerFactory;
 
+    @Inject
+    FabManager fabManager;
+
     private KSLogger logger;
 
     private FloatingActionButton fab;
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         fab = findViewById(R.id.mainFab);
+        fabManager.setFab(fab);
     }
 
     /**
