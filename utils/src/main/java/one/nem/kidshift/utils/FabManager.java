@@ -7,10 +7,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import javax.inject.Inject;
 
+import dagger.Module;
+import dagger.hilt.InstallIn;
+import dagger.hilt.components.SingletonComponent;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import one.nem.kidshift.utils.models.FabEventCallback;
 
+@Module
+@InstallIn(SingletonComponent.class)
 public class FabManager {
     private FloatingActionButton fab;
 
