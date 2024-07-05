@@ -179,7 +179,7 @@ public class SettingMainFragment extends Fragment {
 
         // ダイアログの設定
         LayoutInflater dialogInflater = requireActivity().getLayoutInflater();
-        View childListView = dialogInflater.inflate(R.layout.add_child_list_dialog, null);
+
         View addChildDialogView = dialogInflater.inflate(R.layout.fragment_login_dialog_view, null);
 
         View childListItemView = inflater.inflate(R.layout.list_item_child_name_list, container, false);
@@ -226,34 +226,32 @@ public class SettingMainFragment extends Fragment {
 //        });
 
 
-        //子供の名前追加のダイアログ
-        MaterialAlertDialogBuilder addChildBuilder = new MaterialAlertDialogBuilder(requireContext());
-        addChildBuilder.setTitle("お子様の名前を入力してください。")
-                .setView(childListView)
-                .setPositiveButton("追加", (dialog, which) -> {
-                    dialog.dismiss();
-                    String childName = Objects.requireNonNull(childListView.findViewById(R.id.childNameEditText)).toString();
-                    ChildModel childModel = new ChildModel();
-                    childModel.setName(childName);
-                    childData.addChild(childModel);
-                    updateChildInfo();
-                })
-                .setNeutralButton("閉じる", (dialog, which) -> {
-                    dialog.cancel();
-                });
-        addChildBuilder.create();
+
 
         // ダイアログの表示
-        view.findViewById(R.id.addchildname).setOnClickListener(v -> {
-            addChildBuilder.show();
-        });
 
         if (!fabManager.isShown()) fabManager.show();
 
         fabManager.setFabEventCallback(new FabEventCallback() {
             @Override
             public void onClicked() {
-                addChildBuilder.show();
+                View childListView = dialogInflater.inflate(R.layout.add_child_list_dialog, null);
+                //子供の名前追加のダイアログ
+                MaterialAlertDialogBuilder addChildBuilder = new MaterialAlertDialogBuilder(requireContext());
+                addChildBuilder.setTitle("お子様の名前を入力してください。")
+                        .setView(childListView)
+                        .setPositiveButton("追加", (dialog, which) -> {
+                            dialog.dismiss();
+                            String childName = Objects.requireNonNull(childListView.findViewById(R.id.childNameEditText)).toString();
+                            ChildModel childModel = new ChildModel();
+                            childModel.setName(childName);
+                            childData.addChild(childModel);
+                            updateChildInfo();
+                        })
+                        .setNeutralButton("閉じる", (dialog, which) -> {
+                            dialog.cancel();
+                        });
+                addChildBuilder.create().show();
             }
 
             @Override
