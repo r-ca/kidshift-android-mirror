@@ -243,10 +243,11 @@ public class SettingMainFragment extends Fragment {
                         .setPositiveButton("追加", (dialog, which) -> {
                             ChildModel childModel = new ChildModel();
                             childModel.setName(Objects.requireNonNull(((TextView) dialogView.findViewById(R.id.childNameEditText)).getText()).toString());
-                            childData.addChild(childModel);
-                            // debug
-                            logger.debug("子供を追加しました: " + childModel.getName());
-                            updateChildInfo();
+                            childData.addChild(childModel).thenAccept(childModel1 -> { // Debug
+                                logger.debug("子供を追加しました: " + childModel1.getName());
+                            }).thenRun(() -> {
+                                updateChildInfo();
+                            });
                         })
                         .setNeutralButton("閉じる", (dialog, which) -> {
                             dialog.cancel();
