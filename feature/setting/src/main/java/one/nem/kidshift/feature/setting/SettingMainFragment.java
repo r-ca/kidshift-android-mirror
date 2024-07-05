@@ -95,10 +95,10 @@ public class SettingMainFragment extends Fragment {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            requireActivity().runOnUiThread(() -> {
-                username.setText(parentModel.getName() != null ? parentModel.getName() : "親の名前");
-                userMailAddress.setText(parentModel.getEmail() != null ? parentModel.getEmail() : "親のアドレス");
-            });
+//            requireActivity().runOnUiThread(() -> {
+//                username.setText(parentModel.getName() != null ? parentModel.getName() : "親の名前");
+//                userMailAddress.setText(parentModel.getEmail() != null ? parentModel.getEmail() : "親のアドレス");
+//            });
         });
     }
 
@@ -126,9 +126,9 @@ public class SettingMainFragment extends Fragment {
             }
         }).thenAcceptAsync(childModels -> {
             mainAdapter.setChildDataList(childModels);
-            requireActivity().runOnUiThread(() -> {
-                mainAdapter.notifyDataSetChanged();
-            });
+//            requireActivity().runOnUiThread(() -> {
+//                mainAdapter.notifyDataSetChanged();
+//            });
         });
     }
 
@@ -209,51 +209,25 @@ public class SettingMainFragment extends Fragment {
 
         logger.debug("Point 7");
 
-        mainAdapter.setLoginButtonCallback(new SettingAdapter.LoginButtonCallback() {
-            @Override
-            public void onLoginButtonClicked(String childId) {
-//                Toast.makeText(getContext(), "ボタンがクリックされました(" + childId + ")", Toast.LENGTH_LONG).show();
-                int loginCode = childData.issueLoginCode(childId).join();
-                TextView loginCodeTextView = addChildDialogView.findViewById(R.id.loginCode);
-                new StringBuilder(Integer.toString(loginCode)).insert(3, "-");
+        mainAdapter.setLoginButtonCallback(childId -> {
+            int loginCode = childData.issueLoginCode(childId).join();
+            TextView loginCodeTextView = addChildDialogView.findViewById(R.id.loginCode);
+            new StringBuilder(Integer.toString(loginCode)).insert(3, "-");
 
-                loginCodeTextView.setText(
-                        new StringBuilder(Integer.toString(loginCode)).insert(3, "-")
-                );
+            loginCodeTextView.setText(
+                    new StringBuilder(Integer.toString(loginCode)).insert(3, "-")
+            );
 
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-                builder.setTitle("ログインコード")
-                        .setView(addChildDialogView)
-                        .setNeutralButton("閉じる", null);
-                builder.create();
-
-//                childListItemView.findViewById(R.id.loginButton).setOnClickListener(v -> {
-                builder.show();
-//                });
-            }
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+            builder.setTitle("ログインコード")
+                    .setView(addChildDialogView)
+                    .setNeutralButton("閉じる", null);
+            builder.show();
         });
 
         logger.debug("Point 8");
 
-//        int loginCode = childData.issueLoginCode("543256").join();
-//        TextView loginCodeTextView = addChildDialogView.findViewById(R.id.loginCode);
-//        new StringBuilder(Integer.toString(loginCode)).insert(3,"-");
-//
-//        loginCodeTextView.setText(
-//                new StringBuilder(Integer.toString(loginCode)).insert(3,"-"));
-
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle("ログインコード")
-                .setView(addChildDialogView)
-                .setNeutralButton("閉じる", null);
-        builder.create();
-//
-
         logger.debug("Point 9");
-//        childListItemView.findViewById(R.id.loginButton).setOnClickListener(v -> {
-//            builder.show();
-//        });
-
 
         logger.debug("Point 10");
 
