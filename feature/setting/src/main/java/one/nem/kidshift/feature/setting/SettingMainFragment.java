@@ -32,6 +32,7 @@ import one.nem.kidshift.model.callback.ParentModelCallback;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import one.nem.kidshift.utils.models.FabEventCallback;
 
 @AndroidEntryPoint
 public class SettingMainFragment extends Fragment {
@@ -236,6 +237,25 @@ public class SettingMainFragment extends Fragment {
         // ダイアログの表示
         view.findViewById(R.id.addchildname).setOnClickListener(v -> {
             addChildBuilder.show();
+        });
+
+        if (!fabManager.isShown()) fabManager.show();
+
+        fabManager.setFabEventCallback(new FabEventCallback() {
+            @Override
+            public void onClicked() {
+                addChildBuilder.show();
+            }
+
+            @Override
+            public void onLongClicked() {
+                // Do nothing
+            }
+
+            @Override
+            public void onSwiped() {
+
+            }
         });
 
         return view;
