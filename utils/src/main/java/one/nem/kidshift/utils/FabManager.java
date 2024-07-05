@@ -1,4 +1,4 @@
-package one.nem.kidshift;
+package one.nem.kidshift.utils;
 
 // HiltのSingletonインスタンス
 // FloatingActionButtonを別モジュールから制御するためのクラス
