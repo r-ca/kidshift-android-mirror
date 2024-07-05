@@ -239,7 +239,11 @@ public class SettingMainFragment extends Fragment {
         });
 
         view.findViewById(R.id.fabControlButtonDebug).setOnClickListener(v -> {
-            fabManager.hide();
+            if (fabManager.isShown()) {
+                fabManager.hide();
+            } else {
+                fabManager.show();
+            }
         });
 
         return view;
