@@ -230,8 +230,17 @@ public class SettingMainFragment extends Fragment {
         MaterialAlertDialogBuilder addChildBuilder = new MaterialAlertDialogBuilder(requireContext());
         addChildBuilder.setTitle("お子様の名前を入力してください。")
                 .setView(childListView)
-                .setPositiveButton("追加", null)
-                .setNeutralButton("閉じる", null);
+                .setPositiveButton("追加", (dialog, which) -> {
+                    dialog.dismiss();
+                    String childName = Objects.requireNonNull(childListView.findViewById(R.id.childNameEditText)).toString();
+                    ChildModel childModel = new ChildModel();
+                    childModel.setName(childName);
+                    childData.addChild(childModel);
+                    updateChildInfo();
+                })
+                .setNeutralButton("閉じる", (dialog, which) -> {
+                    dialog.cancel();
+                });
         addChildBuilder.create();
 
         // ダイアログの表示
