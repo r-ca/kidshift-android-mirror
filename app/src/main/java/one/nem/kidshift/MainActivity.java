@@ -80,28 +80,6 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.mainFab);
     }
 
-    public class FabControl{
-        public void showFab() {
-            fab.setVisibility(View.VISIBLE);
-        }
-
-        public void hideFab() {
-            fab.setVisibility(View.GONE);
-        }
-
-        public void setFabIcon(int iconResId) {
-            fab.setImageResource(iconResId);
-        }
-
-        public void setFabEventCallback(FabEventCallback callback) {
-            fab.setOnClickListener(v -> callback.onClicked());
-            fab.setOnLongClickListener(v -> {
-                callback.onLongClicked();
-                return true;
-            });
-        }
-    }
-
     /**
      * 起動時にバックグラウンドで行う各種更新処理とか
      */
