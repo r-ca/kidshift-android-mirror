@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -41,6 +43,8 @@ public class ParentMainFragment extends Fragment {
 
     ParentAdapter parentAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
+
+
 
     @SuppressLint("DatasetChange")
     private void updateTaskInfo(){
@@ -74,6 +78,7 @@ public class ParentMainFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,6 +97,34 @@ public class ParentMainFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         parentAdapter = new ParentAdapter();
+        parentAdapter.setCallback(new ParentAdapter.CompleteButtonClickedCallback() {
+            @Override
+            public void onClicked(String taskId) {
+                Toast.makeText(requireContext(), "TaskID: " + taskId, Toast.LENGTH_LONG).show();
+                //お手伝い完了処理
+                LayoutInflater inflater2 = requireActivity().getLayoutInflater();
+                View view2 = inflater2.inflate(R.layout.act_child_select_dialog,null);
+
+                //子供一覧表示
+                RecyclerView recyclerView2 = view2.findViewById(R.id.act_recycle_view);
+
+                recyclerView2.setHasFixedSize(true);
+
+                RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(getContext());
+                recyclerView2.setLayoutManager(layoutManager2);
+
+                List<ChildModel> child1 = childData.getChildList().join();
+
+                RecyclerView.Adapter mainAdapter2 = new ChildListAdapter2(child1);
+                recyclerView2.setAdapter(mainAdapter2);
+
+                MaterialAlertDialogBuilder builder1 = new MaterialAlertDialogBuilder(getContext());
+                builder1.setTitle("お手伝いをしたお子様の名前を選択してください")
+                        .setView(view2)
+                        .setNeutralButton("閉じる",null);
+                builder1.create().show();
+            }
+        });
         recyclerView.setAdapter(parentAdapter);
         updateTaskInfo();
 
@@ -103,8 +136,6 @@ public class ParentMainFragment extends Fragment {
             });
         } catch (Exception e){
         }
-
-
 
 
 

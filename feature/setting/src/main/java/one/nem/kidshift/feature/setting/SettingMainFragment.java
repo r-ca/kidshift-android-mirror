@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -49,6 +50,7 @@ public class SettingMainFragment extends Fragment {
 
     SettingAdapter mainAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
+
 
     public SettingMainFragment() {
         // Required empty public constructor
@@ -180,6 +182,7 @@ public class SettingMainFragment extends Fragment {
         view.findViewById(R.id.addchildname).setOnClickListener(v -> {
             builder.show();
         });
+
 
 
         return view;
