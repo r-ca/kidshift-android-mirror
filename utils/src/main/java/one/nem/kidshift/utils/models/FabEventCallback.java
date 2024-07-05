@@ -1,4 +1,4 @@
-package one.nem.kidshift.model.callback;
+package one.nem.kidshift.utils.models;
 
 public interface FabEventCallback {
     void onClicked();
