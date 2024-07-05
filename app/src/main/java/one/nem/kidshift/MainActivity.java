@@ -2,6 +2,7 @@ package one.nem.kidshift;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,11 +15,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.UserSettings;
+import one.nem.kidshift.model.callback.FabEventCallback;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     KSLoggerFactory loggerFactory;
 
     private KSLogger logger;
+
+    private FloatingActionButton fab;
 
     @Inject
     UserSettings userSettings;
@@ -70,6 +75,30 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+        }
+
+        fab = findViewById(R.id.mainFab);
+    }
+
+    public class FabControl{
+        public void showFab() {
+            fab.setVisibility(View.VISIBLE);
+        }
+
+        public void hideFab() {
+            fab.setVisibility(View.GONE);
+        }
+
+        public void setFabIcon(int iconResId) {
+            fab.setImageResource(iconResId);
+        }
+
+        public void setFabEventCallback(FabEventCallback callback) {
+            fab.setOnClickListener(v -> callback.onClicked());
+            fab.setOnLongClickListener(v -> {
+                callback.onLongClicked();
+                return true;
+            });
         }
     }
 
