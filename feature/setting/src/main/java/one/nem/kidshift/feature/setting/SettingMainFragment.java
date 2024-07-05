@@ -89,11 +89,17 @@ public class SettingMainFragment extends Fragment {
             public void onFailed(String message) {
 
             }
-        }).thenAccept(parentModel -> {
-            username.setText(parentModel.getName() != null ? parentModel.getName() : "親の名前");
-            userMailAddress.setText(parentModel.getEmail() != null ? parentModel.getEmail() : "親のアドレス");
+        }).thenAcceptAsync(parentModel -> {
+            try {
+                Thread.sleep(5000);  // デバッグのための遅延、実際のアプリでは削除
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            requireActivity().runOnUiThread(() -> {
+                username.setText(parentModel.getName() != null ? parentModel.getName() : "親の名前");
+                userMailAddress.setText(parentModel.getEmail() != null ? parentModel.getEmail() : "親のアドレス");
+            });
         });
-
     }
 
     /**
@@ -118,20 +124,18 @@ public class SettingMainFragment extends Fragment {
             public void onFailed(String message) {
 
             }
-        }).thenAccept(childModels -> {
+        }).thenAcceptAsync(childModels -> {
             mainAdapter.setChildDataList(childModels);
-
             requireActivity().runOnUiThread(() -> {
                 mainAdapter.notifyDataSetChanged();
             });
-
         });
     }
 
     /**
      * ユーザー情報を更新するラッパー
      */
-    private void updateInfo() {
+    private CompletableFuture<Void> updateInfo() {
         CompletableFuture<Void> updateParent = updateParentInfo();
         CompletableFuture<Void> updateChildList = updateChildInfo();
 
@@ -140,14 +144,19 @@ public class SettingMainFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
 
         logger.debug("アップデート開始");
-        updateParent.thenCombine(updateChildList, (res1, res2) -> null).thenRun(() -> {
-            logger.debug("アップデート完了");
-            swipeRefreshLayout.setRefreshing(false);
-        }).exceptionally(e -> {
-            logger.error("アップデート失敗: " + e.getMessage());
-            swipeRefreshLayout.setRefreshing(false);
-            return null;
-        });
+        return updateParent.thenCombineAsync(updateChildList, (res1, res2) -> null)
+                .thenRunAsync(() -> {
+                    requireActivity().runOnUiThread(() -> {
+                        logger.debug("アップデート完了");
+                        swipeRefreshLayout.setRefreshing(false);
+                    });
+                }).exceptionally(e -> {
+                    requireActivity().runOnUiThread(() -> {
+                        logger.error("アップデート失敗: " + e.getMessage());
+                        swipeRefreshLayout.setRefreshing(false);
+                    });
+                    return null;
+                });
     }
 
     @Override
@@ -155,7 +164,11 @@ public class SettingMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+        logger.debug("Point 1");
+
         View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
+
+        logger.debug("Point 2");
 
         // ビューの取得
         username = view.findViewById(R.id.username);
@@ -163,19 +176,29 @@ public class SettingMainFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
+        logger.debug("Point 3");
+
         // RecyclerViewの設定
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         mainAdapter = new SettingAdapter();
         recyclerView.setAdapter(mainAdapter);
 
+        logger.debug("Point 4");
+
         // ユーザー情報の更新(初回)
-        updateInfo();
+        updateInfo().thenRun(() -> {
+            logger.debug("ユーザー情報の更新完了");
+        });
+
+        logger.debug("Point 5");
 
         // スワイプリフレッシュのリスナー
         swipeRefreshLayout.setOnRefreshListener(() -> {
             updateInfo(); // ユーザー情報の更新
         });
+
+        logger.debug("Point 6");
 
         // ダイアログの設定
         LayoutInflater dialogInflater = requireActivity().getLayoutInflater();
@@ -183,6 +206,8 @@ public class SettingMainFragment extends Fragment {
         View addChildDialogView = dialogInflater.inflate(R.layout.fragment_login_dialog_view, null);
 
         View childListItemView = inflater.inflate(R.layout.list_item_child_name_list, container, false);
+
+        logger.debug("Point 7");
 
         mainAdapter.setLoginButtonCallback(new SettingAdapter.LoginButtonCallback() {
             @Override
@@ -208,6 +233,8 @@ public class SettingMainFragment extends Fragment {
             }
         });
 
+        logger.debug("Point 8");
+
 //        int loginCode = childData.issueLoginCode("543256").join();
 //        TextView loginCodeTextView = addChildDialogView.findViewById(R.id.loginCode);
 //        new StringBuilder(Integer.toString(loginCode)).insert(3,"-");
@@ -221,12 +248,14 @@ public class SettingMainFragment extends Fragment {
                 .setNeutralButton("閉じる", null);
         builder.create();
 //
+
+        logger.debug("Point 9");
 //        childListItemView.findViewById(R.id.loginButton).setOnClickListener(v -> {
 //            builder.show();
 //        });
 
 
-
+        logger.debug("Point 10");
 
         // ダイアログの表示
 
@@ -259,6 +288,8 @@ public class SettingMainFragment extends Fragment {
                 // Do nothing
             }
         });
+
+        logger.debug("Point 11");
 
         return view;
     }
