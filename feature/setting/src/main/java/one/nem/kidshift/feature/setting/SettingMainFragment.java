@@ -235,23 +235,20 @@ public class SettingMainFragment extends Fragment {
         fabManager.setFabEventCallback(new FabEventCallback() {
             @Override
             public void onClicked() {
-                View childListView = dialogInflater.inflate(R.layout.add_child_list_dialog, null);
                 //子供の名前追加のダイアログ
-                MaterialAlertDialogBuilder addChildBuilder = new MaterialAlertDialogBuilder(requireContext());
-                addChildBuilder.setTitle("お子様の名前を入力してください。")
-                        .setView(childListView)
+                View dialogView = dialogInflater.inflate(R.layout.add_child_list_dialog, null);
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("お子様の名前を入力してください。")
+                        .setView(dialogView)
                         .setPositiveButton("追加", (dialog, which) -> {
-                            dialog.dismiss();
-                            String childName = Objects.requireNonNull(childListView.findViewById(R.id.childNameEditText)).toString();
                             ChildModel childModel = new ChildModel();
-                            childModel.setName(childName);
+                            childModel.setName(Objects.requireNonNull(((TextView) dialogView.findViewById(R.id.childNameEditText)).getText()).toString());
                             childData.addChild(childModel);
                             updateChildInfo();
                         })
                         .setNeutralButton("閉じる", (dialog, which) -> {
                             dialog.cancel();
-                        });
-                addChildBuilder.create().show();
+                        }).show();
             }
 
             @Override
