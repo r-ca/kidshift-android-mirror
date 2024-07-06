@@ -52,7 +52,9 @@ public class CommonHomeFragment extends Fragment {
         CommonHomeFragment fragment = new CommonHomeFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_IS_CHILD_MODE, isChildMode);
-        args.putString(ARG_CHILD_ID, childId);
+        if (isChildMode) {
+            args.putString(ARG_CHILD_ID, childId);
+        }
         fragment.setArguments(args);
         return fragment;
     }
