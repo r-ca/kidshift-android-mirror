@@ -48,11 +48,11 @@ public class SettingMainFragment extends Fragment {
     FabManager fabManager;
 
     private KSLogger logger;
-    TextView username;
-    TextView userMailAddress;
-    SettingAdapter mainAdapter;
-    SwipeRefreshLayout swipeRefreshLayout;
-    LayoutInflater dialogInflater;
+    private TextView username;
+    private TextView userMailAddress;
+    private SettingAdapter mainAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private LayoutInflater dialogInflater;
 
 
 
