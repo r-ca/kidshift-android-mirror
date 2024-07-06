@@ -106,36 +106,19 @@ public class ParentMainFragment extends Fragment {
         parentAdapter = new ParentAdapter();
         parentAdapter.setCallback(taskId -> {
             View childListView = layoutInflater.inflate(R.layout.act_child_select_dialog, null);
-            RecyclerView recyclerView2 = childListView.findViewById(R.id.act_recycle_view);
+            RecyclerView childListRecyclerView = childListView.findViewById(R.id.act_recycle_view);
+            childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(getContext());
-            recyclerView2.setLayoutManager(layoutManager2);
-
-            List<ChildModel> child1 = childData.getChildList(new ChildModelCallback() {
-                @Override
-                public void onUnchanged() {
-
-                }
-
-                @Override
-                public void onUpdated(List<ChildModel> childModelList) {
-
-                }
-
-                @Override
-                public void onFailed(String message) {
-
-                }
+            childData.getChildListDirect().thenAccept(childModelList -> {
+                childListRecyclerView.setAdapter(new DialogChildListAdapter(childModelList));
+            }).thenRun(() -> {
+                MaterialAlertDialogBuilder builder1 = new MaterialAlertDialogBuilder(requireContext());
+                builder1.setTitle("お手伝いをしたお子様の名前を選択してください")
+                        .setView(childListView)
+                        .setNeutralButton("閉じる",null);
+                builder1.create().show();
             }).join();
 
-            DialogChildListAdapter mainAdapter2 = new DialogChildListAdapter(child1);
-            recyclerView2.setAdapter(mainAdapter2);
-
-            MaterialAlertDialogBuilder builder1 = new MaterialAlertDialogBuilder(requireContext());
-            builder1.setTitle("お手伝いをしたお子様の名前を選択してください")
-                    .setView(childListView)
-                    .setNeutralButton("閉じる",null);
-            builder1.create().show();
         });
         recyclerView.setAdapter(parentAdapter);
         updateTaskInfo();
