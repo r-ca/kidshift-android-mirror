@@ -89,6 +89,11 @@ public class ChildDataImpl implements ChildData {
     }
 
     @Override
+    public CompletableFuture<List<ChildModel>> getChildListDirect() {
+        return ksActions.syncChildList();
+    }
+
+    @Override
     public void updateChild(ChildModel child) {
 
     }
