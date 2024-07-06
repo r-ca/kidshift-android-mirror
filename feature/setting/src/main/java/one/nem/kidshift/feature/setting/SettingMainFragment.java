@@ -183,13 +183,9 @@ public class SettingMainFragment extends Fragment {
         LayoutInflater dialogInflater = requireActivity().getLayoutInflater();
 
         View addChildDialogView = dialogInflater.inflate(R.layout.fragment_login_dialog_view, null);
-
-        View childListItemView = inflater.inflate(R.layout.list_item_child_name_list, container, false);
-
         mainAdapter.setLoginButtonCallback(new SettingAdapter.LoginButtonCallback() {
             @Override
             public void onLoginButtonClicked(String childId) {
-//                Toast.makeText(getContext(), "ボタンがクリックされました(" + childId + ")", Toast.LENGTH_LONG).show();
                 int loginCode = childData.issueLoginCode(childId).join();
                 TextView loginCodeTextView = addChildDialogView.findViewById(R.id.loginCode);
                 new StringBuilder(Integer.toString(loginCode)).insert(3, "-");
@@ -202,32 +198,9 @@ public class SettingMainFragment extends Fragment {
                 builder.setTitle("ログインコード")
                         .setView(addChildDialogView)
                         .setNeutralButton("閉じる", null);
-                builder.create();
-
-//                childListItemView.findViewById(R.id.loginButton).setOnClickListener(v -> {
                 builder.show();
-//                });
             }
         });
-
-//        int loginCode = childData.issueLoginCode("543256").join();
-//        TextView loginCodeTextView = addChildDialogView.findViewById(R.id.loginCode);
-//        new StringBuilder(Integer.toString(loginCode)).insert(3,"-");
-//
-//        loginCodeTextView.setText(
-//                new StringBuilder(Integer.toString(loginCode)).insert(3,"-"));
-
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle("ログインコード")
-                .setView(addChildDialogView)
-                .setNeutralButton("閉じる", null);
-        builder.create();
-//
-//        childListItemView.findViewById(R.id.loginButton).setOnClickListener(v -> {
-//            builder.show();
-//        });
-
-
 
 
         // ダイアログの表示
