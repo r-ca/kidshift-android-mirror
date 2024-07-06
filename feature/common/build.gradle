@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.androidLibrary)
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -32,4 +33,13 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+
+    // Hilt (DI)
+    implementation libs.com.google.dagger.hilt.android
+    annotationProcessor libs.com.google.dagger.hilt.compiler
+
+    // Project modules
+    implementation project(':model')
+    implementation project(':utils')
+    implementation project(':data')
 }
