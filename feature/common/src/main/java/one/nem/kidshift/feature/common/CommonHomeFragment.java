@@ -80,7 +80,7 @@ public class CommonHomeFragment extends Fragment {
         taskListItemAdapter.setCallback((taskId, taskName) -> {
             if (isChildMode) {
                 if (showConfirmDialog(taskName)) {
-                    // タスク完了処理
+                    taskData.recordTaskCompletion(taskId, childId);
                 }
             } else {
                 showChildSelectDialog();
