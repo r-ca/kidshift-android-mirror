@@ -67,6 +67,11 @@ public class ParentMainFragment extends Fragment {
             }
         }).thenAccept(taskItemModel -> {
             parentAdapter.setTaskDataList(taskItemModel);
+            try { // Workaround
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                // Do nothing
+            }
             requireActivity().runOnUiThread(()-> {
                 parentAdapter.notifyDataSetChanged(); // Workaround
             });
