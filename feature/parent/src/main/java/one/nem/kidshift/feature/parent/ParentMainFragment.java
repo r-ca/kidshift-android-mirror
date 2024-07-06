@@ -9,29 +9,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.TaskData;
-import one.nem.kidshift.model.ChildModel;
-import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
+import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import one.nem.kidshift.utils.models.FabEventCallback;
 
 @AndroidEntryPoint
 public class ParentMainFragment extends Fragment {
@@ -42,13 +38,16 @@ public class ParentMainFragment extends Fragment {
     TaskData taskData;
     @Inject
     ChildData childData;
+    @Inject
+    FabManager fabManager;
 
     private KSLogger logger;
 
     ParentAdapter parentAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
+    LayoutInflater layoutInflater;
 
-    @SuppressLint("DatasetChange")
+    @SuppressLint({"DatasetChange", "NotifyDataSetChanged"})
     private void updateTaskInfo(){
         swipeRefreshLayout.setRefreshing(true);
         taskData.getTasks(new TaskItemModelCallback() {
@@ -68,12 +67,10 @@ public class ParentMainFragment extends Fragment {
             }
         }).thenAccept(taskItemModel -> {
             parentAdapter.setTaskDataList(taskItemModel);
-            requireActivity().runOnUiThread(()->{
-                parentAdapter.notifyDataSetChanged();
+            requireActivity().runOnUiThread(()-> {
+                parentAdapter.notifyDataSetChanged(); // Workaround
             });
-        }).thenRun(() -> {
-           swipeRefreshLayout.setRefreshing(false);
-        });
+        }).thenRun(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     public ParentMainFragment() {
@@ -84,6 +81,7 @@ public class ParentMainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.logger = ksLoggerFactory.create("ParentMainFragment");
+        this.layoutInflater = requireActivity().getLayoutInflater();
     }
 
     @SuppressLint("MissingInflatedId")
@@ -91,8 +89,6 @@ public class ParentMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        //タスク一覧表示
         View view = inflater.inflate(R.layout.fragment_parent_main, container, false);
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
@@ -105,109 +101,23 @@ public class ParentMainFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         parentAdapter = new ParentAdapter();
-        parentAdapter.setCallback(new ParentAdapter.CompleteButtonClickedCallback() {
-            @Override
-            public void onClicked(String taskId) {
-                Toast.makeText(requireContext(), "TaskID: " + taskId, Toast.LENGTH_LONG).show();
-                //お手伝い完了処理
-                LayoutInflater inflater2 = requireActivity().getLayoutInflater();
-                View view2 = inflater2.inflate(R.layout.act_child_select_dialog,null);
+        parentAdapter.setCallback(taskId -> {
+            View childListView = layoutInflater.inflate(R.layout.act_child_select_dialog, null);
+            RecyclerView childListRecyclerView = childListView.findViewById(R.id.act_recycle_view);
+            childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                //子供一覧表示
-                RecyclerView recyclerView2 = view2.findViewById(R.id.act_recycle_view);
-
-                recyclerView2.setHasFixedSize(true);
-
-                RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(getContext());
-                recyclerView2.setLayoutManager(layoutManager2);
-
-                List<ChildModel> child1 = childData.getChildList(new ChildModelCallback() {
-                    @Override
-                    public void onUnchanged() {
-
-                    }
-
-                    @Override
-                    public void onUpdated(List<ChildModel> childModelList) {
-
-                    }
-
-                    @Override
-                    public void onFailed(String message) {
-
-                    }
-                }).join();
-
-                RecyclerView.Adapter mainAdapter2 = new ChildListAdapter2(child1);
-                recyclerView2.setAdapter(mainAdapter2);
-
-                MaterialAlertDialogBuilder builder1 = new MaterialAlertDialogBuilder(getContext());
+            childData.getChildListDirect().thenAccept(childModelList -> childListRecyclerView.setAdapter(new TackCompleteDialogChildListAdapter(childModelList))).thenRun(() -> {
+                MaterialAlertDialogBuilder builder1 = new MaterialAlertDialogBuilder(requireContext());
                 builder1.setTitle("お手伝いをしたお子様の名前を選択してください")
-                        .setView(view2)
-                        .setNeutralButton("閉じる",null);
-                builder1.create().show();
-            }
+                        .setView(childListView)
+                        .setNeutralButton("閉じる", (dialog, which) -> dialog.dismiss());
+                builder1.show();
+            }).join();
+
         });
         recyclerView.setAdapter(parentAdapter);
+
         updateTaskInfo();
-
-        //Pull-to-refresh（スワイプで更新）
-        try {
-
-            swipeRefreshLayout.setOnRefreshListener(() ->{
-                updateTaskInfo();
-            });
-        } catch (Exception e){
-        }
-
-
-
-        //お手伝い追加ダイアログ
-        LayoutInflater inflater1 = requireActivity().getLayoutInflater();
-        View view1 = inflater1.inflate(R.layout.add_task_list_dialog,null);
-
-        //子供選択表示
-        RecyclerView recyclerView1 = view1.findViewById(R.id.taskchild);
-
-        recyclerView1.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getContext());
-        recyclerView1.setLayoutManager(layoutManager1);
-
-
-
-        logger.debug("子供一覧取得開始");
-        List<ChildModel> child = childData.getChildList(new ChildModelCallback() {
-            @Override
-            public void onUnchanged() {
-
-            }
-
-            @Override
-            public void onUpdated(List<ChildModel> childModelList) {
-
-            }
-
-            @Override
-            public void onFailed(String message) {
-
-            }
-        }).join();
-        logger.debug("子供一覧取得完了");
-
-        RecyclerView.Adapter mainAdapter1 = new ChildListAdapter(child);
-        recyclerView1.setAdapter(mainAdapter1);
-
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        builder.setTitle("お手伝い名追加")
-                .setView(view1)
-                .setPositiveButton("追加", null)
-                .setNeutralButton("閉じる",null);
-        builder.create();
-
-        view.findViewById(R.id.addtask).setOnClickListener(v -> {
-            builder.show();
-        });
 
         return view;
     }
@@ -215,7 +125,34 @@ public class ParentMainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Do something...
 
+        // FABイベント設定
+        if (!fabManager.isShown()) fabManager.show();
+        fabManager.setFabEventCallback(new FabEventCallback() {
+            @Override
+            public void onClicked() {
+                View childListView = layoutInflater.inflate(R.layout.add_task_list_dialog, null);
+                RecyclerView childListRecyclerView = childListView.findViewById(R.id.taskchild);
+                childData.getChildListDirect().thenAccept(childModelList ->
+                        childListRecyclerView.setAdapter(
+                            new AddTaskDialogChildListAdapter(childModelList)))
+                        .thenRun(() -> {
+                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+                            builder.setTitle("お手伝い名追加")
+                                    .setView(childListView)
+                                    .setPositiveButton("追加", null)
+                                    .setNeutralButton("閉じる", null);
+                            builder.show();
+                        }).join();
+            }
+
+            @Override
+            public void onLongClicked() {
+                // Do nothing
+            }
+        });
+
+        // SwipeToRefresh
+        swipeRefreshLayout.setOnRefreshListener(this::updateTaskInfo);
     }
 }
