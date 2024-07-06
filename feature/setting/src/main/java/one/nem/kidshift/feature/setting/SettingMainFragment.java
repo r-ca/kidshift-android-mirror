@@ -54,8 +54,6 @@ public class SettingMainFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private LayoutInflater dialogInflater;
 
-
-
     public SettingMainFragment() {
         // Required empty public constructor
     }
