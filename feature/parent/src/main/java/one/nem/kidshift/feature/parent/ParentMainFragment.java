@@ -27,24 +27,26 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.TaskData;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
 public class ParentMainFragment extends Fragment {
 
     @Inject
-    KSLogger ksLogger;
+    KSLoggerFactory ksLoggerFactory;
     @Inject
     TaskData taskData;
     @Inject
     ChildData childData;
 
+    private KSLogger logger;
+
     ParentAdapter parentAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
-
-
 
     @SuppressLint("DatasetChange")
     private void updateTaskInfo(){
@@ -76,6 +78,12 @@ public class ParentMainFragment extends Fragment {
 
     public ParentMainFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.logger = ksLoggerFactory.create("ParentMainFragment");
     }
 
     @SuppressLint("MissingInflatedId")
@@ -113,7 +121,22 @@ public class ParentMainFragment extends Fragment {
                 RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(getContext());
                 recyclerView2.setLayoutManager(layoutManager2);
 
-                List<ChildModel> child1 = childData.getChildList().join();
+                List<ChildModel> child1 = childData.getChildList(new ChildModelCallback() {
+                    @Override
+                    public void onUnchanged() {
+
+                    }
+
+                    @Override
+                    public void onUpdated(List<ChildModel> childModelList) {
+
+                    }
+
+                    @Override
+                    public void onFailed(String message) {
+
+                    }
+                }).join();
 
                 RecyclerView.Adapter mainAdapter2 = new ChildListAdapter2(child1);
                 recyclerView2.setAdapter(mainAdapter2);
@@ -153,9 +176,24 @@ public class ParentMainFragment extends Fragment {
 
 
 
-        ksLogger.debug("子供一覧取得開始");
-        List<ChildModel> child = childData.getChildList().join();
-        ksLogger.debug("子供一覧取得完了");
+        logger.debug("子供一覧取得開始");
+        List<ChildModel> child = childData.getChildList(new ChildModelCallback() {
+            @Override
+            public void onUnchanged() {
+
+            }
+
+            @Override
+            public void onUpdated(List<ChildModel> childModelList) {
+
+            }
+
+            @Override
+            public void onFailed(String message) {
+
+            }
+        }).join();
+        logger.debug("子供一覧取得完了");
 
         RecyclerView.Adapter mainAdapter1 = new ChildListAdapter(child);
         recyclerView1.setAdapter(mainAdapter1);
