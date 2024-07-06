@@ -49,7 +49,7 @@ public class ParentMainFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     LayoutInflater layoutInflater;
 
-    @SuppressLint("DatasetChange")
+    @SuppressLint({"DatasetChange", "NotifyDataSetChanged"})
     private void updateTaskInfo(){
         swipeRefreshLayout.setRefreshing(true);
         taskData.getTasks(new TaskItemModelCallback() {
@@ -69,8 +69,8 @@ public class ParentMainFragment extends Fragment {
             }
         }).thenAccept(taskItemModel -> {
             parentAdapter.setTaskDataList(taskItemModel);
-            requireActivity().runOnUiThread(()->{
-                parentAdapter.notifyDataSetChanged();
+            requireActivity().runOnUiThread(()-> {
+                parentAdapter.notifyDataSetChanged(); // Workaround
             });
         }).thenRun(() -> {
            swipeRefreshLayout.setRefreshing(false);
