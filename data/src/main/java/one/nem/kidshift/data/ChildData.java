@@ -22,6 +22,12 @@ public interface ChildData {
     CompletableFuture<List<ChildModel>> getChildList(ChildModelCallback callback);
 
     /**
+     * 子ユーザー一覧をサーバーから直接取得(キャッシュ無視)
+     * @return List<ChildModel> 子ユーザー一覧
+     */
+    CompletableFuture<List<ChildModel>> getChildListDirect();
+
+    /**
      * 子ユーザー情報更新
      * @param child 子ユーザー情報
      */
