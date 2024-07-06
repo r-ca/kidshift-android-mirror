@@ -84,6 +84,10 @@ public class CommonHomeFragment extends Fragment {
         return false;
     }
 
+    private void showChildSelectDialog() {
+        // 子供選択ダイアログ表示
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private void updateTaskInfo() {
         taskData.getTasks(new TaskItemModelCallback() {
