@@ -121,19 +121,7 @@ public class DebugCommandProcessor {
         commandArray = shiftArray(commandArray);
         switch (commandArray[0]) {
             case "get":
-                commandArray = shiftArray(commandArray);
-                switch (commandArray[0]) {
-                    case "all":
-                        List<LogModel> logs = ksLogger.getHistory();
-                        StringBuilder logString = new StringBuilder();
-                        for (LogModel log : logs) {
-                            logString.append(log.getMessage());
-                            logString.append("\n");
-                        }
-                        return logString.toString();
-                    default:
-                        return "TODO";
-                }
+                return "Removed for performance reasons";
             case "insert":
                 commandArray = shiftArray(commandArray);
                 String[] logArray = Arrays.copyOfRange(commandArray, 1, commandArray.length);

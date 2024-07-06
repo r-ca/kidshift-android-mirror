@@ -8,21 +8,28 @@ import javax.inject.Inject;
 
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.TaskData;
+import one.nem.kidshift.data.retrofit.KidShiftApiService;
+import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
+import one.nem.kidshift.data.retrofit.model.task.TaskResponse;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class TaskDataImpl implements TaskData {
 
     private final KSActions ksActions;
+    private final KidShiftApiService kidShiftApiService;
     private final CacheWrapper cacheWrapper;
     private final KSLogger logger;
 
     @Inject
-    public TaskDataImpl(KSActions ksActions, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
+    public TaskDataImpl(KSActions ksActions, KidShiftApiService kidShiftApiService, CacheWrapper cacheWrapper, KSLoggerFactory loggerFactory) {
         this.ksActions = ksActions;
+        this.kidShiftApiService = kidShiftApiService;
         this.cacheWrapper = cacheWrapper;
         this.logger = loggerFactory.create("TaskDataImpl");
     }
@@ -32,34 +39,32 @@ public class TaskDataImpl implements TaskData {
         return CompletableFuture.supplyAsync(() -> {
             logger.debug("タスク取得開始");
             AtomicReference<List<TaskItemModel>> taskListTmp = new AtomicReference<>();
-            Thread thread = new Thread(() -> {
-                ksActions.syncTasks().thenAccept(taskList -> {
-                    if (taskListTmp.get() == null || taskListTmp.get().isEmpty()) {
-                        logger.debug("タスク取得完了: キャッシュよりはやく取得完了 or キャッシュ無し");
-                        if (taskList == null || taskList.isEmpty()) {
-                            callback.onUnchanged();
-                        } else {
-                            callback.onUpdated(taskList);
-                        }
+            Thread thread = new Thread(() -> ksActions.syncTasks().thenAccept(taskList -> {
+                if (taskListTmp.get() == null || taskListTmp.get().isEmpty()) {
+                    logger.debug("タスク取得完了: キャッシュよりはやく取得完了 or キャッシュ無し");
+                    if (taskList == null || taskList.isEmpty()) {
+                        callback.onUnchanged();
                     } else {
-                        // キャッシュと比較して変更の有無を確認
-                        boolean isChanged =
-                            taskList.size() != taskListTmp.get().size() ||
-                            taskList.stream().anyMatch(task -> taskListTmp.get().stream().noneMatch(taskTmp -> task.getId().equals(taskTmp.getId())));
-                        if (isChanged) {
-                            logger.debug("タスク取得完了: キャッシュと比較して変更あり");
-                            callback.onUpdated(taskList);
-                        } else {
-                            logger.debug("タスク取得完了: キャッシュと比較して変更なし");
-                            callback.onUnchanged();
-                        }
+                        callback.onUpdated(taskList);
                     }
-                }).exceptionally(e -> {
-                    logger.error("タスク取得失敗: " + e.getMessage());
-                    callback.onFailed(e.getMessage());
-                    return null;
-                });
-            });
+                } else {
+                    // キャッシュと比較して変更の有無を確認
+                    boolean isChanged =
+                        taskList.size() != taskListTmp.get().size() ||
+                        taskList.stream().anyMatch(task -> taskListTmp.get().stream().noneMatch(taskTmp -> task.getId().equals(taskTmp.getId())));
+                    if (isChanged) {
+                        logger.debug("タスク取得完了: キャッシュと比較して変更あり");
+                        callback.onUpdated(taskList);
+                    } else {
+                        logger.debug("タスク取得完了: キャッシュと比較して変更なし");
+                        callback.onUnchanged();
+                    }
+                }
+            }).exceptionally(e -> {
+                logger.error("タスク取得失敗: " + e.getMessage());
+                callback.onFailed(e.getMessage());
+                return null;
+            }));
             thread.start();
             return cacheWrapper.getTaskList().thenApply(taskList -> {
                 if (taskList == null || taskList.isEmpty()) {
@@ -85,18 +90,62 @@ public class TaskDataImpl implements TaskData {
     }
 
     @Override
-    public void addTask(TaskItemModel task) {
-
+    public CompletableFuture<TaskItemModel> addTask(TaskItemModel task) {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<TaskResponse> call = kidShiftApiService.addTask(TaskModelConverter.taskItemModelToTaskAddRequest(task));
+            try {
+                Response<TaskResponse> response = call.execute();
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    logger.info("タスク追加成功(taskId: " + response.body().getId() + ")");
+                    return TaskModelConverter.taskResponseToTaskItemModel(response.body());
+                } else {
+                    logger.error("タスク追加失敗: HTTP Status: " + response.code());
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
-    public void removeTask(String taskId) {
-
+    public CompletableFuture<Void> removeTask(String taskId) {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<Void> call = kidShiftApiService.removeTask(taskId);
+            try {
+                Response<Void> response = call.execute();
+                if (response.isSuccessful()) {
+                    logger.info("タスク削除成功(taskId: " + taskId + ")");
+                    return null;
+                } else {
+                    logger.error("タスク削除失敗: HTTP Status: " + response.code());
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
-    public void updateTask(TaskItemModel task) {
-
+    public CompletableFuture<Void> updateTask(TaskItemModel task) {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<TaskResponse> call = kidShiftApiService.updateTask(TaskModelConverter.taskItemModelToTaskAddRequest(task), task.getId());
+            try {
+                Response<TaskResponse> response = call.execute();
+                if (response.isSuccessful()) {
+                    logger.info("タスク更新成功(taskId: " + task.getId() + ")");
+//                    return response.body();
+                    return null;
+                } else {
+                    logger.error("タスク更新失敗: HTTP Status: " + response.code());
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
@@ -105,7 +154,21 @@ public class TaskDataImpl implements TaskData {
     }
 
     @Override
-    public void recordTaskCompletion(String taskId, String childId) {
-
+    public CompletableFuture<Void> recordTaskCompletion(String taskId, String childId) {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<Void> call = kidShiftApiService.completeTask(taskId, childId);
+            try {
+                Response<Void> response = call.execute();
+                if (response.isSuccessful()) {
+                    logger.info("タスク完了処理成功(taskId: " + taskId + ", childId: " + childId + ")");
+                    return null;
+                } else {
+                    logger.error("タスク完了処理失敗: HTTP Status: " + response.code());
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

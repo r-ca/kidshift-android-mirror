@@ -3,7 +3,6 @@ package one.nem.kidshift.feature.setting;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,11 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
@@ -30,8 +30,10 @@ import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.ParentModelCallback;
+import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import one.nem.kidshift.utils.models.FabEventCallback;
 
 @AndroidEntryPoint
 public class SettingMainFragment extends Fragment {
@@ -45,11 +47,14 @@ public class SettingMainFragment extends Fragment {
     @Inject
     KSLoggerFactory ksLoggerFactory;
 
+    @Inject
+    FabManager fabManager;
+
     private KSLogger logger;
 
     TextView username;
 
-    TextView useradress;
+    TextView userMailAddress;
 
     SettingAdapter mainAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -65,7 +70,12 @@ public class SettingMainFragment extends Fragment {
         logger = ksLoggerFactory.create("SettingMainFragment");
     }
 
-    private CompletableFuture<Void> updateParentInfo(){
+    /**
+     * 親情報を更新する
+     *
+     * @return CompletableFuture<Void>
+     */
+    private CompletableFuture<Void> updateParentInfo() {
         return parentData.getParent(new ParentModelCallback() {
             @Override
             public void onUnchanged() {
@@ -83,13 +93,18 @@ public class SettingMainFragment extends Fragment {
             }
         }).thenAccept(parentModel -> {
             username.setText(parentModel.getName() != null ? parentModel.getName() : "親の名前");
-            useradress.setText(parentModel.getEmail() != null ? parentModel.getEmail() : "親のアドレス");
+            userMailAddress.setText(parentModel.getEmail() != null ? parentModel.getEmail() : "親のアドレス");
         });
 
     }
 
+    /**
+     * 子供情報を更新する
+     *
+     * @return CompletableFuture<Void>
+     */
     @SuppressLint("NotifyDataSetChanged")
-    private CompletableFuture<Void> updateChildInfo(){
+    private CompletableFuture<Void> updateChildInfo() {
         return childData.getChildList(new ChildModelCallback() {
             @Override
             public void onUnchanged() {
@@ -115,6 +130,9 @@ public class SettingMainFragment extends Fragment {
         });
     }
 
+    /**
+     * ユーザー情報を更新するラッパー
+     */
     private void updateInfo() {
         CompletableFuture<Void> updateParent = updateParentInfo();
         CompletableFuture<Void> updateChildList = updateChildInfo();
@@ -127,6 +145,10 @@ public class SettingMainFragment extends Fragment {
         updateParent.thenCombine(updateChildList, (res1, res2) -> null).thenRun(() -> {
             logger.debug("アップデート完了");
             swipeRefreshLayout.setRefreshing(false);
+        }).exceptionally(e -> {
+            logger.error("アップデート失敗: " + e.getMessage());
+            swipeRefreshLayout.setRefreshing(false);
+            return null;
         });
     }
 
@@ -137,61 +159,116 @@ public class SettingMainFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_setting_main, container, false);
 
+        // ビューの取得
         username = view.findViewById(R.id.username);
-        useradress = view.findViewById(R.id.useradress);
-
+        userMailAddress = view.findViewById(R.id.useradress);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         RecyclerView recyclerView = view.findViewById(R.id.childrecyclerview);
 
+        // RecyclerViewの設定
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
         mainAdapter = new SettingAdapter();
         recyclerView.setAdapter(mainAdapter);
 
-        // Pull-to-refresh（スワイプで更新）
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-
-        try {
-
-        /*
-        TODO:
-            - コールバックの処理を実装
-            - 結果に応じてRecyclerViewを更新する
-            - キャッシュ受け取りの時にjoinでUIスレッドをブロックしないように
-            - Placeholderの表示?
-            - エラーハンドリング try catch文
-                - onFailed時にそれを通知
-         */
-
+        // ユーザー情報の更新(初回)
         updateInfo();
 
-        swipeRefreshLayout.setOnRefreshListener(() ->{
-
-            updateInfo();
-
+        // スワイプリフレッシュのリスナー
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            updateInfo(); // ユーザー情報の更新
         });
 
-        } catch (Exception e) {
-            //
-        }
+        // ダイアログの設定
+        LayoutInflater dialogInflater = requireActivity().getLayoutInflater();
 
-            LayoutInflater inflater1 = requireActivity().getLayoutInflater();
-            View view1 = inflater1.inflate(R.layout.add_child_list_dialog,null);
+        View addChildDialogView = dialogInflater.inflate(R.layout.fragment_login_dialog_view, null);
 
-            //子供の名前追加のダイアログ
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-            builder.setTitle("お子様の名前を入力してください。")
-                    .setView(view1)
-                    .setPositiveButton("追加",null)
-                    .setNeutralButton("閉じる",null);
-            builder.create();
+        View childListItemView = inflater.inflate(R.layout.list_item_child_name_list, container, false);
 
-        view.findViewById(R.id.addchildname).setOnClickListener(v -> {
-            builder.show();
+        mainAdapter.setLoginButtonCallback(new SettingAdapter.LoginButtonCallback() {
+            @Override
+            public void onLoginButtonClicked(String childId) {
+//                Toast.makeText(getContext(), "ボタンがクリックされました(" + childId + ")", Toast.LENGTH_LONG).show();
+                int loginCode = childData.issueLoginCode(childId).join();
+                TextView loginCodeTextView = addChildDialogView.findViewById(R.id.loginCode);
+                new StringBuilder(Integer.toString(loginCode)).insert(3, "-");
+
+                loginCodeTextView.setText(
+                        new StringBuilder(Integer.toString(loginCode)).insert(3, "-")
+                );
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+                builder.setTitle("ログインコード")
+                        .setView(addChildDialogView)
+                        .setNeutralButton("閉じる", null);
+                builder.create();
+
+//                childListItemView.findViewById(R.id.loginButton).setOnClickListener(v -> {
+                builder.show();
+//                });
+            }
         });
 
+//        int loginCode = childData.issueLoginCode("543256").join();
+//        TextView loginCodeTextView = addChildDialogView.findViewById(R.id.loginCode);
+//        new StringBuilder(Integer.toString(loginCode)).insert(3,"-");
+//
+//        loginCodeTextView.setText(
+//                new StringBuilder(Integer.toString(loginCode)).insert(3,"-"));
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle("ログインコード")
+                .setView(addChildDialogView)
+                .setNeutralButton("閉じる", null);
+        builder.create();
+//
+//        childListItemView.findViewById(R.id.loginButton).setOnClickListener(v -> {
+//            builder.show();
+//        });
+
+
+
+
+        // ダイアログの表示
+
+        if (!fabManager.isShown()) fabManager.show();
+
+        fabManager.setFabEventCallback(new FabEventCallback() {
+            @Override
+            public void onClicked() {
+                //子供の名前追加のダイアログ
+                View dialogView = dialogInflater.inflate(R.layout.add_child_list_dialog, null);
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("お子様の名前を入力してください。")
+                        .setView(dialogView)
+                        .setPositiveButton("追加", (dialog, which) -> {
+                            ChildModel childModel = new ChildModel();
+                            childModel.setName(Objects.requireNonNull(((TextView) dialogView.findViewById(R.id.childNameEditText)).getText()).toString());
+                            childData.addChild(childModel).thenAccept(childModel1 -> { // Debug
+                                logger.debug("子供を追加しました: " + childModel1.getName());
+                            }).thenRun(() -> {
+                                updateChildInfo();
+                            });
+                        })
+                        .setNeutralButton("閉じる", (dialog, which) -> {
+                            dialog.cancel();
+                        }).show();
+            }
+
+            @Override
+            public void onLongClicked() {
+                // Do nothing
+            }
+        });
 
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // TODO: 更新する?
     }
 }

@@ -6,7 +6,6 @@ import one.nem.kidshift.utils.models.LogModel;
 
 public interface KSLogger {
     KSLogger addTag(String tag);
-    List<LogModel> getHistory();
     void info(String message);
     void warn(String message);
     void error(String message);

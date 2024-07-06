@@ -27,19 +27,19 @@ public interface TaskData {
      * タスクを追加する
      * @param task タスク
      */
-    void addTask(TaskItemModel task);
+    CompletableFuture<TaskItemModel> addTask(TaskItemModel task);
 
     /**
      * タスクを削除する
      * @param taskId タスクID
      */
-    void removeTask(String taskId);
+    CompletableFuture<Void> removeTask(String taskId);
 
     /**
      * タスクを更新する
      * @param task タスク
      */
-    void updateTask(TaskItemModel task);
+    CompletableFuture<Void> updateTask(TaskItemModel task);
 
     // 子側
 
@@ -55,5 +55,5 @@ public interface TaskData {
      * @param taskId タスクID
      * @param childId 子ID
      */
-    void recordTaskCompletion(String taskId, String childId);
+    CompletableFuture<Void> recordTaskCompletion(String taskId, String childId);
 }

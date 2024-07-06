@@ -3,6 +3,7 @@ package one.nem.kidshift.data.retrofit;
 import one.nem.kidshift.data.retrofit.interceptor.AuthorizationInterceptor;
 import one.nem.kidshift.data.retrofit.model.child.ChildAddRequest;
 import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
+import one.nem.kidshift.data.retrofit.model.child.ChildLoginCodeResponse;
 import one.nem.kidshift.data.retrofit.model.child.ChildResponse;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginRequest;
@@ -19,6 +20,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface KidShiftApiService {
 
@@ -95,7 +97,7 @@ public interface KidShiftApiService {
      */
     @POST("/parent/task/{id}/complete")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
-    Call<Void> completeTask(@Path("id") String id); // TODO-rca: OK responseをパース
+    Call<Void> completeTask(@Path("id") String id, @Query("childId") String childId);
 
     // Child APIs
 
@@ -115,5 +117,14 @@ public interface KidShiftApiService {
     @POST("/parent/child")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildResponse> addChild(@Body ChildAddRequest request);
+
+    /**
+     * 子供ログインコード発行
+     * @param id 子供ID
+     * @return ChildLoginCodeResponse
+     */
+    @GET("/parent/child/{id}/login")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<ChildLoginCodeResponse> issueLoginCode(@Path("id") String id);
 
 }
