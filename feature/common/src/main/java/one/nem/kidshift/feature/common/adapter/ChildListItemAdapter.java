@@ -22,6 +22,10 @@ public class ChildListItemAdapter extends RecyclerView.Adapter<ChildListItemAdap
         // Empty constructor
     }
 
+    public ChildListItemAdapter(List<ChildModel> childDataList) {
+        this.childDataList = childDataList;
+    }
+
     public void setChildDataList(List<ChildModel> childDataList) {
         this.childDataList = childDataList;
     }
