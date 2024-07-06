@@ -53,6 +53,8 @@ public class CommonHomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    // TODO: SwipeToRefreshの実装
+
     public static CommonHomeFragment newInstance(boolean isChildMode, String childId) {
         CommonHomeFragment fragment = new CommonHomeFragment();
         Bundle args = new Bundle();
