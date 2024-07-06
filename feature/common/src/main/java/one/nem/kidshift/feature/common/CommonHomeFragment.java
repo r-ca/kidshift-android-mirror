@@ -73,9 +73,11 @@ public class CommonHomeFragment extends Fragment {
         taskListItemAdapter = new TaskListItemAdapter();
         taskListItemAdapter.setCallback((taskId, taskName) -> {
             if (isChildMode) {
-                // 確認ダイアログ呼び出し
+                if (showConfirmDialog(taskName)) {
+                    // タスク完了処理
+                }
             } else {
-                // 子供選択ダイアログ呼び出し
+                showChildSelectDialog();
             }
         });
 
