@@ -153,6 +153,6 @@ public class CommonHomeFragment extends Fragment {
     }
 
     private void updateCalender() {
-
+        // TODO: タスクの完了状況をカレンダーに表示
     }
 }
