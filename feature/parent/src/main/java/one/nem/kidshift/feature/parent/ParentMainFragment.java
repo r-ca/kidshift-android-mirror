@@ -109,17 +109,16 @@ public class ParentMainFragment extends Fragment {
             RecyclerView childListRecyclerView = childListView.findViewById(R.id.act_recycle_view);
             childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            childData.getChildListDirect().thenAccept(childModelList -> {
-                childListRecyclerView.setAdapter(new DialogChildListAdapter(childModelList));
-            }).thenRun(() -> {
+            childData.getChildListDirect().thenAccept(childModelList -> childListRecyclerView.setAdapter(new DialogChildListAdapter(childModelList))).thenRun(() -> {
                 MaterialAlertDialogBuilder builder1 = new MaterialAlertDialogBuilder(requireContext());
                 builder1.setTitle("お手伝いをしたお子様の名前を選択してください")
                         .setView(childListView)
-                        .setNeutralButton("閉じる",null);
-                builder1.create().show();
+                        .setNeutralButton("閉じる", (dialog, which) -> dialog.dismiss());
+                builder1.show();
             }).join();
 
         });
+
         recyclerView.setAdapter(parentAdapter);
         updateTaskInfo();
 
