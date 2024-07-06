@@ -40,22 +40,16 @@ public class SettingMainFragment extends Fragment {
 
     @Inject
     ChildData childData;
-
     @Inject
     ParentData parentData;
-
     @Inject
     KSLoggerFactory ksLoggerFactory;
-
     @Inject
     FabManager fabManager;
 
     private KSLogger logger;
-
     TextView username;
-
     TextView userMailAddress;
-
     SettingAdapter mainAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
     LayoutInflater dialogInflater;
