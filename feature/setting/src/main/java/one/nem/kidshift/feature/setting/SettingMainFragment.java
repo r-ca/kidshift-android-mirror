@@ -116,6 +116,12 @@ public class SettingMainFragment extends Fragment {
             }
         }).thenAccept(childModels -> {
             mainAdapter.setChildDataList(childModels);
+            // Workaround: RecyclerViewの更新と推移アニメーションが競合するため 200ms 待機
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                // Do nothing
+            }
             requireActivity().runOnUiThread(() -> {
                 mainAdapter.notifyDataSetChanged(); // Workaround
             });
