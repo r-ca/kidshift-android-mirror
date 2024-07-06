@@ -21,12 +21,8 @@ import one.nem.kidshift.utils.models.LogModel;
 public class KSLoggerImpl implements KSLogger {
 
     private ArrayList<String> tags = new ArrayList<String>();
-
-    private SharedPrefUtils sharedPrefUtils;
-
     @AssistedInject
-    public KSLoggerImpl(SharedPrefUtilsFactory sharedPrefUtilsFactory, @Assisted String name) {
-        sharedPrefUtils = sharedPrefUtilsFactory.create("KSLogger");
+    public KSLoggerImpl(@Assisted String name) {
         tags.clear();
         tags.add(name);
     }
@@ -35,11 +31,6 @@ public class KSLoggerImpl implements KSLogger {
     public KSLogger addTag(String tag) {
         tags.add(tag);
         return this;
-    }
-
-    @Override
-    public List<LogModel> getHistory() {
-        return sharedPrefUtils.getObjects(LogModel.class);
     }
 
     @Override
@@ -73,12 +64,7 @@ public class KSLoggerImpl implements KSLogger {
     }
 
     private void log(LogModel log) {
-        addLog(log);
         outputLog(log);
-    }
-
-    private void addLog(LogModel log) {
-        sharedPrefUtils.saveObject(log);
     }
 
     private void outputLog(LogModel log) {
