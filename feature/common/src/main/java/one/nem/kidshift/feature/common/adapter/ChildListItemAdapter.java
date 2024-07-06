@@ -50,7 +50,7 @@ public class ChildListItemAdapter extends RecyclerView.Adapter<ChildListItemAdap
 
     @Override
     public int getItemCount() {
-        return 0;
+        return childDataList == null ? 0 : childDataList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
