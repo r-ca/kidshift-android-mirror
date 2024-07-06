@@ -22,8 +22,6 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.TaskData;
-import one.nem.kidshift.model.ChildModel;
-import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.FabManager;
@@ -72,9 +70,7 @@ public class ParentMainFragment extends Fragment {
             requireActivity().runOnUiThread(()-> {
                 parentAdapter.notifyDataSetChanged(); // Workaround
             });
-        }).thenRun(() -> {
-           swipeRefreshLayout.setRefreshing(false);
-        });
+        }).thenRun(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     public ParentMainFragment() {
