@@ -176,7 +176,7 @@ public class ParentMainFragment extends Fragment {
 
 
 
-        ksLogger.debug("子供一覧取得開始");
+        logger.debug("子供一覧取得開始");
         List<ChildModel> child = childData.getChildList(new ChildModelCallback() {
             @Override
             public void onUnchanged() {
@@ -193,7 +193,7 @@ public class ParentMainFragment extends Fragment {
 
             }
         }).join();
-        ksLogger.debug("子供一覧取得完了");
+        logger.debug("子供一覧取得完了");
 
         RecyclerView.Adapter mainAdapter1 = new ChildListAdapter(child);
         recyclerView1.setAdapter(mainAdapter1);
