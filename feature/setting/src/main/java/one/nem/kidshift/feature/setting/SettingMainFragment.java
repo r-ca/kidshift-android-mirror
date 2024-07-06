@@ -143,9 +143,7 @@ public class SettingMainFragment extends Fragment {
 
         swipeRefreshLayout.setRefreshing(true);
 
-        return CompletableFuture.allOf(updateParent, updateChildList).thenRun(() -> {
-            swipeRefreshLayout.setRefreshing(false);
-        });
+        return CompletableFuture.allOf(updateParent, updateChildList).thenRun(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     @Override
@@ -166,9 +164,7 @@ public class SettingMainFragment extends Fragment {
         recyclerView.setAdapter(mainAdapter);
 
         // ユーザー情報の更新(初回)
-        updateInfo().thenRunAsync(() -> {
-            logger.debug("ユーザー情報の更新完了");
-        });
+        updateInfo().thenRunAsync(() -> logger.debug("ユーザー情報の更新完了"));
 
         return view;
     }
@@ -193,13 +189,9 @@ public class SettingMainFragment extends Fragment {
                             childModel.setName(Objects.requireNonNull(((TextView) dialogView.findViewById(R.id.childNameEditText)).getText()).toString());
                             childData.addChild(childModel).thenAccept(childModel1 -> { // Debug
                                 logger.debug("子供を追加しました: " + childModel1.getName());
-                            }).thenRun(() -> {
-                                updateChildInfo();
-                            });
+                            }).thenRun(() -> updateChildInfo());
                         })
-                        .setNeutralButton("閉じる", (dialog, which) -> {
-                            dialog.cancel();
-                        }).show();
+                        .setNeutralButton("閉じる", (dialog, which) -> dialog.cancel()).show();
             }
 
             @Override
