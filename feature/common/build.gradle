@@ -38,6 +38,8 @@ dependencies {
     implementation libs.com.google.dagger.hilt.android
     annotationProcessor libs.com.google.dagger.hilt.compiler
 
+    api 'com.github.sundeepk:compact-calendar-view:3.0.0'
+
     // Project modules
     implementation project(':model')
     implementation project(':utils')
