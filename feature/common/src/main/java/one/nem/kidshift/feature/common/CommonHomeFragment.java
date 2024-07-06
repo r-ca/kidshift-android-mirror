@@ -21,6 +21,7 @@ import one.nem.kidshift.data.TaskData;
 import one.nem.kidshift.feature.common.adapter.TaskListItemAdapter;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
+import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
@@ -36,6 +37,7 @@ public class CommonHomeFragment extends Fragment {
     ChildData childData;
 
     private boolean isChildMode;
+    private KSLogger logger;
 
     CompactCalendarView compactCalendarView;
     TaskListItemAdapter taskListItemAdapter;
@@ -58,6 +60,7 @@ public class CommonHomeFragment extends Fragment {
         if (getArguments() != null) {
             isChildMode = getArguments().getBoolean(ARG_IS_CHILD_MODE);
         }
+        logger = ksLoggerFactory.create("CommonHomeFragment");
     }
 
     @Override
