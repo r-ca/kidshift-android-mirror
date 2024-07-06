@@ -12,18 +12,18 @@ import java.util.List;
 
 import one.nem.kidshift.model.ChildModel;
 
-public class ChildListAdapter2 extends RecyclerView.Adapter<ChildListAdapter2.MainViewHolder> {
+public class DialogChildListAdapter extends RecyclerView.Adapter<DialogChildListAdapter.MainViewHolder> {
 
     private final List<ChildModel> childDataList;
 
-    ChildListAdapter2(List<ChildModel> childDataList){this.childDataList = childDataList;}
+    DialogChildListAdapter(List<ChildModel> childDataList){this.childDataList = childDataList;}
 
     static class MainViewHolder extends RecyclerView.ViewHolder{
-        TextView actchildname;
+        TextView childName;
 
         MainViewHolder(@NonNull View itemView){
             super(itemView);
-            actchildname = itemView.findViewById(R.id.actchildname);
+            childName = itemView.findViewById(R.id.childNameTextView);
         }
     }
 
@@ -36,7 +36,7 @@ public class ChildListAdapter2 extends RecyclerView.Adapter<ChildListAdapter2.Ma
 
     public void onBindViewHolder(@NonNull MainViewHolder holder,int position){
         ChildModel childData = this.childDataList.get(position);
-        holder.actchildname.setText(childData.getName());
+        holder.childName.setText(childData.getName());
     }
 
     public int getItemCount(){ return childDataList.size();}
