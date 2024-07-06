@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.TaskData;
+import one.nem.kidshift.feature.common.adapter.ChildListItemAdapter;
 import one.nem.kidshift.feature.common.adapter.TaskListItemAdapter;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
@@ -85,7 +88,7 @@ public class CommonHomeFragment extends Fragment {
                     taskData.recordTaskCompletion(taskId, childId);
                 }
             } else {
-                showChildSelectDialog();
+                showChildSelectDialog(taskId);
             }
         });
 
@@ -109,7 +112,22 @@ public class CommonHomeFragment extends Fragment {
         return selection.get();
     }
 
-    private void showChildSelectDialog() {
+    private void showChildSelectDialog(String taskId) {
+        RecyclerView childListRecyclerView = new RecyclerView(requireContext());
+        childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        childData.getChildListDirect().thenAccept(childModelList -> {
+            ChildListItemAdapter childListItemAdapter = new ChildListItemAdapter();
+            childListRecyclerView.setAdapter(childListItemAdapter);
+            childListItemAdapter.setCallback(childId -> {
+                taskData.recordTaskCompletion(taskId, childId);
+            });
+        });
+
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("お手伝いをしたお子様を選択")
+                .setView(childListRecyclerView)
+                .setNeutralButton("閉じる", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     @SuppressLint("NotifyDataSetChanged")
