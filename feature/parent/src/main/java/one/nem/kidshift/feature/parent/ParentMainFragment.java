@@ -31,21 +31,22 @@ import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
 public class ParentMainFragment extends Fragment {
 
     @Inject
-    KSLogger ksLogger;
+    KSLoggerFactory ksLoggerFactory;
     @Inject
     TaskData taskData;
     @Inject
     ChildData childData;
 
+    private KSLogger logger;
+
     ParentAdapter parentAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
-
-
 
     @SuppressLint("DatasetChange")
     private void updateTaskInfo(){
@@ -77,6 +78,12 @@ public class ParentMainFragment extends Fragment {
 
     public ParentMainFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.logger = ksLoggerFactory.create("ParentMainFragment");
     }
 
     @SuppressLint("MissingInflatedId")
