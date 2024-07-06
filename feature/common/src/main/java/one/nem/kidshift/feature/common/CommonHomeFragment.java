@@ -68,7 +68,7 @@ public class CommonHomeFragment extends Fragment {
 
         compactCalendarView = view.findViewById(R.id.calendar);
         taskListItemAdapter = new TaskListItemAdapter();
-        taskListItemAdapter.setCallback(taskId -> {
+        taskListItemAdapter.setCallback((taskId, taskName) -> {
             if (isChildMode) {
                 // 確認ダイアログ呼び出し
             } else {
@@ -79,8 +79,9 @@ public class CommonHomeFragment extends Fragment {
         return view;
     }
 
-    private void showConfirmDialog(String taskName) {
+    private boolean showConfirmDialog(String taskName) {
         // 確認ダイアログ表示
+        return false;
     }
 
     @SuppressLint("NotifyDataSetChanged")
