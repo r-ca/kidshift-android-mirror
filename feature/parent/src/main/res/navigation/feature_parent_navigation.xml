@@ -2,6 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/feature_parent_navigation" >
-    <include app:graph="@navigation/internal_parent_navigation" />
+    android:id="@+id/feature_parent_navigation"
+    app:startDestination="@id/feature_common_navigation">
+    <include app:graph="@navigation/feature_common_navigation" />
 </navigation>
