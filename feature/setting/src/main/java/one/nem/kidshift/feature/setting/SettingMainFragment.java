@@ -117,17 +117,7 @@ public class SettingMainFragment extends Fragment {
         }).thenAccept(childModels -> {
             mainAdapter.setChildDataList(childModels);
             requireActivity().runOnUiThread(() -> {
-                try {
-                    mainAdapter.notifyItemRangeInserted(0, childModels.size());
-                } catch (IndexOutOfBoundsException e) {
-                    try {
-                        mainAdapter.notifyDataSetChanged();
-                    } catch (Exception e1) {
-                        Toast.makeText(requireContext(), "エラーが発生しました", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(requireContext(), "エラーが発生しました", Toast.LENGTH_SHORT).show();
-                }
+                mainAdapter.notifyDataSetChanged(); // Workaround
             });
 
         });
