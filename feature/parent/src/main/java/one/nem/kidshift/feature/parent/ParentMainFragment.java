@@ -12,7 +12,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -27,8 +26,10 @@ import one.nem.kidshift.model.ChildModel;
 import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
+import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import one.nem.kidshift.utils.models.FabEventCallback;
 
 @AndroidEntryPoint
 public class ParentMainFragment extends Fragment {
@@ -39,6 +40,8 @@ public class ParentMainFragment extends Fragment {
     TaskData taskData;
     @Inject
     ChildData childData;
+    @Inject
+    FabManager fabManager;
 
     private KSLogger logger;
 
@@ -109,7 +112,7 @@ public class ParentMainFragment extends Fragment {
             RecyclerView childListRecyclerView = childListView.findViewById(R.id.act_recycle_view);
             childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            childData.getChildListDirect().thenAccept(childModelList -> childListRecyclerView.setAdapter(new DialogChildListAdapter(childModelList))).thenRun(() -> {
+            childData.getChildListDirect().thenAccept(childModelList -> childListRecyclerView.setAdapter(new TackCompleteDialogChildListAdapter(childModelList))).thenRun(() -> {
                 MaterialAlertDialogBuilder builder1 = new MaterialAlertDialogBuilder(requireContext());
                 builder1.setTitle("お手伝いをしたお子様の名前を選択してください")
                         .setView(childListView)
@@ -166,7 +169,7 @@ public class ParentMainFragment extends Fragment {
         }).join();
         logger.debug("子供一覧取得完了");
 
-        RecyclerView.Adapter mainAdapter1 = new ChildListAdapter(child);
+        RecyclerView.Adapter mainAdapter1 = new AddTaskDialogChildListAdapter(child);
         recyclerView1.setAdapter(mainAdapter1);
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
@@ -187,6 +190,30 @@ public class ParentMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Do something...
+        if (!fabManager.isShown()) fabManager.show();
 
+        fabManager.setFabEventCallback(new FabEventCallback() {
+            @Override
+            public void onClicked() {
+                View childListView = layoutInflater.inflate(R.layout.add_task_list_dialog, null);
+                RecyclerView childListRecyclerView = childListView.findViewById(R.id.taskchild);
+                childData.getChildListDirect().thenAccept(childModelList ->
+                        childListRecyclerView.setAdapter(
+                            new AddTaskDialogChildListAdapter(childModelList)))
+                        .thenRun(() -> {
+                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+                            builder.setTitle("お手伝い名追加")
+                                    .setView(childListView)
+                                    .setPositiveButton("追加", null)
+                                    .setNeutralButton("閉じる", null);
+                            builder.show();
+                        }).join();
+            }
+
+            @Override
+            public void onLongClicked() {
+
+            }
+        });
     }
 }

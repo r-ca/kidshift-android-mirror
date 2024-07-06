@@ -3,47 +3,41 @@ package one.nem.kidshift.feature.parent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.chip.Chip;
-
 import java.util.List;
 
 import one.nem.kidshift.model.ChildModel;
-import one.nem.kidshift.model.tasks.TaskItemModel;
 
-public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.MainViewHolder> {
+public class TackCompleteDialogChildListAdapter extends RecyclerView.Adapter<TackCompleteDialogChildListAdapter.MainViewHolder> {
 
     private final List<ChildModel> childDataList;
 
-    ChildListAdapter(List<ChildModel> childDataList) {
-        this.childDataList = childDataList;
-    }
+    TackCompleteDialogChildListAdapter(List<ChildModel> childDataList){this.childDataList = childDataList;}
 
-    static class MainViewHolder extends RecyclerView.ViewHolder {
-        CheckBox childname;
+    static class MainViewHolder extends RecyclerView.ViewHolder{
+        TextView childName;
 
-        MainViewHolder(@NonNull View itemView) {
+        MainViewHolder(@NonNull View itemView){
             super(itemView);
-            childname = itemView.findViewById(R.id.childname);
+            childName = itemView.findViewById(R.id.childNameTextView);
         }
     }
 
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_child_list,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_act_child_name,parent,false);
         return new MainViewHolder(view);
     }
 
     public void onBindViewHolder(@NonNull MainViewHolder holder,int position){
         ChildModel childData = this.childDataList.get(position);
-        holder.childname.setText(childData.getName());
+        holder.childName.setText(childData.getName());
     }
 
-    @Override
     public int getItemCount(){ return childDataList.size();}
 }

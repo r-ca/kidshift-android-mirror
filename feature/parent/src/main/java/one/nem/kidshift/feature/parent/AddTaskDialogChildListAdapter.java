@@ -3,7 +3,7 @@ package one.nem.kidshift.feature.parent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,32 +12,35 @@ import java.util.List;
 
 import one.nem.kidshift.model.ChildModel;
 
-public class DialogChildListAdapter extends RecyclerView.Adapter<DialogChildListAdapter.MainViewHolder> {
+public class AddTaskDialogChildListAdapter extends RecyclerView.Adapter<AddTaskDialogChildListAdapter.MainViewHolder> {
 
     private final List<ChildModel> childDataList;
 
-    DialogChildListAdapter(List<ChildModel> childDataList){this.childDataList = childDataList;}
+    AddTaskDialogChildListAdapter(List<ChildModel> childDataList) {
+        this.childDataList = childDataList;
+    }
 
-    static class MainViewHolder extends RecyclerView.ViewHolder{
-        TextView childName;
+    static class MainViewHolder extends RecyclerView.ViewHolder {
+        CheckBox childname;
 
-        MainViewHolder(@NonNull View itemView){
+        MainViewHolder(@NonNull View itemView) {
             super(itemView);
-            childName = itemView.findViewById(R.id.childNameTextView);
+            childname = itemView.findViewById(R.id.childname);
         }
     }
 
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_act_child_name,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_child_list,parent,false);
         return new MainViewHolder(view);
     }
 
     public void onBindViewHolder(@NonNull MainViewHolder holder,int position){
         ChildModel childData = this.childDataList.get(position);
-        holder.childName.setText(childData.getName());
+        holder.childname.setText(childData.getName());
     }
 
+    @Override
     public int getItemCount(){ return childDataList.size();}
 }
