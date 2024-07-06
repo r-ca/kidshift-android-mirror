@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 
@@ -91,12 +93,23 @@ public class CommonHomeFragment extends Fragment {
     }
 
     private boolean showConfirmDialog(String taskName) {
-        // 確認ダイアログ表示
-        return false;
+        AtomicBoolean selection = new AtomicBoolean(false);
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("タスクを完了しますか？")
+                .setMessage(taskName + "を完了しますか？")
+                .setPositiveButton("はい", (dialog, which) -> {
+                    dialog.dismiss();
+                    selection.set(true);
+                })
+                .setNegativeButton("いいえ", (dialog, which) -> {
+                    dialog.dismiss();
+                    selection.set(false);
+                })
+                .show();
+        return selection.get();
     }
 
     private void showChildSelectDialog() {
-        // 子供選択ダイアログ表示
     }
 
     @SuppressLint("NotifyDataSetChanged")
