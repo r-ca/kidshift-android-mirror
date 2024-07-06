@@ -1,21 +1,12 @@
 package one.nem.kidshift.utils.impl;
 
-import static one.nem.kidshift.utils.enums.LogLevelEnum.INFO;
-
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;
 import one.nem.kidshift.utils.KSLogger;
-import one.nem.kidshift.utils.SharedPrefUtils;
 import one.nem.kidshift.utils.enums.LogLevelEnum;
-import one.nem.kidshift.utils.factory.SharedPrefUtilsFactory;
 import one.nem.kidshift.utils.models.LogModel;
 
 public class KSLoggerImpl implements KSLogger {
