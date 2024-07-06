@@ -79,6 +79,10 @@ public class CommonHomeFragment extends Fragment {
         return view;
     }
 
+    private void showConfirmDialog(String taskName) {
+        // 確認ダイアログ表示
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private void updateTaskInfo() {
         taskData.getTasks(new TaskItemModelCallback() {
