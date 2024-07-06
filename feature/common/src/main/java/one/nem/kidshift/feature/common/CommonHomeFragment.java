@@ -28,6 +28,7 @@ import one.nem.kidshift.utils.factory.KSLoggerFactory;
 public class CommonHomeFragment extends Fragment {
 
     private static final String ARG_IS_CHILD_MODE = "isChildMode";
+    private static final String ARG_CHILD_ID = "childId";
 
     @Inject
     KSLoggerFactory ksLoggerFactory;
@@ -37,6 +38,7 @@ public class CommonHomeFragment extends Fragment {
     ChildData childData;
 
     private boolean isChildMode;
+    private String childId;
     private KSLogger logger;
 
     CompactCalendarView compactCalendarView;
@@ -46,10 +48,11 @@ public class CommonHomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static CommonHomeFragment newInstance(boolean isChildMode) {
+    public static CommonHomeFragment newInstance(boolean isChildMode, String childId) {
         CommonHomeFragment fragment = new CommonHomeFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_IS_CHILD_MODE, isChildMode);
+        args.putString(ARG_CHILD_ID, childId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,6 +62,7 @@ public class CommonHomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             isChildMode = getArguments().getBoolean(ARG_IS_CHILD_MODE);
+            childId = getArguments().getString(ARG_CHILD_ID);
         }
         logger = ksLoggerFactory.create("CommonHomeFragment");
     }
