@@ -93,8 +93,6 @@ public class ParentMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        //タスク一覧表示
         View view = inflater.inflate(R.layout.fragment_parent_main, container, false);
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
@@ -121,18 +119,9 @@ public class ParentMainFragment extends Fragment {
             }).join();
 
         });
-
         recyclerView.setAdapter(parentAdapter);
+
         updateTaskInfo();
-
-        //Pull-to-refresh（スワイプで更新）
-        try {
-
-            swipeRefreshLayout.setOnRefreshListener(() ->{
-                updateTaskInfo();
-            });
-        } catch (Exception e){
-        }
 
         return view;
     }
@@ -166,5 +155,8 @@ public class ParentMainFragment extends Fragment {
                 // Do nothing
             }
         });
+
+        // SwipeToRefresh
+        swipeRefreshLayout.setOnRefreshListener(this::updateTaskInfo);
     }
 }
