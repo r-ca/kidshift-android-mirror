@@ -46,7 +46,7 @@ public class TaskListItemAdapter extends RecyclerView.Adapter<TaskListItemAdapte
         holder.taskContents.setText(taskItemModel.getReward() + "円"); // TODO: ハードコードやめる
         holder.completedButton.setOnClickListener(v -> {
             if (callback != null) {
-                callback.onClicked(taskItemModel.getId());
+                callback.onClicked(taskItemModel.getId(), taskItemModel.getName());
             }
         });
     }
@@ -72,6 +72,6 @@ public class TaskListItemAdapter extends RecyclerView.Adapter<TaskListItemAdapte
     }
 
     public interface CompleteButtonClickedCallback {
-        void onClicked(String taskId);
+        void onClicked(String taskId, String taskName);
     }
 }
