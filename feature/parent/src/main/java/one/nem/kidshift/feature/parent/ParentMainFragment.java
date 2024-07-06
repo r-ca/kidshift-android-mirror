@@ -134,64 +134,15 @@ public class ParentMainFragment extends Fragment {
         } catch (Exception e){
         }
 
-
-
-        //お手伝い追加ダイアログ
-        LayoutInflater inflater1 = requireActivity().getLayoutInflater();
-        View view1 = inflater1.inflate(R.layout.add_task_list_dialog,null);
-
-        //子供選択表示
-        RecyclerView recyclerView1 = view1.findViewById(R.id.taskchild);
-
-        recyclerView1.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getContext());
-        recyclerView1.setLayoutManager(layoutManager1);
-
-
-
-        logger.debug("子供一覧取得開始");
-        List<ChildModel> child = childData.getChildList(new ChildModelCallback() {
-            @Override
-            public void onUnchanged() {
-
-            }
-
-            @Override
-            public void onUpdated(List<ChildModel> childModelList) {
-
-            }
-
-            @Override
-            public void onFailed(String message) {
-
-            }
-        }).join();
-        logger.debug("子供一覧取得完了");
-
-        RecyclerView.Adapter mainAdapter1 = new AddTaskDialogChildListAdapter(child);
-        recyclerView1.setAdapter(mainAdapter1);
-
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-        builder.setTitle("お手伝い名追加")
-                .setView(view1)
-                .setPositiveButton("追加", null)
-                .setNeutralButton("閉じる",null);
-        builder.create();
-
-        view.findViewById(R.id.addtask).setOnClickListener(v -> {
-            builder.show();
-        });
-
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Do something...
-        if (!fabManager.isShown()) fabManager.show();
 
+        // FABイベント設定
+        if (!fabManager.isShown()) fabManager.show();
         fabManager.setFabEventCallback(new FabEventCallback() {
             @Override
             public void onClicked() {
@@ -212,7 +163,7 @@ public class ParentMainFragment extends Fragment {
 
             @Override
             public void onLongClicked() {
-
+                // Do nothing
             }
         });
     }
