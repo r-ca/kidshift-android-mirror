@@ -8,7 +8,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        minSdk 24
+        minSdk 28
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -41,7 +41,7 @@ dependencies {
     implementation libs.com.google.dagger.hilt.android
     annotationProcessor libs.com.google.dagger.hilt.compiler
 
-    api 'com.github.sundeepk:compact-calendar-view:3.0.0'
+    implementation 'one.nem:compact-calendar-view:1.0.0'
 
     // Project modules
     implementation project(':model')
