@@ -50,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         logger = loggerFactory.create("RegisterActivity");
 
-        EditText emailEditText = findViewById(R.id.emailEditText);
+        EditText emailEditText = findViewById(R.id.emailEditText); // TODO: メールアドレスのバリデーション
         EditText passwordEditText = findViewById(R.id.passwordEditText);
 
         findViewById(R.id.registerButton).setOnClickListener(v -> {
