@@ -53,7 +53,7 @@ public class TaskListItemAdapter extends RecyclerView.Adapter<TaskListItemAdapte
 
     @Override
     public int getItemCount() {
-        return 0;
+        return taskItemModelList == null ? 0 : taskItemModelList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
