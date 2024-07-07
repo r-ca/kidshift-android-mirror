@@ -65,15 +65,17 @@ public class LoginActivity extends AppCompatActivity {
                     ParentAuthResponse parentAuthResponse = response.body();
                     if (parentAuthResponse == null || parentAuthResponse.getAccessToken() == null) {
                         // エラー処理
+                        logger.error("ParentAuthResponseがnullまたはAccessTokenがnullです");
                         return;
                     }
                     userSettings.getAppCommonSetting().setLoggedIn(true);
                     userSettings.getAppCommonSetting().setAccessToken(parentAuthResponse.getAccessToken());
                 } else {
+                    logger.error("リクエストに失敗しました");
                     // エラー処理
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("リクエストに失敗しました: " + e.getMessage());
             }
         });
     }

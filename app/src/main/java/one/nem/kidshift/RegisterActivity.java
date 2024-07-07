@@ -16,6 +16,8 @@ import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthResponse;
+import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -29,6 +31,11 @@ public class RegisterActivity extends AppCompatActivity {
     @Inject
     UserSettings userSettings;
 
+    @Inject
+    KSLoggerFactory loggerFactory;
+
+    private KSLogger logger;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        logger = loggerFactory.create("RegisterActivity");
 
         EditText emailEditText = findViewById(R.id.emailEditText);
         EditText passwordEditText = findViewById(R.id.passwordEditText);
@@ -55,15 +64,17 @@ public class RegisterActivity extends AppCompatActivity {
                     ParentAuthResponse parentAuthResponse = response.body();
                     if (parentAuthResponse == null || parentAuthResponse.getAccessToken() == null) {
                         // エラー処理
+                        logger.error("ParentAuthResponseがnullまたはAccessTokenがnullです");
                         return;
                     }
                     userSettings.getAppCommonSetting().setLoggedIn(true);
                     userSettings.getAppCommonSetting().setAccessToken(parentAuthResponse.getAccessToken());
                 } else {
+                    logger.error("リクエストに失敗しました");
                     // エラー処理
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("リクエストに失敗しました: " + e.getMessage());
             }
         });
     }
