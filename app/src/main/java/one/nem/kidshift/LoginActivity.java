@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             String email = emailEditText.getText().toString(); // TODO: メールアドレスのバリデーション
             String password = passwordEditText.getText().toString();
 
-            Call<ParentAuthResponse> call = kidShiftApiService.parentRegister(new ParentAuthRequest(email, password));
+            Call<ParentAuthResponse> call = kidShiftApiService.parentLogin(new ParentAuthRequest(email, password));
             try {
                 Response<ParentAuthResponse> response = call.execute();
                 if (response.isSuccessful()) {
