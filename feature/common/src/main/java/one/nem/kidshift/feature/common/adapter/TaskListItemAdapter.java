@@ -1,6 +1,7 @@
 package one.nem.kidshift.feature.common.adapter;
 
 import android.annotation.SuppressLint;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
 import android.widget.Button;
@@ -34,7 +35,9 @@ public class TaskListItemAdapter extends RecyclerView.Adapter<TaskListItemAdapte
     @NonNull
     @Override
     public TaskListItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = View.inflate(parent.getContext(), R.layout.list_item_common_task, null);
+//        View view = View.inflate(parent.getContext(), R.layout.list_item_common_task, null);
+        // Workaround? by https://stackoverflow.com/questions/30691150/match-parent-width-does-not-work-in-recyclerview
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_common_task, parent, false);
         return new ViewHolder(view);
     }
 
