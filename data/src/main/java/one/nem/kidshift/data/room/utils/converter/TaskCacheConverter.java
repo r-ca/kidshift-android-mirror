@@ -37,7 +37,14 @@ public class TaskCacheConverter {
      * @return TaskItemModel
      */
     public static TaskItemModel taskCacheEntityToTaskModel(TaskCacheEntity entity) {
-        return new TaskItemModel(entity.id, entity.name, entity.iconEmoji, entity.reward, null);
+        TaskItemModel model = new TaskItemModel();
+        model.setId(entity.id);
+        model.setName(entity.name);
+        model.setReward(entity.reward);
+        model.setIconEmoji(entity.iconEmoji == null ? "" : entity.iconEmoji); // Workaround
+        model.setBgColor(null); // TODO: 実装
+        model.setAttachedChildren(null); // TODO: 実装
+        return model;
     }
 
     /**
