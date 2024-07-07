@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 logger.error("リクエストに失敗しました: " + e.getMessage());
+                e.printStackTrace();
             }
         });
 
