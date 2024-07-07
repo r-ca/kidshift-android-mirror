@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginRequest;
-import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginResponse;
+import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthResponse;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import retrofit2.Response;
@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.loginButton).setOnClickListener(v -> {
             CompletableFuture.supplyAsync(() -> {
                 try {
-                    Response<ParentLoginResponse> response = apiService.parentLogin(
+                    Response<ParentAuthResponse> response = apiService.parentLogin(
                             new ParentLoginRequest(
                                     emailEditText.getText().toString(),
                                     passwordEditText.getText().toString()
