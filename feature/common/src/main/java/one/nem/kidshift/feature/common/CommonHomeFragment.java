@@ -90,7 +90,7 @@ public class CommonHomeFragment extends Fragment {
                     taskData.recordTaskCompletion(taskId, childId);
                 }
             } else {
-                showChildSelectDialog(taskId);
+                showChildSelectDialog(taskId, taskName);
             }
         });
 
@@ -125,7 +125,7 @@ public class CommonHomeFragment extends Fragment {
         return selection.get();
     }
 
-    private void showChildSelectDialog(String taskId) { // TODO: Assignされている子供かどうかを考慮するように
+    private void showChildSelectDialog(String taskId, String taskName) { // TODO: Assignされている子供かどうかを考慮するように
         RecyclerView childListRecyclerView = new RecyclerView(requireContext());
         childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // TODO: キャッシュから取得する方にする？
@@ -135,13 +135,15 @@ public class CommonHomeFragment extends Fragment {
                 taskData.recordTaskCompletion(taskId, childId);
             });
             childListRecyclerView.setAdapter(childListItemAdapter);
+        }).thenRun(() -> {
+            requireActivity().runOnUiThread(() -> {
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(taskName + "を完了したお子様を選択")
+                        .setView(childListRecyclerView)
+                        .setNeutralButton("閉じる", (dialog, which) -> dialog.dismiss())
+                        .show();
+            });
         });
-
-        new MaterialAlertDialogBuilder(requireContext())
-                .setTitle("お手伝いをしたお子様を選択")
-                .setView(childListRecyclerView)
-                .setNeutralButton("閉じる", (dialog, which) -> dialog.dismiss())
-                .show();
     }
 
     @SuppressLint("NotifyDataSetChanged")
