@@ -129,7 +129,7 @@ public class CommonHomeFragment extends Fragment {
         RecyclerView childListRecyclerView = new RecyclerView(requireContext());
         childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         childData.getChildListDirect().thenAccept(childModelList -> {
-            ChildListItemAdapter childListItemAdapter = new ChildListItemAdapter();
+            ChildListItemAdapter childListItemAdapter = new ChildListItemAdapter(childModelList);
             childListRecyclerView.setAdapter(childListItemAdapter);
             childListItemAdapter.setCallback(childId -> {
                 taskData.recordTaskCompletion(taskId, childId);
