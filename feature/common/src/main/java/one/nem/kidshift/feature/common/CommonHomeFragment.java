@@ -181,6 +181,12 @@ public class CommonHomeFragment extends Fragment {
     private void updateData() {
         swipeRefreshLayout.setRefreshing(true);
         CompletableFuture.allOf(updateTaskInfo(), updateCalender()).thenRun(() -> {
+            // Workaround: リスト更新処理があまりにも重くてアニメーションが壊れるため
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             swipeRefreshLayout.setRefreshing(false);
         });
     }
