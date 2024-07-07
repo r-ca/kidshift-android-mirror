@@ -16,6 +16,7 @@ import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
@@ -101,10 +102,7 @@ public class CommonHomeFragment extends Fragment {
         taskListRecyclerView.setAdapter(taskListItemAdapter);
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            updateTaskInfo();
-            updateCalender();
-        });
+        swipeRefreshLayout.setOnRefreshListener(this::updateData);
 
         return view;
     }
@@ -112,8 +110,7 @@ public class CommonHomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateTaskInfo();
-        updateCalender();
+        updateData();
     }
 
     private boolean showConfirmDialog(String taskName) {
@@ -155,8 +152,8 @@ public class CommonHomeFragment extends Fragment {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void updateTaskInfo() { // TODO: updatedの場合の処理など実装
-        taskData.getTasks(new TaskItemModelCallback() {
+    private CompletableFuture<Void> updateTaskInfo() { // TODO: updatedの場合の処理など実装
+        return taskData.getTasks(new TaskItemModelCallback() {
             @Override
             public void onUnchanged() {
             }
@@ -176,7 +173,15 @@ public class CommonHomeFragment extends Fragment {
         });
     }
 
-    private void updateCalender() {
+    private CompletableFuture<Void> updateCalender() {
         // TODO: タスクの完了状況をカレンダーに表示
+        return CompletableFuture.completedFuture(null);
+    }
+
+    private void updateData() {
+        swipeRefreshLayout.setRefreshing(true);
+        CompletableFuture.allOf(updateTaskInfo(), updateCalender()).thenRun(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 }
