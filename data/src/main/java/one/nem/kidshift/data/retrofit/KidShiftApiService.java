@@ -6,8 +6,8 @@ import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
 import one.nem.kidshift.data.retrofit.model.child.ChildLoginCodeResponse;
 import one.nem.kidshift.data.retrofit.model.child.ChildResponse;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
-import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginRequest;
-import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginResponse;
+import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthRequest;
+import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthResponse;
 import one.nem.kidshift.data.retrofit.model.task.TaskAddRequest;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.data.retrofit.model.task.TaskResponse;
@@ -15,7 +15,6 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -33,7 +32,15 @@ public interface KidShiftApiService {
      * @return ParentLoginResponse
      */
     @POST("/parent/auth/login")
-    Call<ParentLoginResponse> parentLogin(@Body ParentLoginRequest request);
+    Call<ParentAuthResponse> parentLogin(@Body ParentAuthRequest request);
+
+    /**
+     * 保護者登録処理
+     * @param request ParentRegisterRequest
+     * @return ParentRegisterResponse
+     */
+    @POST("/parent/auth/register")
+    Call<ParentAuthResponse> parentRegister(@Body ParentAuthRequest request);
 
     /**
      * 保護者アカウント情報取得処理

@@ -10,7 +10,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
@@ -24,45 +23,45 @@ import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @AndroidEntryPoint
-public class LoginActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
+
+
+    @Inject
+    KidShiftApiService kidShiftApiService;
+
+    @Inject
+    UserSettings userSettings;
 
     @Inject
     KSLoggerFactory loggerFactory;
 
     private KSLogger logger;
 
-    @Inject
-    UserSettings userSettings;
-
-    @Inject
-    KidShiftApiService kidShiftApiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        logger = loggerFactory.create("LoginActivity");
+        logger = loggerFactory.create("RegisterActivity");
 
-        EditText emailEditText = findViewById(R.id.emailEditText);
+        EditText emailEditText = findViewById(R.id.emailEditText); // TODO: メールアドレスのバリデーション
         EditText passwordEditText = findViewById(R.id.passwordEditText);
 
-        findViewById(R.id.loginButton).setOnClickListener(v -> {
-            String email = emailEditText.getText().toString(); // TODO: メールアドレスのバリデーション
+        findViewById(R.id.registerButton).setOnClickListener(v -> {
+            String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
 
             CompletableFuture.runAsync(() -> {
-                Call<ParentAuthResponse> call = kidShiftApiService.parentLogin(new ParentAuthRequest(email, password));
+                Call<ParentAuthResponse> call = kidShiftApiService.parentRegister(new ParentAuthRequest(email, password));
                 try {
                     Response<ParentAuthResponse> response = call.execute();
                     if (response.isSuccessful()) {
@@ -87,8 +86,8 @@ public class LoginActivity extends AppCompatActivity {
             });
         });
 
-        findViewById(R.id.intentRegisterButton).setOnClickListener(v -> {
-            startActivity(new Intent(this, RegisterActivity.class));
+        findViewById(R.id.intentLoginButton).setOnClickListener(v -> {
+            startActivity(new Intent(this, LoginActivity.class));
         });
     }
 }
