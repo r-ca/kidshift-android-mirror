@@ -1,13 +1,13 @@
 package one.nem.kidshift.data.retrofit.model.parent.auth;
 
-public class ParentLoginResponse {
+public class ParentAuthResponse {
     private String accessToken;
 
     /**
      * コンストラクタ (全プロパティ)
      * @param accessToken アクセストークン
      */
-    public ParentLoginResponse(String accessToken) {
+    public ParentAuthResponse(String accessToken) {
         this.accessToken = accessToken;
     }
 
