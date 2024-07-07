@@ -94,7 +94,18 @@ public class CommonHomeFragment extends Fragment {
             }
         });
 
+        RecyclerView taskListRecyclerView = view.findViewById(R.id.taskListRecyclerView);
+        taskListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        taskListRecyclerView.setAdapter(taskListItemAdapter);
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateTaskInfo();
+        updateCalender();
     }
 
     private boolean showConfirmDialog(String taskName) {
