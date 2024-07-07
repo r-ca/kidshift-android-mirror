@@ -35,6 +35,10 @@ public interface KidShiftApiService {
     @POST("/parent/auth/login")
     Call<ParentLoginResponse> parentLogin(@Body ParentLoginRequest request);
 
+
+    @POST("/parent/auth/register")
+    Call<ParentLoginResponse> parentRegister(@Body ParentLoginRequest request);
+
     /**
      * 保護者アカウント情報取得処理
      * @return ParentInfoResponse
