@@ -52,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
+        logger = loggerFactory.create("LoginActivity");
+
         EditText emailEditText = findViewById(R.id.emailEditText);
         EditText passwordEditText = findViewById(R.id.passwordEditText);
 
