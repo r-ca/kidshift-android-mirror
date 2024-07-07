@@ -1,5 +1,6 @@
 package one.nem.kidshift;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 
@@ -76,6 +77,10 @@ public class RegisterActivity extends AppCompatActivity {
             } catch (Exception e) {
                 logger.error("リクエストに失敗しました: " + e.getMessage());
             }
+        });
+
+        findViewById(R.id.intentLoginButton).setOnClickListener(v -> {
+            startActivity(new Intent(this, LoginActivity.class));
         });
     }
 }
