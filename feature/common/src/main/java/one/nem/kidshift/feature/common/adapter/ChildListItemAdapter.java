@@ -64,7 +64,7 @@ public class ChildListItemAdapter extends RecyclerView.Adapter<ChildListItemAdap
         public ViewHolder(@NonNull android.view.View itemView) {
             super(itemView);
             childName = itemView.findViewById(R.id.childNameTextView);
-            completedButton = itemView.findViewById(R.id.actbutton);
+            completedButton = itemView.findViewById(R.id.completeButton);
         }
     }
 

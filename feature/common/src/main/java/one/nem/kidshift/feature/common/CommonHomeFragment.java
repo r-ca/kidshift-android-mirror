@@ -130,10 +130,10 @@ public class CommonHomeFragment extends Fragment {
         childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         childData.getChildListDirect().thenAccept(childModelList -> {
             ChildListItemAdapter childListItemAdapter = new ChildListItemAdapter(childModelList);
-            childListRecyclerView.setAdapter(childListItemAdapter);
             childListItemAdapter.setCallback(childId -> {
                 taskData.recordTaskCompletion(taskId, childId);
             });
+            childListRecyclerView.setAdapter(childListItemAdapter);
         });
 
         new MaterialAlertDialogBuilder(requireContext())
