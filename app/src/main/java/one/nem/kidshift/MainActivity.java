@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+
         logger = loggerFactory.create("MainActivity");
 
         logger.info("MainActivity started!");
