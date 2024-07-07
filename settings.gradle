@@ -16,6 +16,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            name = 'CompactCalendarView-GHPages'
+            url = uri('https://r-ca.github.io/CompactCalendarView/')
+        }
     }
 }
 
@@ -29,3 +33,4 @@ include ':utils'
 include ':data'
 include ':model'
 include ':shared'
+include ':feature:common'
