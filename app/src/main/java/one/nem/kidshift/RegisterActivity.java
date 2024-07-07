@@ -10,6 +10,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.concurrent.CompletableFuture;
+
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -58,26 +60,30 @@ public class RegisterActivity extends AppCompatActivity {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
 
-            Call<ParentAuthResponse> call = kidShiftApiService.parentRegister(new ParentAuthRequest(email, password));
-            try {
-                Response<ParentAuthResponse> response = call.execute();
-                if (response.isSuccessful()) {
-                    ParentAuthResponse parentAuthResponse = response.body();
-                    if (parentAuthResponse == null || parentAuthResponse.getAccessToken() == null) {
+            CompletableFuture.runAsync(() -> {
+                Call<ParentAuthResponse> call = kidShiftApiService.parentRegister(new ParentAuthRequest(email, password));
+                try {
+                    Response<ParentAuthResponse> response = call.execute();
+                    if (response.isSuccessful()) {
+                        ParentAuthResponse parentAuthResponse = response.body();
+                        if (parentAuthResponse == null || parentAuthResponse.getAccessToken() == null) {
+                            // エラー処理
+                            logger.error("ParentAuthResponseがnullまたはAccessTokenがnullです");
+                            return;
+                        }
+                        userSettings.getAppCommonSetting().setLoggedIn(true);
+                        userSettings.getAppCommonSetting().setAccessToken(parentAuthResponse.getAccessToken());
+                    } else {
+                        logger.error("リクエストに失敗しました");
                         // エラー処理
-                        logger.error("ParentAuthResponseがnullまたはAccessTokenがnullです");
-                        return;
                     }
-                    userSettings.getAppCommonSetting().setLoggedIn(true);
-                    userSettings.getAppCommonSetting().setAccessToken(parentAuthResponse.getAccessToken());
-                } else {
-                    logger.error("リクエストに失敗しました");
-                    // エラー処理
+                } catch (Exception e) {
+                    logger.error("リクエストに失敗しました: " + e.getMessage());
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                logger.error("リクエストに失敗しました: " + e.getMessage());
-                e.printStackTrace();
-            }
+            }).thenRun(() -> {
+                startActivity(new Intent(this, MainActivity.class));
+            });
         });
 
         findViewById(R.id.intentLoginButton).setOnClickListener(v -> {
