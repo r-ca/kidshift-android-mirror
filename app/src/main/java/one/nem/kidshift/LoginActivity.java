@@ -21,6 +21,7 @@ import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthResponse;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -36,6 +37,9 @@ public class LoginActivity extends AppCompatActivity {
     @Inject
     UserSettings userSettings;
 
+    @Inject
+    KidShiftApiService kidShiftApiService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,63 +51,30 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        logger = loggerFactory.create("LoginActivity");
-
-        // Retrofit init
-        KidShiftApiService apiService = new Retrofit.Builder()
-                .baseUrl("https://kidshift-beta.nem.one/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(KidShiftApiService.class);
-
         EditText emailEditText = findViewById(R.id.emailEditText);
         EditText passwordEditText = findViewById(R.id.passwordEditText);
 
         findViewById(R.id.loginButton).setOnClickListener(v -> {
-            CompletableFuture.supplyAsync(() -> {
-                try {
-                    Response<ParentAuthResponse> response = apiService.parentLogin(
-                            new ParentAuthRequest(
-                                    emailEditText.getText().toString(),
-                                    passwordEditText.getText().toString()
-                            )).execute();
+            String email = emailEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
 
-                    return response;
-                } catch (IOException e) {
-                    logger.error("IOException");
-                    throw new RuntimeException(e);
-                }
-            }).thenAccept(response -> {
+            Call<ParentAuthResponse> call = kidShiftApiService.parentRegister(new ParentAuthRequest(email, password));
+            try {
+                Response<ParentAuthResponse> response = call.execute();
                 if (response.isSuccessful()) {
-                    logger.info("Login Success");
-                    logger.debug("AccessToken: " + response.body().getAccessToken());
-
-                    UserSettings.AppCommonSetting appCommonSetting = userSettings.getAppCommonSetting();
-                    appCommonSetting.setLoggedIn(true);
-                    appCommonSetting.setAccessToken(response.body().getAccessToken());
-                    appCommonSetting.setChildMode(false);
-
-                    finish();
-                } else {
-                    logger.error("Login Failed");
-                    try {
-                        logger.debug("Response: " + response.errorBody().string());
-                    } catch (IOException e) {
-                        logger.error("IOException while reading error body");
+                    ParentAuthResponse parentAuthResponse = response.body();
+                    if (parentAuthResponse == null || parentAuthResponse.getAccessToken() == null) {
+                        // エラー処理
+                        return;
                     }
-                    // ログイン失敗時の処理
+                    userSettings.getAppCommonSetting().setLoggedIn(true);
+                    userSettings.getAppCommonSetting().setAccessToken(parentAuthResponse.getAccessToken());
+                } else {
+                    // エラー処理
                 }
-            }).exceptionally(e -> {
-                logger.error("Exception occurred: " + e.getMessage());
-                return null;
-            });
-        });
-
-        // for Debug
-        findViewById(R.id.loginButton).setOnLongClickListener(v -> {
-            // ログイン画面をバイパスしてメイン画面に遷移
-            finish();
-            return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 }
