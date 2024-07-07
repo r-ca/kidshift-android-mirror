@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class CommonHomeFragment extends Fragment {
     private KSLogger logger;
 
     CompactCalendarView compactCalendarView;
+    SwipeRefreshLayout swipeRefreshLayout;
     TaskListItemAdapter taskListItemAdapter;
 
     public CommonHomeFragment() {
@@ -97,6 +99,12 @@ public class CommonHomeFragment extends Fragment {
         RecyclerView taskListRecyclerView = view.findViewById(R.id.taskListRecyclerView);
         taskListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         taskListRecyclerView.setAdapter(taskListItemAdapter);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            updateTaskInfo();
+            updateCalender();
+        });
 
         return view;
     }
