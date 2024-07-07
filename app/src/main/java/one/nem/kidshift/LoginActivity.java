@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
-import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginRequest;
+import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthResponse;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             CompletableFuture.supplyAsync(() -> {
                 try {
                     Response<ParentAuthResponse> response = apiService.parentLogin(
-                            new ParentLoginRequest(
+                            new ParentAuthRequest(
                                     emailEditText.getText().toString(),
                                     passwordEditText.getText().toString()
                             )).execute();

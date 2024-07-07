@@ -1,6 +1,6 @@
 package one.nem.kidshift.data.retrofit.model.parent.auth;
 
-public class ParentLoginRequest {
+public class ParentAuthRequest {
     private String email;
     private String password;
 
@@ -9,7 +9,7 @@ public class ParentLoginRequest {
      * @param email メールアドレス
      * @param password パスワード
      */
-    public ParentLoginRequest(String email, String password) {
+    public ParentAuthRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }
