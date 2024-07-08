@@ -30,8 +30,6 @@ public class RewardDataImpl implements RewardData {
 
     @Override
     public CompletableFuture<Integer> getTotalReward(String childId) {
-        return CompletableFuture.supplyAsync(() -> {
-            return ksActions.syncHistory(childId).join().stream().mapToInt(HistoryModel::getReward).sum();
-        });
+        return CompletableFuture.supplyAsync(() -> ksActions.syncHistory(childId).join().stream().mapToInt(HistoryModel::getReward).sum());
     }
 }

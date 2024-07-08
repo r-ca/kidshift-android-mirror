@@ -64,10 +64,17 @@ public class WalletContentFragment extends Fragment {
 
     private void updateTotalReward() {
         rewardData.getTotalReward(childId).thenAccept(totalReward -> {
+            logger.debug("Total reward: " + totalReward);
             totalRewardTextView.setText(String.valueOf(totalReward));
         }).exceptionally(throwable -> {
             logger.error("Failed to get total reward: " + throwable.getMessage());
             return null;
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateTotalReward();
     }
 }
