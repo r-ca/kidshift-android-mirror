@@ -29,6 +29,6 @@ public interface KSActions {
     /**
      * 履歴情報同期
      */
-    CompletableFuture<List<HistoryModel>> syncHistory();
+    CompletableFuture<List<HistoryModel>> syncHistory(String childId);
 
 }
