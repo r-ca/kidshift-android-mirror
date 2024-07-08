@@ -133,7 +133,20 @@ public class ChildDataImpl implements ChildData {
 
     @Override
     public CompletableFuture<Void> removeChild(String childId) {
-        return CompletableFuture.completedFuture(null);
+        return CompletableFuture.supplyAsync(() -> {
+            Call<Void> call = kidShiftApiService.removeChild(childId);
+            try {
+                Response<Void> response = call.execute();
+                if (response.isSuccessful()) {
+                    logger.info("子供削除成功(childId: " + childId + ")");
+                    return null;
+                } else {
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
