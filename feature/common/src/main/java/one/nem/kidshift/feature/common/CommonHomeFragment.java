@@ -117,12 +117,12 @@ public class CommonHomeFragment extends Fragment {
         updateData();
     }
 
-    private void setupFab() {
+    private void setupFabParent() {
         fabManager.show();
         fabManager.setFabEventCallback(new FabEventCallback() {
             @Override
             public void onClicked() {
-                // TODO: 子供追加ダイアログ表示
+                showAddTaskDialog();
             }
 
             @Override
@@ -130,6 +130,10 @@ public class CommonHomeFragment extends Fragment {
                 // Do nothing
             }
         });
+    }
+
+    private void setupFabChild() {
+        fabManager.hide();
     }
 
     private boolean showConfirmDialog(String taskName) {
@@ -208,5 +212,13 @@ public class CommonHomeFragment extends Fragment {
             }
             swipeRefreshLayout.setRefreshing(false);
         });
+    }
+
+    private void showAddTaskDialog() {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Placeholder")
+                .setMessage("Placeholder")
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }
