@@ -163,7 +163,7 @@ public class ChildManageMainActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("キャンセル", (dialog, which) -> dialog.dismiss())
                 // 削除ボタン
-                .setNeutralButton("削除", (dialog, which) -> {
+                .setNeutralButton("削除", (dialog, which) -> { // TODO: 確認ダイアログを表示する
                     childData.removeChild(childModel.getId());
                     updateListDirectly();
                 })
