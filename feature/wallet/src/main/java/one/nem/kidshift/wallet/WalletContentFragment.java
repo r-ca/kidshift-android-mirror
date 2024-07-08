@@ -5,8 +5,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.KSActions;
+import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
@@ -17,9 +21,13 @@ public class WalletContentFragment extends Fragment {
 
     @Inject
     KSLoggerFactory loggerFactory;
+    @Inject
+    RewardData rewardData;
 
     private KSLogger logger;
     private String childId;
+
+    private TextView totalRewardTextView;
 
     public WalletContentFragment() {
         // Required empty public constructor
@@ -48,7 +56,18 @@ public class WalletContentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wallet_content, container, false);
-        // Use the parameter as needed in the view setup
+
+        totalRewardTextView = view.findViewById(R.id.totalRewardTextView);
+
         return view;
+    }
+
+    private void updateTotalReward() {
+        rewardData.getTotalReward(childId).thenAccept(totalReward -> {
+            totalRewardTextView.setText(String.valueOf(totalReward));
+        }).exceptionally(throwable -> {
+            logger.error("Failed to get total reward: " + throwable.getMessage());
+            return null;
+        });
     }
 }
