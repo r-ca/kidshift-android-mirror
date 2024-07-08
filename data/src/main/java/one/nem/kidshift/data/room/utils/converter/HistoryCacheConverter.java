@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import one.nem.kidshift.data.room.entity.HistoryCacheEntity;
+import one.nem.kidshift.data.room.model.HistoryWithTask;
 import one.nem.kidshift.model.HistoryModel;
 
 public class HistoryCacheConverter {
@@ -38,6 +39,21 @@ public class HistoryCacheConverter {
         List<HistoryModel> historyModelList = new ArrayList<>();
         for (HistoryCacheEntity historyCacheEntity : historyCacheEntityList) {
             historyModelList.add(historyCacheEntityToHistoryModel(historyCacheEntity));
+        }
+        return historyModelList;
+    }
+
+    public static List<HistoryModel> historyWithTaskListToHistoryModelList(List<HistoryWithTask> result) {
+        List<HistoryModel> historyModelList = new ArrayList<>();
+        for (HistoryWithTask historyWithTask : result) {
+            HistoryModel historyModel = new HistoryModel();
+            historyModel.setId(historyWithTask.history.id);
+            historyModel.setTaskId(historyWithTask.history.taskId);
+            historyModel.setChildId(historyWithTask.history.childId);
+            historyModel.setRegisteredAt(historyWithTask.history.registeredAt);
+            historyModel.setTaskName(historyWithTask.task.name);
+            historyModel.setReward(historyWithTask.task.reward);
+            historyModelList.add(historyModel);
         }
         return historyModelList;
     }
