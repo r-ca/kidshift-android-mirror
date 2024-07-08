@@ -136,11 +136,13 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.getMenu().removeItem(R.id.feature_common_parent_child_navigation);
             bottomNavigationView.getMenu().removeItem(R.id.feature_common_parent_parent_navigation);
 
+            bottomNavigationView.getMenu().removeItem(R.id.feature_wallet_parent_navigation);
             // startDestinationを変更
             bottomNavigationView.setSelectedItemId(R.id.feature_common_child_child_navigation);
         } else {
             logger.info("Child mode is disabled!");
             bottomNavigationView.getMenu().removeItem(R.id.feature_common_child_child_navigation);
+            bottomNavigationView.getMenu().removeItem(R.id.feature_wallet_child_navigation);
         }
 
         fab = findViewById(R.id.mainFab);
