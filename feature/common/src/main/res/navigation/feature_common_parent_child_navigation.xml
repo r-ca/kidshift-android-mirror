@@ -2,11 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/feature_common_navigation"
-    app:startDestination="@id/commonHomeFragment">
+    android:id="@+id/feature_common_parent_child_navigation"
+    app:startDestination="@id/commonHomeFragmentParentChild">
 
     <fragment
-        android:id="@+id/commonHomeFragment"
+        android:id="@+id/commonHomeFragmentParentChild"
         android:name="one.nem.kidshift.feature.common.CommonHomeFragment"
         android:label="fragment_common_home"
         tools:layout="@layout/fragment_common_home" />

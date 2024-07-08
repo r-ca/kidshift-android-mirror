@@ -70,6 +70,16 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Check logged in
+        if (userSettings.getAppCommonSetting().isLoggedIn()) {
+            logger.info("User is logged in!");
+        } else {
+            logger.info("User is not logged in!");
+
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -119,22 +129,27 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Check logged in
-        if (userSettings.getAppCommonSetting().isLoggedIn()) {
-            logger.info("User is logged in!");
-        } else {
-            logger.info("User is not logged in!");
+        UserSettings.AppCommonSetting appCommonSetting = userSettings.getAppCommonSetting();
+        if (appCommonSetting.isChildMode()) {
+            logger.info("Child mode is enabled!");
+            // 保護者向けのナビゲーションを削除
+            bottomNavigationView.getMenu().removeItem(R.id.feature_common_parent_child_navigation);
+            bottomNavigationView.getMenu().removeItem(R.id.feature_common_parent_parent_navigation);
 
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            bottomNavigationView.getMenu().removeItem(R.id.feature_wallet_parent_navigation);
+            // startDestinationを変更
+            bottomNavigationView.setSelectedItemId(R.id.feature_common_child_child_navigation);
+
+            // manage_child_accountを削除
+            navigationView.getMenu().removeItem(R.id.manage_child_account);
+        } else {
+            logger.info("Child mode is disabled!");
+            bottomNavigationView.getMenu().removeItem(R.id.feature_common_child_child_navigation);
+            bottomNavigationView.getMenu().removeItem(R.id.feature_wallet_child_navigation);
         }
 
         fab = findViewById(R.id.mainFab);
         fabManager.setFab(fab);
-
-        // Apply feature flag
-        if (!featureFlag.isEnabled("showDebugMenu"))
-            bottomNavigationView.getMenu().removeItem(R.id.feature_debug_navigation);
     }
 
     /**

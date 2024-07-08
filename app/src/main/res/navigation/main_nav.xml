@@ -2,10 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_nav"
-    app:startDestination="@id/feature_parent_navigation">
+    app:startDestination="@id/feature_common_parent_parent_navigation">
 
     <include app:graph="@navigation/feature_debug_navigation" />
     <include app:graph="@navigation/feature_child_navigation" />
-    <include app:graph="@navigation/feature_parent_navigation" />
+    <include app:graph="@navigation/feature_common_parent_parent_navigation" />
+    <include app:graph="@navigation/feature_common_parent_child_navigation" />
+    <include app:graph="@navigation/feature_common_child_child_navigation" />
     <include app:graph="@navigation/feature_wallet_parent_navigation" />
+    <include app:graph="@navigation/feature_wallet_child_navigation" />
 </navigation>

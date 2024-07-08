@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/feature_common_parent_parent_navigation"
+    app:startDestination="@id/commonHomeFragmentParentParent">
+
+    <fragment
+        android:id="@+id/commonHomeFragmentParentParent"
+        android:name="one.nem.kidshift.feature.common.CommonHomeFragment"
+        android:label="fragment_common_home"
+        tools:layout="@layout/fragment_common_home" />
+</navigation>

@@ -77,6 +77,7 @@ public class UserSettingsImpl implements UserSettings {
         boolean loggedIn;
         String accessToken;
         boolean childMode;
+        String childId;
 
         AppCommonSettingImpl() {
             sharedPrefUtils = sharedPrefUtilsFactory.create("user_settings");
@@ -85,10 +86,12 @@ public class UserSettingsImpl implements UserSettings {
                 loggedIn = appCommonSetting.isLoggedIn();
                 accessToken = appCommonSetting.getAccessToken().isEmpty() ? "" : appCommonSetting.getAccessToken();
                 childMode = appCommonSetting.isChildMode();
+                childId = appCommonSetting.getChildId().isEmpty() ? "" : appCommonSetting.getChildId();
             } else {
                 loggedIn = false;
                 accessToken = "";
                 childMode = false;
+                childId = "";
             }
         }
 
@@ -126,6 +129,17 @@ public class UserSettingsImpl implements UserSettings {
         @Override
         public void setChildMode(boolean childMode) {
             this.childMode = childMode;
+            save();
+        }
+
+        @Override
+        public String getChildId() {
+            return childId;
+        }
+
+        @Override
+        public void setChildId(String childId) {
+            this.childId = childId;
             save();
         }
     }

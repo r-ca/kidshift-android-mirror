@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- TODO: アイコン再検討 -->
+    <!-- 保護者モード / 保護者目線 -->
     <item
-        android:id="@+id/feature_parent_navigation"
+        android:id="@+id/feature_common_parent_parent_navigation"
         android:icon="@drawable/pending_24px"
-        android:title="Parent" />
+        android:title="ホーム" />
 
+    <!-- 保護者モード / 子供目線 -->
     <item
-        android:id="@+id/feature_child_navigation"
+        android:id="@+id/feature_common_parent_child_navigation"
         android:icon="@drawable/child_care_24px"
-        android:title="Child" />
+        android:title="こども" />
 
+    <!-- 子供モード / 子供目線 -->
     <item
-        android:id="@+id/feature_debug_navigation"
-        android:icon="@drawable/developer_mode_24px"
-        android:title="Debug" />
+        android:id="@+id/feature_common_child_child_navigation"
+        android:icon="@drawable/child_care_24px"
+        android:title="ホーム" />
 
     <item
         android:id="@+id/feature_wallet_parent_navigation"
         android:icon="@drawable/wallet_24px"
-        android:title="Wallet" />
+        android:title="ウォレット" />
+
+    <item
+        android:id="@+id/feature_wallet_child_navigation"
+        android:icon="@drawable/wallet_24px"
+        android:title="ウォレット" />
 </menu>

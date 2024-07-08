@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.RewardData;
+import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
@@ -19,7 +20,6 @@ import one.nem.kidshift.utils.factory.KSLoggerFactory;
 public class WalletContentFragment extends Fragment {
 
     private static final String ARG_CHILD_ID = "childId";
-
     @Inject
     KSLoggerFactory loggerFactory;
     @Inject
@@ -27,6 +27,9 @@ public class WalletContentFragment extends Fragment {
 
     @Inject
     FabManager fabManager;
+
+    @Inject
+    UserSettings userSettings;
 
     private KSLogger logger;
     private String childId;
@@ -45,6 +48,10 @@ public class WalletContentFragment extends Fragment {
         return fragment;
     }
 
+    public static WalletContentFragment newInstance() {
+        return new WalletContentFragment();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +60,13 @@ public class WalletContentFragment extends Fragment {
         }
         logger = loggerFactory.create("WalletMainFragment");
         logger.debug("Received parameter: " + childId);
+        if (childId == null) {
+            // 単品で呼び出されてる = 子供モードでログインされている
+            childId = userSettings.getAppCommonSetting().getChildId();
+            if (childId == null) {
+                logger.error("Child ID is not set");
+            }
+        }
     }
 
     @Override

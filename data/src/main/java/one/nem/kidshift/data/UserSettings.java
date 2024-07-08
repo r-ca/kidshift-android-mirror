@@ -37,6 +37,9 @@ public interface UserSettings {
 
         boolean isChildMode();
         void setChildMode(boolean childMode);
+
+        String getChildId();
+        void setChildId(String childId);
     }
 
     interface SharedPrefCache {
