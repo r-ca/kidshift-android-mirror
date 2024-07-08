@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.RewardData;
+import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
@@ -23,6 +24,9 @@ public class WalletContentFragment extends Fragment {
     KSLoggerFactory loggerFactory;
     @Inject
     RewardData rewardData;
+
+    @Inject
+    FabManager fabManager;
 
     private KSLogger logger;
     private String childId;
@@ -62,6 +66,11 @@ public class WalletContentFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
     private void updateTotalReward() {
         rewardData.getTotalReward(childId).thenAccept(totalReward -> {
             logger.debug("Total reward: " + totalReward);
@@ -76,5 +85,6 @@ public class WalletContentFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateTotalReward();
+        fabManager.hide();
     }
 }
