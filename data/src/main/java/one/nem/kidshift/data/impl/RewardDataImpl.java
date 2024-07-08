@@ -29,7 +29,7 @@ public class RewardDataImpl implements RewardData {
     }
 
     @Override
-    public CompletableFuture<Integer> getTotalReward(String childId) {
+    public CompletableFuture<Integer> getTotalReward(String childId) { // TODO: localCacheを使う
         return CompletableFuture.supplyAsync(() -> ksActions.syncHistory(childId).join().stream().mapToInt(HistoryModel::getReward).sum());
     }
 }
