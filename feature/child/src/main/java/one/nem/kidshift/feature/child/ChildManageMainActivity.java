@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -60,6 +62,16 @@ public class ChildManageMainActivity extends AppCompatActivity {
         });
 
         logger = loggerFactory.create("ChildManageMainActivity");
+
+        // ToolBarのセットアップ
+        Toolbar toolbar = findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        // タイトル
+        Objects.requireNonNull(getSupportActionBar()).setTitle("子供管理");
+        // 閉じる
+        toolbar.setNavigationIcon(one.nem.kidshift.shared.R.drawable.check_24px); // TODO: アイコン修正
+        toolbar.setNavigationOnClickListener(v -> finish());
+        // 追加ボタン
 
         RecyclerView recyclerView = findViewById(R.id.childListRecyclerView);
         childListAdapter = new ChildListAdapter();
