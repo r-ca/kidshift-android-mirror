@@ -1,8 +1,12 @@
 package one.nem.kidshift;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -20,6 +24,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.divider.MaterialDivider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -75,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, ChildManageMainActivity.class);
                     startActivity(intent);
                     return true;
+                } else if (item.getItemId() == R.id.show_debug_dialog) {
+                    showDebugDialog();
+                    return true;
+                } else {
+                    logger.warn("不明なアイテム: " + item.getItemId());
                 }
                 return false;
             }
@@ -124,4 +135,55 @@ public class MainActivity extends AppCompatActivity {
     private void startup() {
 
     }
+
+    private void showDebugDialog() {
+
+        ScrollView scrollView = new ScrollView(this);
+        scrollView.setPadding(32, 16, 32, 16);
+        LinearLayout linearLayout = new LinearLayout(this);
+
+        TextView serverAddressTextView = new TextView(this);
+        serverAddressTextView.setText("サーバーアドレス: " + userSettings.getApiSetting().getApiBaseUrl());
+        serverAddressTextView.setTextSize(16);
+
+        TextView accessTokenTextView = new TextView(this);
+        accessTokenTextView.setText("アクセストークン: " + userSettings.getAppCommonSetting().getAccessToken());
+        accessTokenTextView.setTextSize(16);
+
+        TextView childModeTextView = new TextView(this);
+        childModeTextView.setText("子供モード: " + userSettings.getAppCommonSetting().isChildMode());
+        childModeTextView.setTextSize(16);
+
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.addView(serverAddressTextView);
+        linearLayout.addView(createDivider(this));
+        linearLayout.addView(accessTokenTextView);
+        linearLayout.addView(createDivider(this));
+        linearLayout.addView(childModeTextView);
+
+        scrollView.addView(linearLayout);
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("参考情報(評価用)")
+                .setView(scrollView)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    // Do nothing
+                })
+                .show();
+
+    }
+
+    private MaterialDivider createDivider(Context context) {
+        MaterialDivider divider = new MaterialDivider(context);
+        // Margin (48, 16, 48, 16)
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(48, 16, 48, 16);
+        divider.setLayoutParams(params);
+        return divider;
+    }
+
+
 }
