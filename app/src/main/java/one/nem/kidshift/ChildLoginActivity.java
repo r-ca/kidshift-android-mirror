@@ -12,7 +12,31 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.ChildData;
+import one.nem.kidshift.data.UserSettings;
+import one.nem.kidshift.data.retrofit.KidShiftApiService;
+import one.nem.kidshift.data.retrofit.model.child.auth.ChildAuthRequest;
+import one.nem.kidshift.data.retrofit.model.child.auth.ChildAuthResponse;
+import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import retrofit2.Call;
+
+@AndroidEntryPoint
 public class ChildLoginActivity extends AppCompatActivity {
+
+    @Inject
+    ChildData childData;
+    @Inject
+    UserSettings userSettings;
+    @Inject
+    KSLoggerFactory loggerFactory;
+    @Inject
+    KidShiftApiService kidShiftApiService;
+
+    private KSLogger logger;
 
 
     private EditText loginCode1, loginCode2, loginCode3, loginCode4, loginCode5, loginCode6, loginCode7, loginCode8;
@@ -49,7 +73,20 @@ public class ChildLoginActivity extends AppCompatActivity {
 
         // ログインボタンを押したときの処理
         findViewById(R.id.childLoginButton).setOnClickListener(v -> {
-            Toast.makeText(this, "ログインコード: " + getLoginCode(), Toast.LENGTH_SHORT).show();
+            Call<ChildAuthResponse> call = kidShiftApiService.childLogin(new ChildAuthRequest(getLoginCode()));
+            try {
+                ChildAuthResponse childAuthResponse = call.execute().body();
+                if (childAuthResponse == null || childAuthResponse.getAccessToken() == null) {
+                    // エラー処理
+                    logger.error("ChildAuthResponseがnullまたはAccessTokenがnullです");
+                    return;
+                }
+                userSettings.getAppCommonSetting().setLoggedIn(true);
+                userSettings.getAppCommonSetting().setAccessToken(childAuthResponse.getAccessToken());
+            } catch (Exception e) {
+                logger.error("リクエストに失敗しました");
+                Toast.makeText(this, "ログインに失敗しました", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
