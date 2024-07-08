@@ -89,5 +89,9 @@ public class RegisterActivity extends AppCompatActivity {
         findViewById(R.id.toLoginButton).setOnClickListener(v -> {
             startActivity(new Intent(this, LoginActivity.class));
         });
+
+        findViewById(R.id.toChildLoginButton).setOnClickListener(v -> {
+            startActivity(new Intent(this, ChildLoginActivity.class));
+        });
     }
 }
