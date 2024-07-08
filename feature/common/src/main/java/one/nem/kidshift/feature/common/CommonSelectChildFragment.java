@@ -51,7 +51,12 @@ public class CommonSelectChildFragment extends Fragment {
         childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         childData.getChildListDirect().thenAccept(childList -> {
             adapter = new SelectShowChildListItemAdapter(childList);
-            childListRecyclerView.setAdapter(adapter);
+            adapter.setCallback(new SelectShowChildListItemAdapter.CompleteButtonClickedCallback() {
+                @Override
+                public void onClicked(String taskId) {
+                    logger.info("Clicked on child with id: " + taskId);
+                }
+            });
         });
 
         return view;
