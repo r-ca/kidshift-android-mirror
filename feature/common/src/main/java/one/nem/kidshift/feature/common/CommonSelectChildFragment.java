@@ -58,7 +58,9 @@ public class CommonSelectChildFragment extends Fragment {
                 }
             });
         }).thenRun(() -> {
-            childListRecyclerView.setAdapter(adapter);
+            requireActivity().runOnUiThread(() -> {
+                childListRecyclerView.setAdapter(adapter);
+            });
         });
 
         return view;
