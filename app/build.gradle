@@ -46,6 +46,7 @@ dependencies {
     implementation project(':feature:child')
     implementation project(':feature:setting')
     implementation project(':feature:common')
+    implementation project(':feature:wallet')
 
     implementation project(':data')
 
