@@ -26,6 +26,10 @@ public class WalletContentFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static Fragment newInstance() { // WIP
+        return new WalletContentFragment();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
