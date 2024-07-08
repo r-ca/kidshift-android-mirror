@@ -3,11 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/feature_common_parent_child_navigation"
-    app:startDestination="@id/commonHomeFragmentParentChild">
+    app:startDestination="@id/commonSelectChildFragment">
 
     <fragment
         android:id="@+id/commonHomeFragmentParentChild"
         android:name="one.nem.kidshift.feature.common.CommonHomeFragment"
         android:label="fragment_common_home"
         tools:layout="@layout/fragment_common_home" />
+    <fragment
+        android:id="@+id/commonSelectChildFragment"
+        android:name="one.nem.kidshift.feature.common.CommonSelectChildFragment"
+        android:label="fragment_common_select_child"
+        tools:layout="@layout/fragment_common_select_child" >
+        <action
+            android:id="@+id/action_commonSelectChildFragment_to_commonHomeFragmentParentChild"
+            app:destination="@id/commonHomeFragmentParentChild" />
+    </fragment>
 </navigation>
