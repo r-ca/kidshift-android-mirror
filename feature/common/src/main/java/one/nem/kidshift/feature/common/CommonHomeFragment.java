@@ -122,6 +122,9 @@ public class CommonHomeFragment extends Fragment {
         }
     }
 
+    /**
+     * 親モードの場合(=子供モードではない場合)のFABの設定
+     */
     private void setupFabParent() {
         fabManager.show();
         fabManager.setFabEventCallback(new FabEventCallback() {
@@ -137,10 +140,19 @@ public class CommonHomeFragment extends Fragment {
         });
     }
 
+    /**
+     * 子供モードの場合のFABの設定
+     */
     private void setupFabChild() {
         fabManager.hide();
     }
 
+    /**
+     * タスク完了確認ダイアログを表示 (子供モード用)
+     *
+     * @param taskName タスク名
+     * @return OKボタンが押されたかどうか
+     */
     private boolean showConfirmDialog(String taskName) {
         AtomicBoolean selection = new AtomicBoolean(false);
         new MaterialAlertDialogBuilder(requireContext())
@@ -158,6 +170,12 @@ public class CommonHomeFragment extends Fragment {
         return selection.get();
     }
 
+    /**
+     * タスク完了ダイアログ(子供選択画面)を表示 (親モード用)
+     *
+     * @param taskId   タスクID
+     * @param taskName タスク名
+     */
     private void showChildSelectDialog(String taskId, String taskName) { // TODO: Assignされている子供かどうかを考慮するように
         RecyclerView childListRecyclerView = new RecyclerView(requireContext());
         childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
