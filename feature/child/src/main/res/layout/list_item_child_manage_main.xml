@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="編集"
-            android:layout_marginRight="4px"/>
+            android:layout_marginRight="8px"/>
 
         <Button
             android:id="@+id/loginButton"
@@ -41,6 +41,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="ログイン"
-            android:layout_marginLeft="4px"/>
+            android:layout_marginLeft="8px"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
