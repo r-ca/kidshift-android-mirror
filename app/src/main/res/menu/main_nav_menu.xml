@@ -20,4 +20,9 @@
         android:id="@+id/feature_setting_navigation"
         android:icon="@drawable/settings_24px"
         android:title="Setting" />
+
+    <item
+        android:id="@+id/feature_wallet_parent_navigation"
+        android:icon="@drawable/wallet_24px"
+        android:title="Wallet" />
 </menu>

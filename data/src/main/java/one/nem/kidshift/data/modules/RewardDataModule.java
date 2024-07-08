@@ -5,12 +5,12 @@ import dagger.Module;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.FragmentComponent;
 import one.nem.kidshift.data.RewardData;
-import one.nem.kidshift.data.impl.RewardDataDummyImpl;
+import one.nem.kidshift.data.impl.RewardDataImpl;
 
 @Module
 @InstallIn(FragmentComponent.class)
-abstract public class RewardDataDummyModule {
+public abstract class RewardDataModule {
 
     @Binds
-    public abstract RewardData bindRewardData(RewardDataDummyImpl rewardDataDummyImpl);
+    public abstract RewardData bindRewardData(RewardDataImpl rewardDataImpl);
 }

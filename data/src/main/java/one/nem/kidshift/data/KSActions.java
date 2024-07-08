@@ -5,11 +5,12 @@ import java.util.concurrent.CompletableFuture;
 
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.HistoryModel;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 
 /**
- * データの同期など, ユーザーからの操作に基づかない処理を行う
+ * データの同期などを提供する内部ユーティリティ
  */
 public interface KSActions {
 
@@ -24,5 +25,10 @@ public interface KSActions {
      * 親ユーザー情報同期
      */
     CompletableFuture<ParentModel> syncParent();
+
+    /**
+     * 履歴情報同期
+     */
+    CompletableFuture<List<HistoryModel>> syncHistory(String childId);
 
 }

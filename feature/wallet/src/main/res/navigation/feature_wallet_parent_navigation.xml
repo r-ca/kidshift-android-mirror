@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/feature_wallet_parent_navigation"
+    app:startDestination="@id/walletParentWrapperFragment">
+
+    <fragment
+        android:id="@+id/walletParentWrapperFragment"
+        android:name="one.nem.kidshift.wallet.WalletParentWrapperFragment"
+        android:label="fragment_wallet_parent_wrapper"
+        tools:layout="@layout/fragment_wallet_parent_wrapper" />
+</navigation>

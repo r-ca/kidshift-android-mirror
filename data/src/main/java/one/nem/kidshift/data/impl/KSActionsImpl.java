@@ -10,12 +10,15 @@ import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
 import one.nem.kidshift.data.retrofit.model.converter.ChildModelConverter;
+import one.nem.kidshift.data.retrofit.model.converter.HistoryModelConverter;
 import one.nem.kidshift.data.retrofit.model.converter.ParentModelConverter;
 import one.nem.kidshift.data.retrofit.model.converter.TaskModelConverter;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
+import one.nem.kidshift.data.retrofit.model.task.HistoryListResponse;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.HistoryModel;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
@@ -61,7 +64,7 @@ public class KSActionsImpl implements KSActions {
         return fetchChildListAsync().thenCombine(fetchTaskListAsync(), (childListResponse, taskListResponse) -> {
             Thread cacheThread = new Thread(() -> {
                 logger.debug("キャッシュ更新スレッド開始(スレッドID: " + Thread.currentThread().getId() + ")");
-                cacheWrapper.updateCache(ChildModelConverter.childListResponseToChildModelList(childListResponse),
+                cacheWrapper.updateChildTaskCache(ChildModelConverter.childListResponseToChildModelList(childListResponse),
                         TaskModelConverter.taskListResponseToTaskItemModelList(taskListResponse)).join();
                 logger.info("キャッシュ更新完了");
             });
@@ -151,5 +154,32 @@ public class KSActionsImpl implements KSActions {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    @Override
+    public CompletableFuture<List<HistoryModel>> syncHistory(String childId) {
+        CompletableFuture<HistoryListResponse> callHistoryApi = CompletableFuture.supplyAsync(() -> {
+            Call<HistoryListResponse> call = kidShiftApiService.getHistory(childId);
+            try {
+                Response<HistoryListResponse> response = call.execute();
+                if (!response.isSuccessful()) {
+                    logger.error("Error fetching history list: " + response.errorBody().string());
+                    throw new RuntimeException("Error fetching history list: " + response.errorBody().string());
+                }
+                return response.body();
+            } catch (Exception e) {
+                logger.error("Error fetching history list");
+                throw new RuntimeException(e);
+            }
+        });
+
+        CompletableFuture<TaskListResponse> callTaskApi = fetchTaskListAsync();
+
+        return CompletableFuture.allOf(callHistoryApi, callTaskApi).thenApplyAsync(result -> {
+            HistoryListResponse historyListResponse = callHistoryApi.join();
+            TaskListResponse taskListResponse = callTaskApi.join();
+            return HistoryModelConverter.historyListResponseAndTaskListResponseToHistoryModelList(historyListResponse, taskListResponse);
+        });
+        // TODO: キャッシュ更新
     }
 }

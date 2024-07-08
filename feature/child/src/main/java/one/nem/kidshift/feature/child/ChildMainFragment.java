@@ -90,24 +90,24 @@ public class ChildMainFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        logger.addTag("ChildMainFragment");
-
-        Integer reward = rewardData.getTotalReward().join();
-
-        logger.debug("取得したデータ: " + reward);
-
-        Calendar cl = Calendar.getInstance();
-        TextView tr = view.findViewById(R.id.totalReward);
-        TextView dv = view.findViewById(R.id.dateView);
-        Date date = new Date();
-
-
-        NumberFormat nf = NumberFormat.getNumberInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat();
-        sdf.applyPattern("yyyy年MM月");
-
-        dv.setText(sdf.format(cl.getTime()) + "  お小遣い総額");
-        tr.setText("¥" + nf.format(reward).toString());
+//
+//        logger.addTag("ChildMainFragment");
+//
+//        Integer reward = rewardData.getTotalReward().join();
+//
+//        logger.debug("取得したデータ: " + reward);
+//
+//        Calendar cl = Calendar.getInstance();
+//        TextView tr = view.findViewById(R.id.totalReward);
+//        TextView dv = view.findViewById(R.id.dateView);
+//        Date date = new Date();
+//
+//
+//        NumberFormat nf = NumberFormat.getNumberInstance();
+//        SimpleDateFormat sdf = new SimpleDateFormat();
+//        sdf.applyPattern("yyyy年MM月");
+//
+//        dv.setText(sdf.format(cl.getTime()) + "  お小遣い総額");
+//        tr.setText("¥" + nf.format(reward).toString());
     }
 }
