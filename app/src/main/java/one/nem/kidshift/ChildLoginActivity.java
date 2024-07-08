@@ -3,6 +3,8 @@ package one.nem.kidshift;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -104,7 +106,7 @@ public class ChildLoginActivity extends AppCompatActivity {
                 loginCode8.getText().toString();
     }
 
-    private static class LoginCodeTextWatcher implements TextWatcher {
+    private static class LoginCodeTextWatcher implements TextWatcher, View.OnKeyListener {
         private EditText currentView;
         private final EditText nextView;
         private final EditText previousView;
@@ -125,9 +127,15 @@ public class ChildLoginActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {
             if (s.length() == 1 && nextView != null) {
                 nextView.requestFocus();
-            } else if (s.length() == 0 && previousView != null) {
+            }
+        }
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_DEL && currentView.getText().length() == 0 && previousView != null) {
                 previousView.requestFocus();
             }
+            return false;
         }
     }
 }
