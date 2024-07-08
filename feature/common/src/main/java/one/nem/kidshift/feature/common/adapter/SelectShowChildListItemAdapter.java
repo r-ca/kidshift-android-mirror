@@ -38,7 +38,7 @@ public class SelectShowChildListItemAdapter extends RecyclerView.Adapter<SelectS
     @NonNull
     @Override
     public SelectShowChildListItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_task_completion_child, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_select_show_child, parent, false);
         return new ViewHolder(view);
     }
 
