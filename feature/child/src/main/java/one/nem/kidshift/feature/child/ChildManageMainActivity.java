@@ -73,6 +73,7 @@ public class ChildManageMainActivity extends AppCompatActivity {
             @Override
             public void onLoginButtonClick(ChildModel childModel) {
                 childData.issueLoginCode(childModel.getId()).thenAccept(loginCode -> {
+                    logger.debug("ログインコード発行完了: " + loginCode);
                     runOnUiThread(() -> showLoginCodeDialog(loginCode));
                 });
             }
