@@ -197,6 +197,10 @@ public class CommonHomeFragment extends Fragment {
         });
     }
 
+    /**
+     * タスク情報を更新
+     * @return CompletableFuture<Void>
+     */
     @SuppressLint("NotifyDataSetChanged")
     private CompletableFuture<Void> updateTaskInfo() { // TODO: updatedの場合の処理など実装
         return taskData.getTasks(new TaskItemModelCallback() {
@@ -219,11 +223,18 @@ public class CommonHomeFragment extends Fragment {
         });
     }
 
+    /**
+     * カレンダーを更新
+     * @return CompletableFuture<Void>
+     */
     private CompletableFuture<Void> updateCalender() {
         // TODO: タスクの完了状況をカレンダーに表示
         return CompletableFuture.completedFuture(null);
     }
 
+    /**
+     * データを更新 (updateTaskInfoとupdateCalenderを並列実行)
+     */
     private void updateData() {
         swipeRefreshLayout.setRefreshing(true);
         CompletableFuture.allOf(updateTaskInfo(), updateCalender()).thenRun(() -> {
@@ -237,6 +248,9 @@ public class CommonHomeFragment extends Fragment {
         });
     }
 
+    /**
+     * タスク追加ダイアログを表示
+     */
     private void showAddTaskDialog() {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Placeholder")
