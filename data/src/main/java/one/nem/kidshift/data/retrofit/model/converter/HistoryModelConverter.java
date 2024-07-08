@@ -34,4 +34,14 @@ public class HistoryModelConverter { // TODO: JavaDoc
         }
         return historyModelList;
     }
+
+    public static HistoryListResponse historyModelListToHistoryListResponse(List<HistoryModel> historyModelList) {
+        HistoryListResponse historyListResponse = new HistoryListResponse();
+        List<HistoryResponse> historyResponseList = new ArrayList<>();
+        for (HistoryModel historyModel : historyModelList) {
+            historyResponseList.add(historyModelToHistoryResponse(historyModel));
+        }
+        historyListResponse.setList(historyResponseList);
+        return historyListResponse;
+    }
 }
