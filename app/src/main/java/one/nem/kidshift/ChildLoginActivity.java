@@ -28,8 +28,6 @@ import retrofit2.Call;
 public class ChildLoginActivity extends AppCompatActivity {
 
     @Inject
-    ChildData childData;
-    @Inject
     UserSettings userSettings;
     @Inject
     KSLoggerFactory loggerFactory;
@@ -52,6 +50,8 @@ public class ChildLoginActivity extends AppCompatActivity {
             return insets;
         });
 
+        logger = loggerFactory.create("ChildLoginActivity");
+
         // コードのフォーカスを自動で移動する
         loginCode1 = findViewById(R.id.loginCode_1);
         loginCode2 = findViewById(R.id.loginCode_2);
@@ -73,6 +73,7 @@ public class ChildLoginActivity extends AppCompatActivity {
 
         // ログインボタンを押したときの処理
         findViewById(R.id.childLoginButton).setOnClickListener(v -> {
+            logger.debug("ログインボタンが押されました");
             Call<ChildAuthResponse> call = kidShiftApiService.childLogin(new ChildAuthRequest(getLoginCode()));
             try {
                 ChildAuthResponse childAuthResponse = call.execute().body();
