@@ -94,8 +94,8 @@ public class ChildDataImpl implements ChildData {
     }
 
     @Override
-    public void updateChild(ChildModel child) {
-
+    public CompletableFuture<ChildModel> updateChild(ChildModel child) {
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
