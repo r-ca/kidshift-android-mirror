@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        logger = loggerFactory.create("MainActivity");
+
         // Check logged in
         if (userSettings.getAppCommonSetting().isLoggedIn()) {
             logger.info("User is logged in!");
@@ -110,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
                         this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-
-        logger = loggerFactory.create("MainActivity");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 
