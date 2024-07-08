@@ -8,6 +8,7 @@ import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.room.utils.CacheWrapper;
+import one.nem.kidshift.model.HistoryModel;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
@@ -28,7 +29,9 @@ public class RewardDataImpl implements RewardData {
     }
 
     @Override
-    public CompletableFuture<Integer> getTotalReward() {
-        return null;
+    public CompletableFuture<Integer> getTotalReward(String childId) {
+        return CompletableFuture.supplyAsync(() -> {
+            return ksActions.syncHistory(childId).join().stream().mapToInt(HistoryModel::getReward).sum();
+        });
     }
 }
