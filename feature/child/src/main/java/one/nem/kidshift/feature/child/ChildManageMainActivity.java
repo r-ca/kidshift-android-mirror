@@ -46,13 +46,6 @@ public class ChildManageMainActivity extends AppCompatActivity {
 
     ChildListAdapter childListAdapter;
 
-    /* MEMO
-    - ToolBarの設定
-        - タイトル
-        - 戻るボタン
-        - 追加ボタン
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
