@@ -7,7 +7,7 @@ import one.nem.kidshift.data.retrofit.model.task.HistoryListResponse;
 import one.nem.kidshift.data.retrofit.model.task.HistoryResponse;
 import one.nem.kidshift.model.HistoryModel;
 
-public class HistoryModelConverter {
+public class HistoryModelConverter { // TODO: JavaDoc
 
     public static HistoryModel historyResponseToHistoryModel(HistoryResponse historyResponse) {
         HistoryModel historyModel = new HistoryModel();
