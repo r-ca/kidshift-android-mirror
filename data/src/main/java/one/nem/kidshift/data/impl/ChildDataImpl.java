@@ -95,7 +95,21 @@ public class ChildDataImpl implements ChildData {
 
     @Override
     public CompletableFuture<ChildModel> updateChild(ChildModel child) {
-        return CompletableFuture.completedFuture(null);
+        return CompletableFuture.supplyAsync(() -> {
+            Call<ChildResponse> call = kidShiftApiService.updateChild(ChildModelConverter.childModelToChildAddRequest(child), child.getId());
+            try {
+                Response<ChildResponse> response = call.execute();
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    logger.info("子供更新成功(childId: " + response.body().getId() + ")");
+                    return ChildModelConverter.childResponseToChildModel(response.body());
+                } else {
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
