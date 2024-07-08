@@ -67,22 +67,13 @@ public class WalletParentWrapperFragment extends Fragment {
         TabAdapter tabAdapter = new TabAdapter(requireActivity());
 
         // デバッグ用
-        List<ChildModel> childList = new ArrayList<>();
-        ChildModel child = new ChildModel();
-        child.setId("1");
-        child.setName("Child 1");
-        childList.add(child);
-        ChildModel child2 = new ChildModel();
-        child2.setId("2");
-        child2.setName("Child 2");
-        childList.add(child2);
-
+        List<ChildModel> childList = childData.getChildListDirect().join();
         tabAdapter.setChildList(childList);
 
         viewPager.setAdapter(tabAdapter);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            tab.setText("Child " + (position + 1));
+            tab.setText(childList.get(position).getName());
         }).attach();
 
 
@@ -105,8 +96,7 @@ public class WalletParentWrapperFragment extends Fragment {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            // デバッグ用
-            return WalletContentFragment.newInstance();
+            return WalletContentFragment.newInstance(childList.get(position).getId());
         }
 
         @Override
