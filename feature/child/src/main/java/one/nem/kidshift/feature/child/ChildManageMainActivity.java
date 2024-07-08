@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public class ChildManageMainActivity extends AppCompatActivity {
                 Toast.makeText(ChildManageMainActivity.this, "Login button clicked", Toast.LENGTH_SHORT).show();
             }
         });
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(childListAdapter);
 
         updateList();
