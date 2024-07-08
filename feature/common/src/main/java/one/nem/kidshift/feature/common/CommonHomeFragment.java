@@ -28,8 +28,10 @@ import one.nem.kidshift.feature.common.adapter.ChildListItemAdapter;
 import one.nem.kidshift.feature.common.adapter.TaskListItemAdapter;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
+import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import one.nem.kidshift.utils.models.FabEventCallback;
 
 @AndroidEntryPoint
 public class CommonHomeFragment extends Fragment {
@@ -43,6 +45,8 @@ public class CommonHomeFragment extends Fragment {
     TaskData taskData;
     @Inject
     ChildData childData;
+    @Inject
+    FabManager fabManager;
 
     private boolean isChildMode;
     private String childId;
@@ -111,6 +115,30 @@ public class CommonHomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateData();
+        if (isChildMode) {
+            setupFabChild();
+        } else {
+            setupFabParent();
+        }
+    }
+
+    private void setupFabParent() {
+        fabManager.show();
+        fabManager.setFabEventCallback(new FabEventCallback() {
+            @Override
+            public void onClicked() {
+                showAddTaskDialog();
+            }
+
+            @Override
+            public void onLongClicked() {
+                // Do nothing
+            }
+        });
+    }
+
+    private void setupFabChild() {
+        fabManager.hide();
     }
 
     private boolean showConfirmDialog(String taskName) {
@@ -189,5 +217,13 @@ public class CommonHomeFragment extends Fragment {
             }
             swipeRefreshLayout.setRefreshing(false);
         });
+    }
+
+    private void showAddTaskDialog() {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Placeholder")
+                .setMessage("Placeholder")
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }
