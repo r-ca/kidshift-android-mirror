@@ -123,7 +123,7 @@ public interface KidShiftApiService {
      * 子供一覧取得
      * @return ChildListResponse
      */
-    @GET("/parent/child")
+    @GET("/child")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildListResponse> getChildList();
 
@@ -132,7 +132,7 @@ public interface KidShiftApiService {
      * @param request ChildAddRequest
      * @return ChildResponse
      */
-    @POST("/parent/child")
+    @POST("/child")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildResponse> addChild(@Body ChildAddRequest request);
 
@@ -142,7 +142,7 @@ public interface KidShiftApiService {
      * @param id 子供ID
      * @return ChildResponse
      */
-    @PUT("/parent/child/{id}")
+    @PUT("/child/{id}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildResponse> updateChild(@Body ChildAddRequest request, @Path("id") String id);
 
@@ -151,7 +151,7 @@ public interface KidShiftApiService {
      * @param id 子供ID
      * @return Void
      */
-    @DELETE("/parent/child/{id}")
+    @DELETE("/child/{id}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<Void> removeChild(@Path("id") String id);
 
@@ -160,7 +160,7 @@ public interface KidShiftApiService {
      * @param id 子供ID
      * @return ChildLoginCodeResponse
      */
-    @GET("/parent/child/{id}/login")
+    @GET("/child/{id}/login")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildLoginCodeResponse> issueLoginCode(@Path("id") String id);
 
