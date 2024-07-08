@@ -9,13 +9,17 @@ import javax.inject.Inject;
 import dagger.Module;
 import dagger.hilt.InstallIn;
 import dagger.hilt.components.SingletonComponent;
+import one.nem.kidshift.data.retrofit.model.converter.HistoryModelConverter;
 import one.nem.kidshift.data.room.KidShiftDatabase;
 import one.nem.kidshift.data.room.entity.ChildCacheEntity;
 import one.nem.kidshift.data.room.entity.TaskCacheEntity;
 import one.nem.kidshift.data.room.entity.TaskChildLinkageEntity;
+import one.nem.kidshift.data.room.model.HistoryWithTask;
 import one.nem.kidshift.data.room.utils.converter.ChildCacheConverter;
+import one.nem.kidshift.data.room.utils.converter.HistoryCacheConverter;
 import one.nem.kidshift.data.room.utils.converter.TaskCacheConverter;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.HistoryModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
@@ -65,6 +69,12 @@ public class CacheWrapper {
         });
     }
 
+    public CompletableFuture<Void> updateHistoryCache(List<HistoryModel> historyList) {
+        return CompletableFuture.runAsync(() -> {
+            kidShiftDatabase.historyCacheDao().insertHistoryList(HistoryCacheConverter.historyModelListToHistoryCacheEntityList(historyList));
+        });
+    }
+
     /**
      * 子供リストをDBに挿入する
      * @param childList 子供リスト
@@ -106,6 +116,13 @@ public class CacheWrapper {
         return CompletableFuture.supplyAsync(() -> {
             List<TaskCacheEntity> result = kidShiftDatabase.taskCacheDao().getTaskList();
             return TaskCacheConverter.taskCacheEntityListToTaskModelList(result);
+        });
+    }
+
+    public CompletableFuture<List<HistoryModel>> getHistoryList(String childId) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<HistoryWithTask> result = kidShiftDatabase.historyCacheDao().getHistoryWithTasksByChildId(childId);
+            return HistoryCacheConverter.historyWithTaskListToHistoryModelList(result);
         });
     }
 
