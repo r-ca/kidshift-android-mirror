@@ -28,8 +28,10 @@ import one.nem.kidshift.feature.common.adapter.ChildListItemAdapter;
 import one.nem.kidshift.feature.common.adapter.TaskListItemAdapter;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
+import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import one.nem.kidshift.utils.models.FabEventCallback;
 
 @AndroidEntryPoint
 public class CommonHomeFragment extends Fragment {
@@ -43,6 +45,8 @@ public class CommonHomeFragment extends Fragment {
     TaskData taskData;
     @Inject
     ChildData childData;
+    @Inject
+    FabManager fabManager;
 
     private boolean isChildMode;
     private String childId;
@@ -111,6 +115,21 @@ public class CommonHomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateData();
+    }
+
+    private void setupFab() {
+        fabManager.show();
+        fabManager.setFabEventCallback(new FabEventCallback() {
+            @Override
+            public void onClicked() {
+                // TODO
+            }
+
+            @Override
+            public void onLongClicked() {
+                // Do nothing
+            }
+        });
     }
 
     private boolean showConfirmDialog(String taskName) {
