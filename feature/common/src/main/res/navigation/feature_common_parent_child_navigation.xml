@@ -17,6 +17,10 @@
         tools:layout="@layout/fragment_common_select_child" >
         <action
             android:id="@+id/action_commonSelectChildFragment_to_commonHomeFragmentParentChild"
-            app:destination="@id/commonHomeFragmentParentChild" />
+            app:destination="@id/commonHomeFragmentParentChild" >
+            <argument
+                android:name="childId"
+                app:argType="string" />
+        </action>
     </fragment>
 </navigation>
