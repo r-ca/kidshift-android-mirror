@@ -113,8 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
         logger = loggerFactory.create("MainActivity");
 
-        logger.info("MainActivity started!");
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 
         // Init navigation
