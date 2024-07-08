@@ -3,6 +3,7 @@ package one.nem.kidshift;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -132,10 +133,14 @@ public class ChildLoginActivity extends AppCompatActivity {
 
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_DEL && currentView.getText().length() == 0 && previousView != null) {
-                previousView.requestFocus();
-            }
-            return false;
+//            if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) { // TODO: バックスペースの処理
+//                EditText currentView = (EditText) v;
+//                if (currentView.getText().length() == 0 && previousView != null) {
+//                    previousView.requestFocus();
+//                }
+//            }
+//            return false;
+            return true;
         }
     }
 }
