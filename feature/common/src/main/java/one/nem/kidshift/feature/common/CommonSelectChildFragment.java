@@ -57,6 +57,8 @@ public class CommonSelectChildFragment extends Fragment {
                     logger.info("Clicked on child with id: " + taskId);
                 }
             });
+        }).thenRun(() -> {
+            childListRecyclerView.setAdapter(adapter);
         });
 
         return view;
