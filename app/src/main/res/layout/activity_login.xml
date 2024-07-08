@@ -36,7 +36,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:weightSum="10"
-            app:layout_constraintBottom_toTopOf="@+id/childLoginButton"
+            app:layout_constraintBottom_toTopOf="@+id/parentLoginButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -60,7 +60,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/childLoginButton"
+            android:id="@+id/parentLoginButton"
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/toRegisterButton"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
             android:text="新規登録" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/toChildLoginButton"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
