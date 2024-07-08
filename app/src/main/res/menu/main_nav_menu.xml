@@ -20,11 +20,6 @@
         android:title="ホーム" />
 
     <item
-        android:id="@+id/feature_debug_navigation"
-        android:icon="@drawable/developer_mode_24px"
-        android:title="Debug" />
-
-    <item
         android:id="@+id/feature_wallet_parent_navigation"
         android:icon="@drawable/wallet_24px"
         android:title="ウォレット" />

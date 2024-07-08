@@ -147,10 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
         fab = findViewById(R.id.mainFab);
         fabManager.setFab(fab);
-
-        // Apply feature flag
-        if (!featureFlag.isEnabled("showDebugMenu"))
-            bottomNavigationView.getMenu().removeItem(R.id.feature_debug_navigation);
     }
 
     /**
