@@ -115,6 +115,11 @@ public class CommonHomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateData();
+        if (isChildMode) {
+            setupFabChild();
+        } else {
+            setupFabParent();
+        }
     }
 
     private void setupFabParent() {
