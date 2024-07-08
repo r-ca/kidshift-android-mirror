@@ -1,5 +1,6 @@
 package one.nem.kidshift.feature.common.adapter;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,7 +38,7 @@ public class ChildListItemAdapter extends RecyclerView.Adapter<ChildListItemAdap
     @NonNull
     @Override
     public ChildListItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = View.inflate(parent.getContext(), R.layout.list_item_task_completion_child, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_task_completion_child, parent, false);
         return new ViewHolder(view);
     }
 
