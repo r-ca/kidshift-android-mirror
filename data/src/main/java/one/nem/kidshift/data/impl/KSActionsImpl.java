@@ -180,5 +180,6 @@ public class KSActionsImpl implements KSActions {
             TaskListResponse taskListResponse = callTaskApi.join();
             return HistoryModelConverter.historyListResponseAndTaskListResponseToHistoryModelList(historyListResponse, taskListResponse);
         });
+        // TODO: キャッシュ更新
     }
 }
