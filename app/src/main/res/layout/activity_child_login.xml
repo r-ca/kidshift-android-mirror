@@ -8,146 +8,147 @@
     tools:context=".ChildLoginActivity">
 
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
-        android:text="KidShiftにログイン"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/inputContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/inputContainer"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:maxWidth="48px"
-        android:orientation="horizontal"
-        android:weightSum="10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="288dp">
-
-        <EditText
-            android:id="@+id/loginCode_1"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxWidth="48px"
-            android:maxLength="1"
-            android:textSize="18sp"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/loginCode_2"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxWidth="48px"
-            android:maxLength="1"
-            android:textSize="18sp"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/loginCode_3"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxWidth="48px"
-            android:maxLength="1"
-            android:textSize="18sp"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/loginCode_4"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxWidth="48px"
-            android:maxLength="1"
-            android:textSize="18sp"
-            tools:ignore="Autofill,LabelFor" />
+        android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_weight="0"
-            android:gravity="center"
-            android:text="-"
-            android:textSize="18sp"
-            tools:ignore="Autofill,LabelFor" />
+            android:layout_height="wrap_content"
+            android:text="KidShiftにログイン"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/inputContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <EditText
-            android:id="@+id/loginCode_5"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
+        <LinearLayout
+            android:id="@+id/inputContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <EditText
+                android:id="@+id/loginCode_1"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxWidth="48dp"
+                android:maxLength="1"
+                android:textSize="18sp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/loginCode_2"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxWidth="48dp"
+                android:maxLength="1"
+                android:textSize="18sp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/loginCode_3"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxWidth="48dp"
+                android:maxLength="1"
+                android:textSize="18sp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/loginCode_4"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxWidth="48dp"
+                android:maxLength="1"
+                android:textSize="18sp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:text="-"
+                android:textSize="18sp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/loginCode_5"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxWidth="48dp"
+                android:maxLength="1"
+                android:textSize="18sp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/loginCode_6"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxWidth="48dp"
+                android:maxLength="1"
+                android:textSize="18sp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/loginCode_7"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxWidth="48dp"
+                android:maxLength="1"
+                android:textSize="18sp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/loginCode_8"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxWidth="48dp"
+                android:maxLength="1"
+                android:textSize="18sp"
+                tools:ignore="Autofill,LabelFor" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxWidth="48px"
-            android:maxLength="1"
-            android:textSize="18sp"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/loginCode_6"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxWidth="48px"
-            android:maxLength="1"
-            android:textSize="18sp"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/loginCode_7"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxWidth="48px"
-            android:maxLength="1"
-            android:textSize="18sp"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/loginCode_8"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxWidth="48px"
-            android:maxLength="1"
-            android:textSize="18sp"
-            tools:ignore="Autofill,LabelFor" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        android:layout_weight="1"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputContainer" />
+            android:text="Button"
+            app:layout_constraintTop_toBottomOf="@+id/inputContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
