@@ -65,13 +65,20 @@ public class ChildManageMainActivity extends AppCompatActivity {
 
         // ToolBarのセットアップ
         Toolbar toolbar = findViewById(R.id.toolBar);
-        setSupportActionBar(toolbar);
         // タイトル
-        Objects.requireNonNull(getSupportActionBar()).setTitle("子供管理");
+        toolbar.setTitle("子供アカウント管理");
         // 閉じる
         toolbar.setNavigationIcon(one.nem.kidshift.shared.R.drawable.check_24px); // TODO: アイコン修正
         toolbar.setNavigationOnClickListener(v -> finish());
         // 追加ボタン
+        toolbar.inflateMenu(R.menu.child_manage_main_toolbar_item);
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.add_child_account) {
+                Toast.makeText(this, "Add button clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            return false;
+        });
 
         RecyclerView recyclerView = findViewById(R.id.childListRecyclerView);
         childListAdapter = new ChildListAdapter();

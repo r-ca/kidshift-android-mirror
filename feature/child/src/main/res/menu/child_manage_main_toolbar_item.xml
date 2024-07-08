@@ -5,6 +5,6 @@
     <item
         android:id="@+id/add_child_account"
         android:icon="@drawable/add_24px"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="子供アカウントの追加" />
 </menu>
