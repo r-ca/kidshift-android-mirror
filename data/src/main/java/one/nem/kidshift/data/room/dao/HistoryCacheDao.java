@@ -4,10 +4,12 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import java.util.List;
 
 import one.nem.kidshift.data.room.entity.HistoryCacheEntity;
+import one.nem.kidshift.data.room.model.HistoryWithTask;
 
 @Dao
 public interface HistoryCacheDao {
@@ -26,6 +28,14 @@ public interface HistoryCacheDao {
 
     @Query("SELECT * FROM history_cache WHERE child_id = :childId")
     List<HistoryCacheEntity> getHistoryListByChildId(String childId);
+
+    @Transaction
+    @Query("SELECT * FROM history_cache")
+    List<HistoryWithTask> getHistoryWithTasks();
+
+    @Transaction
+    @Query("SELECT * FROM history_cache WHERE child_id = :childId")
+    List<HistoryWithTask> getHistoryWithTasksByChildId(String childId);
 
     @Query("SELECT * FROM history_cache WHERE task_id = :taskId")
     List<HistoryCacheEntity> getHistoryListByTaskId(String taskId);
