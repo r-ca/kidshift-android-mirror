@@ -122,7 +122,7 @@ public class CommonHomeFragment extends Fragment {
         fabManager.setFabEventCallback(new FabEventCallback() {
             @Override
             public void onClicked() {
-                // TODO
+                // TODO: 子供追加ダイアログ表示
             }
 
             @Override
