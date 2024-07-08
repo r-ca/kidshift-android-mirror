@@ -81,9 +81,10 @@ public class ChildLoginActivity extends AppCompatActivity {
                     logger.error("ChildAuthResponseがnullまたはAccessTokenがnullです");
                     return;
                 }
-                userSettings.getAppCommonSetting().setLoggedIn(true);
-                userSettings.getAppCommonSetting().setAccessToken(childAuthResponse.getAccessToken());
-                userSettings.getAppCommonSetting().setChildMode(true);
+                UserSettings.AppCommonSetting appCommonSetting = userSettings.getAppCommonSetting();
+                appCommonSetting.setLoggedIn(true);
+                appCommonSetting.setAccessToken(childAuthResponse.getAccessToken());
+                appCommonSetting.setChildMode(true);
             } catch (Exception e) {
                 logger.error("リクエストに失敗しました");
                 Toast.makeText(this, "ログインに失敗しました", Toast.LENGTH_SHORT).show();
