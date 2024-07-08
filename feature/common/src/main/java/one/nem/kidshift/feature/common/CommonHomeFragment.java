@@ -81,6 +81,12 @@ public class CommonHomeFragment extends Fragment {
             childId = getArguments().getString(ARG_CHILD_ID);
         }
         logger = ksLoggerFactory.create("CommonHomeFragment");
+
+        if (isChildMode) {
+            logger.info("Child mode, childId: " + childId);
+        } else {
+            logger.info("Parent mode");
+        }
     }
 
     @Override
@@ -243,7 +249,7 @@ public class CommonHomeFragment extends Fragment {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                // do nothing
             }
             swipeRefreshLayout.setRefreshing(false);
         });
