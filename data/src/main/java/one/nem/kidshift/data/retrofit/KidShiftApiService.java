@@ -5,6 +5,8 @@ import one.nem.kidshift.data.retrofit.model.child.ChildAddRequest;
 import one.nem.kidshift.data.retrofit.model.child.ChildListResponse;
 import one.nem.kidshift.data.retrofit.model.child.ChildLoginCodeResponse;
 import one.nem.kidshift.data.retrofit.model.child.ChildResponse;
+import one.nem.kidshift.data.retrofit.model.child.auth.ChildAuthRequest;
+import one.nem.kidshift.data.retrofit.model.child.auth.ChildAuthResponse;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthResponse;
@@ -42,6 +44,14 @@ public interface KidShiftApiService {
      */
     @POST("/parent/auth/register")
     Call<ParentAuthResponse> parentRegister(@Body ParentAuthRequest request);
+
+    /**
+     * 子供ログイン処理
+     * @param request ChildAuthRequest
+     * @return ChildAuthResponse
+     */
+    @POST("/child/auth/login")
+    Call<ChildAuthResponse> childLogin(@Body ChildAuthRequest request);
 
     /**
      * 保護者アカウント情報取得処理

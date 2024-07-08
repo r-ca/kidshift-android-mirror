@@ -3,6 +3,9 @@ package one.nem.kidshift;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -12,7 +15,29 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.ChildData;
+import one.nem.kidshift.data.UserSettings;
+import one.nem.kidshift.data.retrofit.KidShiftApiService;
+import one.nem.kidshift.data.retrofit.model.child.auth.ChildAuthRequest;
+import one.nem.kidshift.data.retrofit.model.child.auth.ChildAuthResponse;
+import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import retrofit2.Call;
+
+@AndroidEntryPoint
 public class ChildLoginActivity extends AppCompatActivity {
+
+    @Inject
+    UserSettings userSettings;
+    @Inject
+    KSLoggerFactory loggerFactory;
+    @Inject
+    KidShiftApiService kidShiftApiService;
+
+    private KSLogger logger;
 
 
     private EditText loginCode1, loginCode2, loginCode3, loginCode4, loginCode5, loginCode6, loginCode7, loginCode8;
@@ -28,6 +53,8 @@ public class ChildLoginActivity extends AppCompatActivity {
             return insets;
         });
 
+        logger = loggerFactory.create("ChildLoginActivity");
+
         // コードのフォーカスを自動で移動する
         loginCode1 = findViewById(R.id.loginCode_1);
         loginCode2 = findViewById(R.id.loginCode_2);
@@ -38,18 +65,34 @@ public class ChildLoginActivity extends AppCompatActivity {
         loginCode7 = findViewById(R.id.loginCode_7);
         loginCode8 = findViewById(R.id.loginCode_8);
 
-        loginCode1.addTextChangedListener(new LoginCodeTextWatcher(loginCode1, loginCode2));
-        loginCode2.addTextChangedListener(new LoginCodeTextWatcher(loginCode2, loginCode3));
-        loginCode3.addTextChangedListener(new LoginCodeTextWatcher(loginCode3, loginCode4));
-        loginCode4.addTextChangedListener(new LoginCodeTextWatcher(loginCode4, loginCode5));
-        loginCode5.addTextChangedListener(new LoginCodeTextWatcher(loginCode5, loginCode6));
-        loginCode6.addTextChangedListener(new LoginCodeTextWatcher(loginCode6, loginCode7));
-        loginCode7.addTextChangedListener(new LoginCodeTextWatcher(loginCode7, loginCode8));
-        loginCode8.addTextChangedListener(new LoginCodeTextWatcher(loginCode8, null));
+        loginCode1.addTextChangedListener(new LoginCodeTextWatcher(loginCode1, loginCode2, null));
+        loginCode2.addTextChangedListener(new LoginCodeTextWatcher(loginCode2, loginCode3, loginCode1));
+        loginCode3.addTextChangedListener(new LoginCodeTextWatcher(loginCode3, loginCode4, loginCode2));
+        loginCode4.addTextChangedListener(new LoginCodeTextWatcher(loginCode4, loginCode5, loginCode3));
+        loginCode5.addTextChangedListener(new LoginCodeTextWatcher(loginCode5, loginCode6, loginCode4));
+        loginCode6.addTextChangedListener(new LoginCodeTextWatcher(loginCode6, loginCode7, loginCode5));
+        loginCode7.addTextChangedListener(new LoginCodeTextWatcher(loginCode7, loginCode8, loginCode6));
+        loginCode8.addTextChangedListener(new LoginCodeTextWatcher(loginCode8, null, loginCode7));
 
         // ログインボタンを押したときの処理
         findViewById(R.id.childLoginButton).setOnClickListener(v -> {
-            Toast.makeText(this, "ログインコード: " + getLoginCode(), Toast.LENGTH_SHORT).show();
+            logger.debug("ログインボタンが押されました");
+            Call<ChildAuthResponse> call = kidShiftApiService.childLogin(new ChildAuthRequest(getLoginCode()));
+            try {
+                ChildAuthResponse childAuthResponse = call.execute().body();
+                if (childAuthResponse == null || childAuthResponse.getAccessToken() == null) {
+                    // エラー処理
+                    logger.error("ChildAuthResponseがnullまたはAccessTokenがnullです");
+                    return;
+                }
+                UserSettings.AppCommonSetting appCommonSetting = userSettings.getAppCommonSetting();
+                appCommonSetting.setLoggedIn(true);
+                appCommonSetting.setAccessToken(childAuthResponse.getAccessToken());
+                appCommonSetting.setChildMode(true);
+            } catch (Exception e) {
+                logger.error("リクエストに失敗しました");
+                Toast.makeText(this, "ログインに失敗しました", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -64,13 +107,15 @@ public class ChildLoginActivity extends AppCompatActivity {
                 loginCode8.getText().toString();
     }
 
-    private static class LoginCodeTextWatcher implements TextWatcher {
+    private static class LoginCodeTextWatcher implements TextWatcher, View.OnKeyListener {
         private EditText currentView;
         private final EditText nextView;
+        private final EditText previousView;
 
-        LoginCodeTextWatcher(EditText currentView, EditText nextView) {
+        LoginCodeTextWatcher(EditText currentView, EditText nextView, EditText previousView) {
             this.currentView = currentView;
             this.nextView = nextView;
+            this.previousView = previousView;
         }
 
         @Override
@@ -84,6 +129,18 @@ public class ChildLoginActivity extends AppCompatActivity {
             if (s.length() == 1 && nextView != null) {
                 nextView.requestFocus();
             }
+        }
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+//            if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) { // TODO: バックスペースの処理
+//                EditText currentView = (EditText) v;
+//                if (currentView.getText().length() == 0 && previousView != null) {
+//                    previousView.requestFocus();
+//                }
+//            }
+//            return false;
+            return true;
         }
     }
 }
