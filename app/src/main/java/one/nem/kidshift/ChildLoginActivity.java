@@ -1,5 +1,6 @@
 package one.nem.kidshift;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -93,11 +94,12 @@ public class ChildLoginActivity extends AppCompatActivity {
                     appCommonSetting.setAccessToken(childAuthResponse.getAccessToken());
                     appCommonSetting.setChildId(childAuthResponse.getChildId());
                     appCommonSetting.setChildMode(true);
-                    finish();
                 } catch (Exception e) {
                     logger.error("リクエストに失敗しました");
                     Toast.makeText(this, "ログインに失敗しました", Toast.LENGTH_SHORT).show();
                 }
+            }).thenRun(() -> {
+                startActivity(new Intent(this, MainActivity.class));
             });
         });
     }
