@@ -70,6 +70,16 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Check logged in
+        if (userSettings.getAppCommonSetting().isLoggedIn()) {
+            logger.info("User is logged in!");
+        } else {
+            logger.info("User is not logged in!");
+
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -117,16 +127,6 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-        // Check logged in
-        if (userSettings.getAppCommonSetting().isLoggedIn()) {
-            logger.info("User is logged in!");
-        } else {
-            logger.info("User is not logged in!");
-
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
         }
 
         UserSettings.AppCommonSetting appCommonSetting = userSettings.getAppCommonSetting();
