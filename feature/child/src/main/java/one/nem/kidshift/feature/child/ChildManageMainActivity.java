@@ -81,8 +81,7 @@ public class ChildManageMainActivity extends AppCompatActivity {
         childListAdapter.setButtonEventCallback(new ChildListAdapter.ButtonEventCallback() {
             @Override
             public void onEditButtonClick(ChildModel childModel) {
-                Toast.makeText(ChildManageMainActivity.this, "Edit button clicked", Toast.LENGTH_SHORT).show();
-                // TODO: 実装
+                showEditChildDialog(childModel);
             }
 
             @Override
