@@ -3,6 +3,7 @@ package one.nem.kidshift.feature.child;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +75,7 @@ public class ChildManageMainActivity extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.child_manage_main_toolbar_item);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.add_child_account) {
-                Toast.makeText(this, "Add button clicked", Toast.LENGTH_SHORT).show();
+                showAddChildDialog();
                 return true;
             }
             return false;
@@ -113,6 +114,24 @@ public class ChildManageMainActivity extends AppCompatActivity {
                 .setTitle("ログインコード")
                 .setView(view)
                 .setPositiveButton("閉じる", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private void showAddChildDialog() {
+        EditText childNameEditText = new EditText(this);
+        childNameEditText.setHint("子供の名前");
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("子供アカウント追加")
+                .setView(childNameEditText)
+                .setPositiveButton("追加", (dialog, which) -> {
+                    String childName = Objects.requireNonNull(childNameEditText.getText()).toString();
+                    if (childName.isEmpty()) {
+                        Toast.makeText(this, "名前を入力してください", Toast.LENGTH_SHORT).show();
+                    }
+                    childData.addChild(new ChildModel(childName))
+                            .thenRun(this::updateList);
+                })
+                .setNegativeButton("キャンセル", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
