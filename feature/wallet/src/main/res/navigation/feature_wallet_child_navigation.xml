@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/walletMainFragment"
-        android:name="one.nem.kidshift.wallet.WalletMainFragment"
+        android:name="one.nem.kidshift.wallet.WalletContentFragment"
         android:label="fragment_wallet_main"
-        tools:layout="@layout/fragment_wallet_main" />
+        tools:layout="@layout/fragment_wallet_content" />
 </navigation>

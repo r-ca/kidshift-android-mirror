@@ -15,14 +15,14 @@ import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
-public class WalletMainFragment extends Fragment {
+public class WalletContentFragment extends Fragment {
 
     @Inject
     KSLoggerFactory loggerFactory;
 
     private KSLogger logger;
 
-    public WalletMainFragment() {
+    public WalletContentFragment() {
         // Required empty public constructor
     }
 
@@ -36,7 +36,7 @@ public class WalletMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_wallet_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_wallet_content, container, false);
 
 
 
