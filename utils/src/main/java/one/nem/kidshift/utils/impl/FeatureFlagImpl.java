@@ -68,14 +68,17 @@ public class FeatureFlagImpl implements FeatureFlag {
     // init
     private void initBase() { // ベース, (= Production)
         setFlag("dynamicColorEnable", true, false);
+        setFlag("showDebugMenu", false, false);
     }
 
     private void initBeta() { // 上書き
         setFlag("dynamicColorEnable", true, true);
+        setFlag("showDebugMenu", false, true);
     }
 
     private void initDevelop() { // 上書き
         setFlag("dynamicColorEnable", true, true);
+        setFlag("showDebugMenu", true, true);
     }
 
     // utils
