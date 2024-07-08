@@ -9,7 +9,7 @@ import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 
 /**
- * データの同期など, ユーザーからの操作に基づかない処理を行う
+ * データの同期などを提供する内部ユーティリティ
  */
 public interface KSActions {
 
