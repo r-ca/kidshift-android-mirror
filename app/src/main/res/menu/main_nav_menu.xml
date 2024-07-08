@@ -25,12 +25,7 @@
         android:title="Debug" />
 
     <item
-        android:id="@+id/feature_wallet_parent_navigation"
-        android:icon="@drawable/wallet_24px"
-        android:title="ウォレット" />
-
-    <item
-        android:id="@+id/feature_wallet_child_navigation"
+        android:id="@+id/feature_wallet_navigation"
         android:icon="@drawable/wallet_24px"
         android:title="ウォレット" />
 </menu>
