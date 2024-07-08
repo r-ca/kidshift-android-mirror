@@ -54,10 +54,10 @@ public class LoginActivity extends AppCompatActivity {
 
         logger = loggerFactory.create("LoginActivity");
 
-        EditText emailEditText = findViewById(R.id.emailEditText);
-        EditText passwordEditText = findViewById(R.id.passwordEditText);
+        EditText emailEditText = findViewById(R.id.parentLoginEmailEditText);
+        EditText passwordEditText = findViewById(R.id.parentLoginPasswordEditText);
 
-        findViewById(R.id.loginButton).setOnClickListener(v -> {
+        findViewById(R.id.parentLoginButton).setOnClickListener(v -> {
             String email = emailEditText.getText().toString(); // TODO: メールアドレスのバリデーション
             String password = passwordEditText.getText().toString();
 
@@ -87,8 +87,12 @@ public class LoginActivity extends AppCompatActivity {
             });
         });
 
-        findViewById(R.id.intentRegisterButton).setOnClickListener(v -> {
+        findViewById(R.id.toRegisterButton).setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
+        });
+
+        findViewById(R.id.toChildLoginButton).setOnClickListener(v -> {
+            startActivity(new Intent(this, ChildLoginActivity.class));
         });
     }
 }
