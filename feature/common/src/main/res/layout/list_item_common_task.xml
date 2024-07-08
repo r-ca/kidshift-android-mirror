@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp">
+    android:layout_marginHorizontal="24dp"
+    android:layout_marginVertical="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/textContainer"
@@ -16,7 +17,6 @@
             android:id="@+id/task_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
             android:text="お手伝い名"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="20sp"
@@ -27,7 +27,6 @@
             android:id="@+id/task_contents_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
             android:layout_marginTop="13dp"
             android:text="円／回"
             app:layout_constraintStart_toStartOf="parent"

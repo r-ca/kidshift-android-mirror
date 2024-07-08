@@ -179,6 +179,7 @@ public class CommonHomeFragment extends Fragment {
     private void showChildSelectDialog(String taskId, String taskName) { // TODO: Assignされている子供かどうかを考慮するように
         RecyclerView childListRecyclerView = new RecyclerView(requireContext());
         childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        childListRecyclerView.setPadding(0, 48, 0, 0);
         // TODO: キャッシュから取得する方にする？
         childData.getChildListDirect().thenAccept(childModelList -> {
             ChildListItemAdapter childListItemAdapter = new ChildListItemAdapter(childModelList);
