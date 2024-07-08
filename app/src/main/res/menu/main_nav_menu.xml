@@ -22,7 +22,7 @@
         android:title="Setting" />
 
     <item
-        android:id="@+id/feature_wallet_navigation"
+        android:id="@+id/feature_wallet_parent_navigation"
         android:icon="@drawable/developer_mode_24px"
         android:title="Wallet" />
 </menu>

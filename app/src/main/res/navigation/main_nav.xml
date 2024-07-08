@@ -8,4 +8,5 @@
     <include app:graph="@navigation/feature_child_navigation" />
     <include app:graph="@navigation/feature_parent_navigation" />
     <include app:graph="@navigation/feature_setting_navigation" />
+    <include app:graph="@navigation/feature_wallet_parent_navigation" />
 </navigation>
