@@ -62,14 +62,14 @@ public class ChildLoginActivity extends AppCompatActivity {
         loginCode7 = findViewById(R.id.loginCode_7);
         loginCode8 = findViewById(R.id.loginCode_8);
 
-        loginCode1.addTextChangedListener(new LoginCodeTextWatcher(loginCode1, loginCode2));
-        loginCode2.addTextChangedListener(new LoginCodeTextWatcher(loginCode2, loginCode3));
-        loginCode3.addTextChangedListener(new LoginCodeTextWatcher(loginCode3, loginCode4));
-        loginCode4.addTextChangedListener(new LoginCodeTextWatcher(loginCode4, loginCode5));
-        loginCode5.addTextChangedListener(new LoginCodeTextWatcher(loginCode5, loginCode6));
-        loginCode6.addTextChangedListener(new LoginCodeTextWatcher(loginCode6, loginCode7));
-        loginCode7.addTextChangedListener(new LoginCodeTextWatcher(loginCode7, loginCode8));
-        loginCode8.addTextChangedListener(new LoginCodeTextWatcher(loginCode8, null));
+        loginCode1.addTextChangedListener(new LoginCodeTextWatcher(loginCode1, loginCode2, null));
+        loginCode2.addTextChangedListener(new LoginCodeTextWatcher(loginCode2, loginCode3, loginCode1));
+        loginCode3.addTextChangedListener(new LoginCodeTextWatcher(loginCode3, loginCode4, loginCode2));
+        loginCode4.addTextChangedListener(new LoginCodeTextWatcher(loginCode4, loginCode5, loginCode3));
+        loginCode5.addTextChangedListener(new LoginCodeTextWatcher(loginCode5, loginCode6, loginCode4));
+        loginCode6.addTextChangedListener(new LoginCodeTextWatcher(loginCode6, loginCode7, loginCode5));
+        loginCode7.addTextChangedListener(new LoginCodeTextWatcher(loginCode7, loginCode8, loginCode6));
+        loginCode8.addTextChangedListener(new LoginCodeTextWatcher(loginCode8, null, loginCode7));
 
         // ログインボタンを押したときの処理
         findViewById(R.id.childLoginButton).setOnClickListener(v -> {
@@ -107,10 +107,12 @@ public class ChildLoginActivity extends AppCompatActivity {
     private static class LoginCodeTextWatcher implements TextWatcher {
         private EditText currentView;
         private final EditText nextView;
+        private final EditText previousView;
 
-        LoginCodeTextWatcher(EditText currentView, EditText nextView) {
+        LoginCodeTextWatcher(EditText currentView, EditText nextView, EditText previousView) {
             this.currentView = currentView;
             this.nextView = nextView;
+            this.previousView = previousView;
         }
 
         @Override
@@ -123,6 +125,8 @@ public class ChildLoginActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {
             if (s.length() == 1 && nextView != null) {
                 nextView.requestFocus();
+            } else if (s.length() == 0 && previousView != null) {
+                previousView.requestFocus();
             }
         }
     }
