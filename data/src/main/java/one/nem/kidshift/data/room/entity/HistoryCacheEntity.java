@@ -4,10 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 
+import one.nem.kidshift.data.room.converter.DateTypeConverter;
+
 @Entity(tableName = "history_cache")
+@TypeConverters({DateTypeConverter.class})
 public class HistoryCacheEntity {
 
     @PrimaryKey
