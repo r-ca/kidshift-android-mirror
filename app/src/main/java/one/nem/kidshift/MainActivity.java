@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
-        drawerLayout.open();
 
         // アイテムが選択されたときの処理
         NavigationView navigationView = findViewById(R.id.navigationView);
