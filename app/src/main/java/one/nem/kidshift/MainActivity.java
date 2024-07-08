@@ -129,6 +129,20 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        UserSettings.AppCommonSetting appCommonSetting = userSettings.getAppCommonSetting();
+        if (appCommonSetting.isChildMode()) {
+            logger.info("Child mode is enabled!");
+            // 保護者向けのナビゲーションを削除
+            bottomNavigationView.getMenu().removeItem(R.id.feature_common_parent_child_navigation);
+            bottomNavigationView.getMenu().removeItem(R.id.feature_common_parent_parent_navigation);
+
+            // startDestinationを変更
+            bottomNavigationView.setSelectedItemId(R.id.feature_common_child_child_navigation);
+        } else {
+            logger.info("Child mode is disabled!");
+            bottomNavigationView.getMenu().removeItem(R.id.feature_common_child_child_navigation);
+        }
+
         fab = findViewById(R.id.mainFab);
         fabManager.setFab(fab);
 
