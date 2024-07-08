@@ -35,6 +35,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.feature.child.ChildManageMainActivity;
 import one.nem.kidshift.utils.FabManager;
+import one.nem.kidshift.utils.FeatureFlag;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
@@ -46,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     FabManager fabManager;
+
+    @Inject
+    FeatureFlag featureFlag;
+
 
     private KSLogger logger;
 
@@ -127,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
 
         fab = findViewById(R.id.mainFab);
         fabManager.setFab(fab);
+
+        // Apply feature flag
+        if (!featureFlag.isEnabled("showDebugMenu"))
+            bottomNavigationView.getMenu().removeItem(R.id.feature_debug_navigation);
     }
 
     /**
