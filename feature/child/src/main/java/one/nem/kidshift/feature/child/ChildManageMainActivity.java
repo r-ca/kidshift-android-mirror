@@ -2,8 +2,10 @@ package one.nem.kidshift.feature.child;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.print.PrintAttributes;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -118,11 +120,19 @@ public class ChildManageMainActivity extends AppCompatActivity {
     }
 
     private void showAddChildDialog() {
+        // EditTextを作成
         EditText childNameEditText = new EditText(this);
         childNameEditText.setHint("子供の名前");
+        // FrameLayoutに入れる
+        FrameLayout container = new FrameLayout(this);
+        container.addView(childNameEditText);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) childNameEditText.getLayoutParams();
+        params.setMargins(32, 16, 32, 16);
+        childNameEditText.setLayoutParams(params);
+
         new MaterialAlertDialogBuilder(this)
                 .setTitle("子供アカウント追加")
-                .setView(childNameEditText)
+                .setView(container)
                 .setPositiveButton("追加", (dialog, which) -> {
                     String childName = Objects.requireNonNull(childNameEditText.getText()).toString();
                     if (childName.isEmpty()) {
