@@ -2,6 +2,8 @@ package one.nem.kidshift.feature.child;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -11,6 +13,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
@@ -68,14 +72,28 @@ public class ChildManageMainActivity extends AppCompatActivity {
 
             @Override
             public void onLoginButtonClick(ChildModel childModel) {
-                Toast.makeText(ChildManageMainActivity.this, "Login button clicked", Toast.LENGTH_SHORT).show();
-                // TODO: 実装
+                childData.issueLoginCode(childModel.getId()).thenAccept(loginCode -> {
+                    runOnUiThread(() -> showLoginCodeDialog(loginCode));
+                });
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(childListAdapter);
 
         updateList();
+    }
+
+    private void showLoginCodeDialog(Integer loginCode) {
+        View view = getLayoutInflater().inflate(R.layout.child_login_code_dialog_layout, null);
+        TextView loginCodeTextView = view.findViewById(R.id.loginCode);
+        // loginCodeをStringに変換して4桁 2つに分割してハイフンで繋げる
+        loginCodeTextView.setText(loginCode.toString().substring(0, 4) + "-" + loginCode.toString().substring(4));
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("ログインコード")
+                .setView(view)
+                .setPositiveButton("閉じる", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     @SuppressLint("NotifyDataSetChanged")
