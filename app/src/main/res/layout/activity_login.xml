@@ -40,23 +40,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <EditText
-                android:id="@+id/parentLoginEmailEditText"
-                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="12dp"
-                android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:layout_marginBottom="8dp"
+                android:hint="メールアドレス">
 
-            <EditText
-                android:id="@+id/parentLoginPasswordEditText"
-                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/parentLoginEmailEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="12dp"
-                android:ems="10"
-                android:inputType="textPassword" />
+                android:layout_marginTop="8dp"
+                android:hint="パスワード"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/parentLoginPasswordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <Button
