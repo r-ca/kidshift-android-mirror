@@ -46,7 +46,7 @@ public class SelectShowChildListItemAdapter extends RecyclerView.Adapter<SelectS
     public void onBindViewHolder(@NonNull SelectShowChildListItemAdapter.ViewHolder holder, int position) {
         ChildModel childData = childDataList.get(position);
         holder.childName.setText(childData.getName());
-        holder.completedButton.setOnClickListener(v -> {
+        holder.selectButton.setOnClickListener(v -> {
             if (callback != null) {
                 callback.onClicked(childData.getId());
             }
@@ -60,12 +60,12 @@ public class SelectShowChildListItemAdapter extends RecyclerView.Adapter<SelectS
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView childName;
-        Button completedButton;
+        Button selectButton;
 
         public ViewHolder(@NonNull android.view.View itemView) {
             super(itemView);
             childName = itemView.findViewById(R.id.childNameTextView);
-            completedButton = itemView.findViewById(R.id.completeButton);
+            selectButton = itemView.findViewById(R.id.selectButton);
         }
     }
 
