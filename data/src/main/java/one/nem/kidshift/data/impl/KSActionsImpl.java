@@ -61,7 +61,7 @@ public class KSActionsImpl implements KSActions {
         return fetchChildListAsync().thenCombine(fetchTaskListAsync(), (childListResponse, taskListResponse) -> {
             Thread cacheThread = new Thread(() -> {
                 logger.debug("キャッシュ更新スレッド開始(スレッドID: " + Thread.currentThread().getId() + ")");
-                cacheWrapper.updateCache(ChildModelConverter.childListResponseToChildModelList(childListResponse),
+                cacheWrapper.updateChildTaskCache(ChildModelConverter.childListResponseToChildModelList(childListResponse),
                         TaskModelConverter.taskListResponseToTaskItemModelList(taskListResponse)).join();
                 logger.info("キャッシュ更新完了");
             });
