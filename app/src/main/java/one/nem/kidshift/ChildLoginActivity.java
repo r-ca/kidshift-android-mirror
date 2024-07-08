@@ -92,6 +92,7 @@ public class ChildLoginActivity extends AppCompatActivity {
                     appCommonSetting.setLoggedIn(true);
                     appCommonSetting.setAccessToken(childAuthResponse.getAccessToken());
                     appCommonSetting.setChildMode(true);
+                    finish();
                 } catch (Exception e) {
                     logger.error("リクエストに失敗しました");
                     Toast.makeText(this, "ログインに失敗しました", Toast.LENGTH_SHORT).show();
