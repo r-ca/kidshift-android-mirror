@@ -8,7 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.ChildData;
+import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.factory.KSLoggerFactory;
+
+@AndroidEntryPoint
 public class CommonSelectChildFragment extends Fragment {
+
+    @Inject
+    KSLoggerFactory loggerFactory;
+    @Inject
+    ChildData childData;
+
+    private KSLogger logger;
 
     public CommonSelectChildFragment() {
         // Required empty public constructor
@@ -17,6 +32,7 @@ public class CommonSelectChildFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        logger = loggerFactory.create("CommonSelectChildFragment");
     }
 
     @Override
