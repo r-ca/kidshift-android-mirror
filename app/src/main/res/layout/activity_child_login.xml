@@ -47,7 +47,7 @@
                 android:inputType="number"
                 android:maxWidth="48dp"
                 android:maxLength="1"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
@@ -59,7 +59,7 @@
                 android:inputType="number"
                 android:maxWidth="48dp"
                 android:maxLength="1"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
@@ -71,7 +71,7 @@
                 android:inputType="number"
                 android:maxWidth="48dp"
                 android:maxLength="1"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
@@ -83,7 +83,7 @@
                 android:inputType="number"
                 android:maxWidth="48dp"
                 android:maxLength="1"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 tools:ignore="Autofill,LabelFor" />
 
             <TextView
@@ -92,7 +92,7 @@
                 android:layout_weight="0"
                 android:gravity="center"
                 android:text="-"
-                android:textSize="18sp"
+                android:textSize="34sp"
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
@@ -104,7 +104,7 @@
                 android:inputType="number"
                 android:maxWidth="48dp"
                 android:maxLength="1"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
@@ -116,7 +116,7 @@
                 android:inputType="number"
                 android:maxWidth="48dp"
                 android:maxLength="1"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
@@ -128,7 +128,7 @@
                 android:inputType="number"
                 android:maxWidth="48dp"
                 android:maxLength="1"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 tools:ignore="Autofill,LabelFor" />
 
             <EditText
@@ -140,7 +140,7 @@
                 android:inputType="number"
                 android:maxWidth="48dp"
                 android:maxLength="1"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 tools:ignore="Autofill,LabelFor" />
 
         </LinearLayout>
