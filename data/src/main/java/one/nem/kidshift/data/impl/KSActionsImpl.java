@@ -166,8 +166,7 @@ public class KSActionsImpl implements KSActions {
                     logger.error("Error fetching history list: " + response.errorBody().string());
                     throw new RuntimeException("Error fetching history list: " + response.errorBody().string());
                 }
-                HistoryListResponse responseBody = response.body();
-                return responseBody;
+                return response.body();
             } catch (Exception e) {
                 logger.error("Error fetching history list");
                 throw new RuntimeException(e);
