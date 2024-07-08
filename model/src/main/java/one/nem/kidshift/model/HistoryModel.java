@@ -26,6 +26,9 @@ public class HistoryModel {
         this.registeredAt = registeredAt;
     }
 
+    public HistoryModel() {
+    }
+
     public String getId() {
         return id;
     }
