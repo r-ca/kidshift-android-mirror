@@ -132,7 +132,7 @@ public class ChildManageMainActivity extends AppCompatActivity {
                         Toast.makeText(this, "名前を入力してください", Toast.LENGTH_SHORT).show();
                     }
                     childData.addChild(new ChildModel(childName))
-                            .thenRun(this::updateList);
+                            .thenRun(this::updateListDirectly);
                 })
                 .setNegativeButton("キャンセル", (dialog, which) -> dialog.dismiss())
                 .show();
@@ -156,6 +156,13 @@ public class ChildManageMainActivity extends AppCompatActivity {
 
             }
         }).thenAccept(childListAdapter::setChildList).thenRun(() -> {
+            runOnUiThread(() -> childListAdapter.notifyDataSetChanged());
+        });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void updateListDirectly() {
+        childData.getChildListDirect().thenAccept(childListAdapter::setChildList).thenRun(() -> {
             runOnUiThread(() -> childListAdapter.notifyDataSetChanged());
         });
     }
