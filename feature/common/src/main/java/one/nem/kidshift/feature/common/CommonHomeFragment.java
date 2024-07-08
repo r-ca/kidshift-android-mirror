@@ -243,7 +243,7 @@ public class CommonHomeFragment extends Fragment {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                // do nothing
             }
             swipeRefreshLayout.setRefreshing(false);
         });
