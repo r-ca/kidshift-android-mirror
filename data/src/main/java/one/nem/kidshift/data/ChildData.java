@@ -31,7 +31,7 @@ public interface ChildData {
      * 子ユーザー情報更新
      * @param child 子ユーザー情報
      */
-    void updateChild(ChildModel child);
+    CompletableFuture<ChildModel> updateChild(ChildModel child);
 
     /**
      * 子ユーザー追加
@@ -43,7 +43,7 @@ public interface ChildData {
      * 子ユーザー削除
      * @param childId 子ID
      */
-    void removeChild(String childId);
+    CompletableFuture<Void> removeChild(String childId);
 
     /**
      * 子ユーザーログインコード発行

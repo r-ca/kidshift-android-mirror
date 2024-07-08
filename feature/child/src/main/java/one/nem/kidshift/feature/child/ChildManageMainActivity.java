@@ -2,7 +2,10 @@ package one.nem.kidshift.feature.child;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.print.PrintAttributes;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,13 +46,6 @@ public class ChildManageMainActivity extends AppCompatActivity {
 
     ChildListAdapter childListAdapter;
 
-    /* MEMO
-    - ToolBarの設定
-        - タイトル
-        - 戻るボタン
-        - 追加ボタン
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +64,13 @@ public class ChildManageMainActivity extends AppCompatActivity {
         // タイトル
         toolbar.setTitle("子供アカウント管理");
         // 閉じる
-        toolbar.setNavigationIcon(one.nem.kidshift.shared.R.drawable.check_24px); // TODO: アイコン修正
+        toolbar.setNavigationIcon(one.nem.kidshift.shared.R.drawable.close_24px);
         toolbar.setNavigationOnClickListener(v -> finish());
         // 追加ボタン
         toolbar.inflateMenu(R.menu.child_manage_main_toolbar_item);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.add_child_account) {
-                Toast.makeText(this, "Add button clicked", Toast.LENGTH_SHORT).show();
+                showAddChildDialog();
                 return true;
             }
             return false;
@@ -85,8 +81,7 @@ public class ChildManageMainActivity extends AppCompatActivity {
         childListAdapter.setButtonEventCallback(new ChildListAdapter.ButtonEventCallback() {
             @Override
             public void onEditButtonClick(ChildModel childModel) {
-                Toast.makeText(ChildManageMainActivity.this, "Edit button clicked", Toast.LENGTH_SHORT).show();
-                // TODO: 実装
+                showEditChildDialog(childModel);
             }
 
             @Override
@@ -116,6 +111,65 @@ public class ChildManageMainActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void showAddChildDialog() {
+        // EditTextを作成
+        EditText childNameEditText = new EditText(this);
+        childNameEditText.setHint("子供の名前");
+        // FrameLayoutに入れる
+        FrameLayout container = new FrameLayout(this);
+        container.addView(childNameEditText);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) childNameEditText.getLayoutParams();
+        params.setMargins(32, 16, 32, 16);
+        childNameEditText.setLayoutParams(params);
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("子供アカウント追加")
+                .setView(container)
+                .setPositiveButton("追加", (dialog, which) -> {
+                    String childName = Objects.requireNonNull(childNameEditText.getText()).toString();
+                    if (childName.isEmpty()) {
+                        Toast.makeText(this, "名前を入力してください", Toast.LENGTH_SHORT).show();
+                    }
+                    childData.addChild(new ChildModel(childName))
+                            .thenRun(this::updateListDirectly);
+                })
+                .setNegativeButton("キャンセル", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private void showEditChildDialog(ChildModel childModel) {
+        // EditTextを作成
+        EditText childNameEditText = new EditText(this);
+        childNameEditText.setHint("子供の名前");
+        childNameEditText.setText(childModel.getName());
+        // FrameLayoutに入れる
+        FrameLayout container = new FrameLayout(this);
+        container.addView(childNameEditText);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) childNameEditText.getLayoutParams();
+        params.setMargins(32, 16, 32, 16);
+        childNameEditText.setLayoutParams(params);
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("子供アカウント編集")
+                .setView(container)
+                .setPositiveButton("保存", (dialog, which) -> {
+                    String childName = Objects.requireNonNull(childNameEditText.getText()).toString();
+                    if (childName.isEmpty()) {
+                        Toast.makeText(this, "名前を入力してください", Toast.LENGTH_SHORT).show();
+                    }
+                    childModel.setName(childName);
+                    childData.updateChild(childModel)
+                            .thenRun(this::updateListDirectly);
+                })
+                .setNegativeButton("キャンセル", (dialog, which) -> dialog.dismiss())
+                // 削除ボタン
+                .setNeutralButton("削除", (dialog, which) -> { // TODO: 確認ダイアログを表示する
+                    childData.removeChild(childModel.getId())
+                            .thenRun(this::updateListDirectly);
+                })
+                .show();
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private void updateList() {
         childData.getChildList(new ChildModelCallback() {
@@ -134,6 +188,13 @@ public class ChildManageMainActivity extends AppCompatActivity {
 
             }
         }).thenAccept(childListAdapter::setChildList).thenRun(() -> {
+            runOnUiThread(() -> childListAdapter.notifyDataSetChanged());
+        });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void updateListDirectly() {
+        childData.getChildListDirect().thenAccept(childListAdapter::setChildList).thenRun(() -> {
             runOnUiThread(() -> childListAdapter.notifyDataSetChanged());
         });
     }

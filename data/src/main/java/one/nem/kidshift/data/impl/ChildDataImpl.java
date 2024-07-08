@@ -94,8 +94,22 @@ public class ChildDataImpl implements ChildData {
     }
 
     @Override
-    public void updateChild(ChildModel child) {
-
+    public CompletableFuture<ChildModel> updateChild(ChildModel child) {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<ChildResponse> call = kidShiftApiService.updateChild(ChildModelConverter.childModelToChildAddRequest(child), child.getId());
+            try {
+                Response<ChildResponse> response = call.execute();
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    logger.info("子供更新成功(childId: " + response.body().getId() + ")");
+                    return ChildModelConverter.childResponseToChildModel(response.body());
+                } else {
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
@@ -118,8 +132,21 @@ public class ChildDataImpl implements ChildData {
     }
 
     @Override
-    public void removeChild(String childId) {
-
+    public CompletableFuture<Void> removeChild(String childId) {
+        return CompletableFuture.supplyAsync(() -> {
+            Call<Void> call = kidShiftApiService.removeChild(childId);
+            try {
+                Response<Void> response = call.execute();
+                if (response.isSuccessful()) {
+                    logger.info("子供削除成功(childId: " + childId + ")");
+                    return null;
+                } else {
+                    throw new RuntimeException("HTTP Status: " + response.code());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override

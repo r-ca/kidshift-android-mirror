@@ -127,6 +127,25 @@ public interface KidShiftApiService {
     Call<ChildResponse> addChild(@Body ChildAddRequest request);
 
     /**
+     * 子供更新
+     * @param request ChildAddRequest
+     * @param id 子供ID
+     * @return ChildResponse
+     */
+    @PUT("/parent/child/{id}")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<ChildResponse> updateChild(@Body ChildAddRequest request, @Path("id") String id);
+
+    /**
+     * 子供削除
+     * @param id 子供ID
+     * @return Void
+     */
+    @DELETE("/parent/child/{id}")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<Void> removeChild(@Path("id") String id);
+
+    /**
      * 子供ログインコード発行
      * @param id 子供ID
      * @return ChildLoginCodeResponse
