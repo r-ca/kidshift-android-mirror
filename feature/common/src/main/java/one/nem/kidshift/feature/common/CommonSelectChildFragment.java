@@ -1,5 +1,7 @@
 package one.nem.kidshift.feature.common;
 
+import static androidx.navigation.Navigation.findNavController;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -54,7 +56,8 @@ public class CommonSelectChildFragment extends Fragment {
             adapter.setCallback(new SelectShowChildListItemAdapter.CompleteButtonClickedCallback() {
                 @Override
                 public void onClicked(String taskId) {
-                    logger.info("Clicked on child with id: " + taskId);
+                    // Navigate to CommonHomeFragment with navigation controller and pass the selected child id
+                    findNavController(view).navigate(CommonSelectChildFragmentDirections.actionCommonSelectChildFragmentToCommonHomeFragmentParentChild(taskId));
                 }
             });
         }).thenRun(() -> {
