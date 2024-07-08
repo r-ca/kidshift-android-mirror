@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/add_child_account"
+        android:icon="@drawable/add_24px"
+        app:showAsAction="ifRoom"
+        android:title="子供アカウントの追加" />
+</menu>
