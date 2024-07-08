@@ -138,6 +138,34 @@ public class ChildManageMainActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void showEditChildDialog(ChildModel childModel) {
+        // EditTextを作成
+        EditText childNameEditText = new EditText(this);
+        childNameEditText.setHint("子供の名前");
+        childNameEditText.setText(childModel.getName());
+        // FrameLayoutに入れる
+        FrameLayout container = new FrameLayout(this);
+        container.addView(childNameEditText);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) childNameEditText.getLayoutParams();
+        params.setMargins(32, 16, 32, 16);
+        childNameEditText.setLayoutParams(params);
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("子供アカウント編集")
+                .setView(container)
+                .setPositiveButton("保存", (dialog, which) -> {
+                    String childName = Objects.requireNonNull(childNameEditText.getText()).toString();
+                    if (childName.isEmpty()) {
+                        Toast.makeText(this, "名前を入力してください", Toast.LENGTH_SHORT).show();
+                    }
+                    childModel.setName(childName);
+                    childData.updateChild(childModel)
+                            .thenRun(this::updateListDirectly);
+                })
+                .setNegativeButton("キャンセル", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private void updateList() {
         childData.getChildList(new ChildModelCallback() {
