@@ -56,11 +56,13 @@ public class ChildManageMainActivity extends AppCompatActivity {
             @Override
             public void onEditButtonClick(ChildModel childModel) {
                 Toast.makeText(ChildManageMainActivity.this, "Edit button clicked", Toast.LENGTH_SHORT).show();
+                // TODO: 実装
             }
 
             @Override
             public void onLoginButtonClick(ChildModel childModel) {
                 Toast.makeText(ChildManageMainActivity.this, "Login button clicked", Toast.LENGTH_SHORT).show();
+                // TODO: 実装
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
