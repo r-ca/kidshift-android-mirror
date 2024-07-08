@@ -15,6 +15,9 @@ public class HistoryBaseItem {
         this.registeredAt = registeredAt;
     }
 
+    public HistoryBaseItem() {
+    }
+
     public String getId() {
         return id;
     }
