@@ -67,7 +67,7 @@ public interface KidShiftApiService {
      * タスク一覧取得
      * @return TaskListResponse
      */
-    @GET("/parent/task")
+    @GET("/task")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<TaskListResponse> getTasks();
 
@@ -76,7 +76,7 @@ public interface KidShiftApiService {
      * @param request TaskAddRequest
      * @return TaskResponse
      */
-    @POST("/parent/task")
+    @POST("/task")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<TaskResponse> addTask(@Body TaskAddRequest request);
 
@@ -86,7 +86,7 @@ public interface KidShiftApiService {
      * @param id タスクID
      * @return TaskResponse
      */
-    @PUT("/parent/task/{id}")
+    @PUT("/task/{id}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<TaskResponse> updateTask(@Body TaskAddRequest request, @Path("id") String id);
 
@@ -95,7 +95,7 @@ public interface KidShiftApiService {
      * @param id タスクID
      * @return Void
      */
-    @DELETE("/parent/task/{id}")
+    @DELETE("/task/{id}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<Void> removeTask(@Path("id") String id); // TODO-rca: OK responseをパース
 
@@ -104,7 +104,7 @@ public interface KidShiftApiService {
      * @param id タスクID
      * @return TaskResponse
      */
-    @GET("/parent/task/{id}")
+    @GET("/task/{id}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<TaskResponse> getTask(@Path("id") String id);
 
@@ -113,7 +113,7 @@ public interface KidShiftApiService {
      * @param id タスクID
      * @return Void
      */
-    @POST("/parent/task/{id}/complete")
+    @POST("/task/{id}/complete")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<Void> completeTask(@Path("id") String id, @Query("childId") String childId);
 
