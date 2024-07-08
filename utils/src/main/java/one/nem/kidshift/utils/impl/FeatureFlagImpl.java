@@ -22,7 +22,7 @@ public class FeatureFlagImpl implements FeatureFlag {
     private final SharedPreferences sharedPreferences;
 
     // ここを書き換えてプロファイルを書き換え
-    private final Profile currentProfile = Profile.DEVELOP;
+    private final Profile currentProfile = Profile.PRODUCTION;
 
     enum Profile {
         DEVELOP("develop"),
