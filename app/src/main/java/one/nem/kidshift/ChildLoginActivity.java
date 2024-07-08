@@ -15,6 +15,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.concurrent.CompletableFuture;
+
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -78,21 +80,24 @@ public class ChildLoginActivity extends AppCompatActivity {
         findViewById(R.id.childLoginButton).setOnClickListener(v -> {
             logger.debug("ログインボタンが押されました");
             Call<ChildAuthResponse> call = kidShiftApiService.childLogin(new ChildAuthRequest(getLoginCode()));
-            try {
-                ChildAuthResponse childAuthResponse = call.execute().body();
-                if (childAuthResponse == null || childAuthResponse.getAccessToken() == null) {
-                    // エラー処理
-                    logger.error("ChildAuthResponseがnullまたはAccessTokenがnullです");
-                    return;
+            CompletableFuture.runAsync(() -> {
+                try {
+                    ChildAuthResponse childAuthResponse = call.execute().body();
+                    if (childAuthResponse == null || childAuthResponse.getAccessToken() == null) {
+                        // エラー処理
+                        logger.error("ChildAuthResponseがnullまたはAccessTokenがnullです");
+                        return;
+                    }
+                    UserSettings.AppCommonSetting appCommonSetting = userSettings.getAppCommonSetting();
+                    appCommonSetting.setLoggedIn(true);
+                    appCommonSetting.setAccessToken(childAuthResponse.getAccessToken());
+                    appCommonSetting.setChildMode(true);
+                    finish();
+                } catch (Exception e) {
+                    logger.error("リクエストに失敗しました");
+                    Toast.makeText(this, "ログインに失敗しました", Toast.LENGTH_SHORT).show();
                 }
-                UserSettings.AppCommonSetting appCommonSetting = userSettings.getAppCommonSetting();
-                appCommonSetting.setLoggedIn(true);
-                appCommonSetting.setAccessToken(childAuthResponse.getAccessToken());
-                appCommonSetting.setChildMode(true);
-            } catch (Exception e) {
-                logger.error("リクエストに失敗しました");
-                Toast.makeText(this, "ログインに失敗しました", Toast.LENGTH_SHORT).show();
-            }
+            });
         });
     }
 
