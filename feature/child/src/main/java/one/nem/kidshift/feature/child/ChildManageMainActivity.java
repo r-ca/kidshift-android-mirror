@@ -64,7 +64,7 @@ public class ChildManageMainActivity extends AppCompatActivity {
         // タイトル
         toolbar.setTitle("子供アカウント管理");
         // 閉じる
-        toolbar.setNavigationIcon(one.nem.kidshift.shared.R.drawable.check_24px); // TODO: アイコン修正
+        toolbar.setNavigationIcon(one.nem.kidshift.shared.R.drawable.close_24px);
         toolbar.setNavigationOnClickListener(v -> finish());
         // 追加ボタン
         toolbar.inflateMenu(R.menu.child_manage_main_toolbar_item);
