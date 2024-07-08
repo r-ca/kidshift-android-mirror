@@ -91,6 +91,7 @@ public class ChildLoginActivity extends AppCompatActivity {
                     UserSettings.AppCommonSetting appCommonSetting = userSettings.getAppCommonSetting();
                     appCommonSetting.setLoggedIn(true);
                     appCommonSetting.setAccessToken(childAuthResponse.getAccessToken());
+                    appCommonSetting.setChildId(childAuthResponse.getChildId());
                     appCommonSetting.setChildMode(true);
                     finish();
                 } catch (Exception e) {
