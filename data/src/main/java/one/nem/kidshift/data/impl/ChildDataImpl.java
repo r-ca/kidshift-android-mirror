@@ -132,8 +132,8 @@ public class ChildDataImpl implements ChildData {
     }
 
     @Override
-    public void removeChild(String childId) {
-
+    public CompletableFuture<Void> removeChild(String childId) {
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

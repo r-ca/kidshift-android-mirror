@@ -43,7 +43,7 @@ public interface ChildData {
      * 子ユーザー削除
      * @param childId 子ID
      */
-    void removeChild(String childId);
+    CompletableFuture<Void> removeChild(String childId);
 
     /**
      * 子ユーザーログインコード発行
