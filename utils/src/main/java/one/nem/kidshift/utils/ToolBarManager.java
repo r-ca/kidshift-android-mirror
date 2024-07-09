@@ -34,27 +34,6 @@ public class ToolBarManager {
         toolbar.setSubtitle(subtitle);
     }
 
-    public void setNavigationIcon(int resId) {
-        checkToolbar();
-        toolbar.setNavigationIcon(resId);
-    }
-
-    public void setMenuResId(int resId) {
-        checkToolbar();
-        toolbar.getMenu().clear();
-        toolbar.inflateMenu(resId);
-    }
-
-    public void setOnMenuItemClickListener(Toolbar.OnMenuItemClickListener listener) {
-        checkToolbar();
-        toolbar.setOnMenuItemClickListener(listener);
-    }
-
-    public void setNavigationOnClickListener(Toolbar.OnClickListener listener) {
-        checkToolbar();
-        toolbar.setNavigationOnClickListener(listener);
-    }
-
     public Toolbar getToolbar() {
         return toolbar;
     }
