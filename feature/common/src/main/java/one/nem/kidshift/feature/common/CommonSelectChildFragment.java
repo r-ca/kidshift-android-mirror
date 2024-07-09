@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.feature.common.adapter.SelectShowChildListItemAdapter;
+import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
@@ -29,6 +30,8 @@ public class CommonSelectChildFragment extends Fragment {
     KSLoggerFactory loggerFactory;
     @Inject
     ChildData childData;
+    @Inject
+    FabManager fabManager;
     private KSLogger logger;
 
     private SelectShowChildListItemAdapter adapter;
@@ -56,7 +59,7 @@ public class CommonSelectChildFragment extends Fragment {
             adapter.setCallback(new SelectShowChildListItemAdapter.CompleteButtonClickedCallback() {
                 @Override
                 public void onClicked(String taskId) {
-                    // Navigate to CommonHomeFragment with navigation controller and pass the selected child id
+                    // 静的解析エラーが発生するのになぜか実行はできる↓
                     findNavController(view).navigate(CommonSelectChildFragmentDirections.actionCommonSelectChildFragmentToCommonHomeFragmentParentChild(taskId));
                 }
             });
@@ -68,4 +71,11 @@ public class CommonSelectChildFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fabManager.hide();
+    }
+
 }
