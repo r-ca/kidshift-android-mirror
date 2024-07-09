@@ -23,6 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -126,6 +127,8 @@ public class CommonHomeFragment extends Fragment {
         taskListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         taskListRecyclerView.setAdapter(taskListItemAdapter);
         taskListRecyclerView.setItemAnimator(new SlideInUpAnimator());
+        Objects.requireNonNull(taskListRecyclerView.getItemAnimator()).setAddDuration(400);
+        Objects.requireNonNull(taskListRecyclerView.getItemAnimator()).setRemoveDuration(400);
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this::updateData);
