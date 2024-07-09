@@ -16,45 +16,37 @@ public class RecyclerViewAnimUtils {
     }
 
     // SlideUp
-    public RecyclerView setSlideUpAnimation(RecyclerView recyclerView) {
+    public void setSlideUpAnimation(RecyclerView recyclerView) {
         recyclerView.setItemAnimator(new SlideInUpAnimator());
         recyclerView.getItemAnimator().setAddDuration(500);
         recyclerView.getItemAnimator().setRemoveDuration(500);
         recyclerView.getItemAnimator().setMoveDuration(500);
         recyclerView.getItemAnimator().setChangeDuration(500);
-
-        return recyclerView;
     }
 
-    public RecyclerView setSlideUpAnimation(RecyclerView recyclerView, int duration) {
+    public void setSlideUpAnimation(RecyclerView recyclerView, int duration) {
         recyclerView.setItemAnimator(new SlideInUpAnimator());
         recyclerView.getItemAnimator().setAddDuration(duration);
         recyclerView.getItemAnimator().setRemoveDuration(duration);
         recyclerView.getItemAnimator().setMoveDuration(duration);
         recyclerView.getItemAnimator().setChangeDuration(duration);
-
-        return recyclerView;
     }
 
     // Fade
-    public RecyclerView setFadeAnimation(RecyclerView recyclerView) {
+    public void setFadeAnimation(RecyclerView recyclerView) {
         recyclerView.setItemAnimator(new FadeInAnimator());
         recyclerView.getItemAnimator().setAddDuration(500);
         recyclerView.getItemAnimator().setRemoveDuration(500);
         recyclerView.getItemAnimator().setMoveDuration(500);
         recyclerView.getItemAnimator().setChangeDuration(500);
-
-        return recyclerView;
     }
 
-    public RecyclerView setFadeAnimation(RecyclerView recyclerView, int duration) {
+    public void setFadeAnimation(RecyclerView recyclerView, int duration) {
         recyclerView.setItemAnimator(new FadeInAnimator());
         recyclerView.getItemAnimator().setAddDuration(duration);
         recyclerView.getItemAnimator().setRemoveDuration(duration);
         recyclerView.getItemAnimator().setMoveDuration(duration);
         recyclerView.getItemAnimator().setChangeDuration(duration);
-
-        return recyclerView;
     }
 
 }
