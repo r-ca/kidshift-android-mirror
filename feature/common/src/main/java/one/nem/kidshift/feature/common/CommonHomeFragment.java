@@ -4,12 +4,18 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -140,8 +146,6 @@ public class CommonHomeFragment extends Fragment {
         calendarPrevButton = view.findViewById(R.id.calendarPrevButton);
         calendarNextButton = view.findViewById(R.id.calendarNextButton);
 
-
-
         initCalender();
 
         return view;
@@ -156,6 +160,7 @@ public class CommonHomeFragment extends Fragment {
         } else {
             setupFabParent();
         }
+        setupToolBar();
     }
 
     /**
@@ -182,6 +187,23 @@ public class CommonHomeFragment extends Fragment {
     private void setupFabChild() {
         fabManager.hide();
     }
+
+    private void setupToolBar() {
+        if (isChildMode) {
+            toolBarManager.setTitle("タスク一覧");
+        } else {
+            toolBarManager.setTitle("ホーム");
+        }
+        toolBarManager.setMenuResId(R.menu.common_home_toolbar_menu);
+        toolBarManager.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.toggle_calendar) {
+                Toast.makeText(requireContext(), "カレンダー表示切替", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            return false;
+        });
+    }
+
 
     /**
      * タスク完了確認ダイアログを表示 (子供モード用)
