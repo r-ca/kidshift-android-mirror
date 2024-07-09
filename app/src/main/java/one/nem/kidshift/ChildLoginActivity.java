@@ -102,6 +102,11 @@ public class ChildLoginActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MainActivity.class));
             });
         });
+
+        // 親ログインボタンを押したときの処理
+        findViewById(R.id.toParentLoginButton).setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private String getLoginCode() {
