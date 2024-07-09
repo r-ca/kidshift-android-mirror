@@ -63,17 +63,15 @@ public class CommonSelectChildFragment extends Fragment {
             // 静的解析エラーが発生するのになぜか実行はできる↓
             findNavController(view).navigate(CommonSelectChildFragmentDirections.actionCommonSelectChildFragmentToCommonHomeFragmentParentChild(taskId));
         });
-        childData.getChildListDirect().thenAccept(childList -> {
+        CompletableFuture.runAsync(() -> childListRecyclerView.setAdapter(adapter)).thenRun(() -> childData.getChildListDirect().thenAccept(childList -> {
             requireActivity().runOnUiThread(() -> {
-                childListRecyclerView.setAdapter(adapter);
-                adapter.notifyItemRangeRemoved(0, adapter.getItemCount());
                 adapter.setChildDataList(childList);
-                adapter.notifyItemRangeInserted(0, childList.size());
+                adapter.notifyItemRangeChanged(0, childList.size());
             });
         }).exceptionally(e -> {
             logger.error("Failed to load child list");
             return null;
-        });
+        }));
 
         return view;
     }
