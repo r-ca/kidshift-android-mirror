@@ -132,6 +132,8 @@ public class CommonHomeFragment extends Fragment {
         calendarPrevButton = view.findViewById(R.id.calendarPrevButton);
         calendarNextButton = view.findViewById(R.id.calendarNextButton);
 
+
+
         initCalender();
 
         return view;
