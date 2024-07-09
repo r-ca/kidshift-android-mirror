@@ -11,21 +11,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.github.sundeepk.compactcalendarview.CompactCalendarView
-            android:id="@+id/calendar"
-            android:layout_width="fill_parent"
-            android:layout_height="300dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            app:compactCalendarBackgroundColor="@color/colorSurface"
-            app:compactCalendarCurrentDayBackgroundColor="@color/colorSurfaceVariant"
-            app:compactCalendarCurrentSelectedDayBackgroundColor="@color/colorSurfaceVariant"
-            app:compactCalendarMultiEventIndicatorColor="@color/colorOnSurface"
-            app:compactCalendarTextColor="@color/colorOnSurface"
-            app:compactCalendarTextSize="12sp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorSurface">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.github.sundeepk.compactcalendarview.CompactCalendarView
+                android:id="@+id/calendar"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:compactCalendarBackgroundColor="@color/colorSurface"
+                app:compactCalendarCurrentDayBackgroundColor="@color/colorSurfaceVariant"
+                app:compactCalendarCurrentSelectedDayBackgroundColor="@color/colorSurfaceVariant"
+                app:compactCalendarEventIndicatorStyle="fill_large_indicator"
+                app:compactCalendarMultiEventIndicatorColor="@color/colorOnSurface"
+                app:compactCalendarTextColor="@color/colorOnSurface"
+                app:compactCalendarTextSize="12sp"/>
+
+        </LinearLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
