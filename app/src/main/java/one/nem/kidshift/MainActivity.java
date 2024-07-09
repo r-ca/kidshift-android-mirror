@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         return divider;
     }
 
-    public Toolbar getToolbar() {
+    public Toolbar getToolbar() { // TODO: toolbarのインスタンス自体を取得するのではなく，fabのように操作できるようにする
         return toolbar;
     }
 
