@@ -22,7 +22,7 @@ public class ParentDataImpl implements ParentData {
     private final KSActions ksActions;
 
     @Inject
-    public ParentDataImpl(KidShiftApiService kidshiftApiService, UserSettings userSettings, KSLoggerFactory ksLoggerFactory, KSActions ksActions) {
+    public ParentDataImpl(UserSettings userSettings, KSLoggerFactory ksLoggerFactory, KSActions ksActions) {
         this.userSettings = userSettings;
         this.logger = ksLoggerFactory.create("ParentDataImpl");
         this.ksActions = ksActions;
