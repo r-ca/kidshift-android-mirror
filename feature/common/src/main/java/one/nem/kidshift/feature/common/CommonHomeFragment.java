@@ -30,7 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.data.TaskData;
@@ -126,9 +125,6 @@ public class CommonHomeFragment extends Fragment {
         RecyclerView taskListRecyclerView = view.findViewById(R.id.taskListRecyclerView);
         taskListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         taskListRecyclerView.setAdapter(taskListItemAdapter);
-        taskListRecyclerView.setItemAnimator(new SlideInUpAnimator());
-        Objects.requireNonNull(taskListRecyclerView.getItemAnimator()).setAddDuration(400);
-        Objects.requireNonNull(taskListRecyclerView.getItemAnimator()).setRemoveDuration(400);
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this::updateData);
