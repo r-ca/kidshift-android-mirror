@@ -203,5 +203,8 @@ public class MainActivity extends AppCompatActivity {
         return divider;
     }
 
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
 
 }
