@@ -50,10 +50,9 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     UserSettings userSettings;
 
-
     private KSLogger logger;
-
     private FloatingActionButton fab;
+    private Toolbar toolbar;
 
 
 
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
