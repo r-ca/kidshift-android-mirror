@@ -18,10 +18,10 @@ public class RecyclerViewAnimUtils {
     // SlideUp
     public void setSlideUpAnimation(RecyclerView recyclerView) {
         recyclerView.setItemAnimator(new SlideInUpAnimator());
-        recyclerView.getItemAnimator().setAddDuration(500);
-        recyclerView.getItemAnimator().setRemoveDuration(500);
-        recyclerView.getItemAnimator().setMoveDuration(500);
-        recyclerView.getItemAnimator().setChangeDuration(500);
+        recyclerView.getItemAnimator().setAddDuration(300);
+        recyclerView.getItemAnimator().setRemoveDuration(100);
+        recyclerView.getItemAnimator().setMoveDuration(100);
+        recyclerView.getItemAnimator().setChangeDuration(100);
     }
 
     public void setSlideUpAnimation(RecyclerView recyclerView, int duration) {
@@ -35,10 +35,10 @@ public class RecyclerViewAnimUtils {
     // Fade
     public void setFadeAnimation(RecyclerView recyclerView) {
         recyclerView.setItemAnimator(new FadeInAnimator());
-        recyclerView.getItemAnimator().setAddDuration(500);
-        recyclerView.getItemAnimator().setRemoveDuration(500);
-        recyclerView.getItemAnimator().setMoveDuration(500);
-        recyclerView.getItemAnimator().setChangeDuration(500);
+        recyclerView.getItemAnimator().setAddDuration(300);
+        recyclerView.getItemAnimator().setRemoveDuration(100);
+        recyclerView.getItemAnimator().setMoveDuration(100);
+        recyclerView.getItemAnimator().setChangeDuration(100);
     }
 
     public void setFadeAnimation(RecyclerView recyclerView, int duration) {
@@ -48,5 +48,4 @@ public class RecyclerViewAnimUtils {
         recyclerView.getItemAnimator().setMoveDuration(duration);
         recyclerView.getItemAnimator().setChangeDuration(duration);
     }
-
 }
