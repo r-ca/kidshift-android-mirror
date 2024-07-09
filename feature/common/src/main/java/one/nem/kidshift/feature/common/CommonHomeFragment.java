@@ -4,14 +4,25 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
@@ -20,6 +31,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -35,6 +47,8 @@ import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.RecyclerViewAnimUtils;
+import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import one.nem.kidshift.utils.models.FabEventCallback;
 
@@ -53,7 +67,11 @@ public class CommonHomeFragment extends Fragment {
     @Inject
     FabManager fabManager;
     @Inject
+    ToolBarManager toolBarManager;
+    @Inject
     RewardData rewardData;
+    @Inject
+    RecyclerViewAnimUtils recyclerViewAnimUtils;
 
 
     private boolean isChildMode;
@@ -63,6 +81,9 @@ public class CommonHomeFragment extends Fragment {
     CompactCalendarView compactCalendarView;
     SwipeRefreshLayout swipeRefreshLayout;
     TaskListItemAdapter taskListItemAdapter;
+    TextView calendarTitleTextView;
+    ImageButton calendarPrevButton;
+    ImageButton calendarNextButton;
 
     public CommonHomeFragment() {
         // Required empty public constructor
@@ -118,24 +139,99 @@ public class CommonHomeFragment extends Fragment {
         RecyclerView taskListRecyclerView = view.findViewById(R.id.taskListRecyclerView);
         taskListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         taskListRecyclerView.setAdapter(taskListItemAdapter);
+        recyclerViewAnimUtils.setSlideUpAnimation(taskListRecyclerView);
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this::updateData);
 
+        calendarTitleTextView = view.findViewById(R.id.calendarTitleTextView);
+        calendarPrevButton = view.findViewById(R.id.calendarPrevButton);
+        calendarNextButton = view.findViewById(R.id.calendarNextButton);
+
         initCalender();
 
+        MenuHost menuHost = requireActivity();
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.common_home_toolbar_menu, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.toggle_calendar) {
+                    View calendarContainer = view.findViewById(R.id.calendarContainer);
+                    if (calendarContainer.getVisibility() == View.VISIBLE) {
+                        Animation slideUp = AnimationUtils.loadAnimation(getContext(), one.nem.kidshift.shared.R.anim.slide_up);
+                        calendarContainer.startAnimation(slideUp);
+                        slideUp.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                recyclerViewRefresh();
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                calendarContainer.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+                    } else {
+                        Animation slideDown = AnimationUtils.loadAnimation(getContext(), one.nem.kidshift.shared.R.anim.slide_down);
+                        calendarContainer.startAnimation(slideDown);
+                        slideDown.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                calendarContainer.setVisibility(View.VISIBLE);
+                                recyclerViewRefresh();
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        initCalender();
+        updateData();
+
         return view;
+    }
+
+    private void recyclerViewRefresh() {
+        requireActivity().runOnUiThread(() -> {
+            taskListItemAdapter.notifyItemRangeRemoved(0, taskListItemAdapter.getItemCount());
+            taskListItemAdapter.notifyItemRangeInserted(0, taskListItemAdapter.getItemCount());
+        });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateData();
         if (isChildMode) {
             setupFabChild();
         } else {
             setupFabParent();
         }
+        setupToolBar();
     }
 
     /**
@@ -162,6 +258,15 @@ public class CommonHomeFragment extends Fragment {
     private void setupFabChild() {
         fabManager.hide();
     }
+
+    private void setupToolBar() {
+        if (isChildMode) {
+            toolBarManager.setTitle("タスク一覧");
+        } else {
+            toolBarManager.setTitle("ホーム");
+        }
+    }
+
 
     /**
      * タスク完了確認ダイアログを表示 (子供モード用)
@@ -223,19 +328,25 @@ public class CommonHomeFragment extends Fragment {
         return taskData.getTasks(new TaskItemModelCallback() {
             @Override
             public void onUnchanged() {
+                // Do nothing
             }
 
             @Override
-            public void onUpdated(List<TaskItemModel> taskItem) {
+            public void onUpdated(List<TaskItemModel> taskItem) { // Workaround
+                taskListItemAdapter.notifyItemRangeRemoved(0, taskListItemAdapter.getItemCount());
+                taskListItemAdapter.setTaskItemModelList(taskItem);
+                taskListItemAdapter.notifyItemRangeInserted(0, taskItem.size());
             }
-
             @Override
             public void onFailed(String message) {
+                // TODO: ユーザーに丁寧に通知
+                Toast.makeText(requireContext(), "タスク情報の取得に失敗しました", Toast.LENGTH_SHORT).show(); // Workaround
             }
         }).thenAccept(taskItemModel -> {
-            taskListItemAdapter.setTaskItemModelList(taskItemModel);
             requireActivity().runOnUiThread(() -> {
-                taskListItemAdapter.notifyDataSetChanged();
+                taskListItemAdapter.notifyItemRangeRemoved(0, taskListItemAdapter.getItemCount());
+                taskListItemAdapter.setTaskItemModelList(taskItemModel);
+                taskListItemAdapter.notifyItemRangeInserted(0, taskItemModel.size());
             });
         });
     }
@@ -266,8 +377,21 @@ public class CommonHomeFragment extends Fragment {
 
             @Override
             public void onMonthScroll(Date date) {
-                // Do nothing
+                // 0000年00月の形式に変換 getYear/getMonthは非推奨
+                calendarTitleTextView.setText(String.format("%d年%d月", date.getYear() + 1900, date.getMonth() + 1)); // 統合
             }
+        });
+
+        // 初回
+        Date date = new Date();
+        calendarTitleTextView.setText(String.format("%d年%d月", date.getYear() + 1900, date.getMonth() + 1)); // 統合
+
+        calendarPrevButton.setOnClickListener(v -> {
+            compactCalendarView.scrollLeft();
+        });
+
+        calendarNextButton.setOnClickListener(v -> {
+            compactCalendarView.scrollRight();
         });
     }
 
@@ -277,12 +401,6 @@ public class CommonHomeFragment extends Fragment {
     private void updateData() {
         swipeRefreshLayout.setRefreshing(true);
         CompletableFuture.allOf(updateTaskInfo(), updateCalender()).thenRun(() -> {
-            // Workaround: リスト更新処理があまりにも重くてアニメーションが壊れるため
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                // do nothing
-            }
             swipeRefreshLayout.setRefreshing(false);
         });
     }

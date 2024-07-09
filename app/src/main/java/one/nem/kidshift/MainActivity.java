@@ -20,7 +20,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -37,27 +36,28 @@ import one.nem.kidshift.feature.child.ChildManageMainActivity;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.FeatureFlag;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     @Inject
-    KSLoggerFactory loggerFactory;
-
+    KSLoggerFactory ksLoggerFactory;
     @Inject
     FabManager fabManager;
-
+    @Inject
+    ToolBarManager toolBarManager;
     @Inject
     FeatureFlag featureFlag;
-
-
-    private KSLogger logger;
-
-    private FloatingActionButton fab;
-
     @Inject
     UserSettings userSettings;
+
+    private KSLogger logger;
+    private FloatingActionButton fab;
+    private Toolbar toolbar;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        logger = loggerFactory.create("MainActivity");
+        logger = ksLoggerFactory.create("MainActivity");
 
         // Check logged in
         if (userSettings.getAppCommonSetting().isLoggedIn()) {
@@ -82,8 +82,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolBarManager.setToolbar(toolbar);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
 
@@ -206,5 +207,8 @@ public class MainActivity extends AppCompatActivity {
         return divider;
     }
 
+    public Toolbar getToolbar() { // TODO: toolbarのインスタンス自体を取得するのではなく，fabのように操作できるようにする
+        return toolbar;
+    }
 
 }
