@@ -255,8 +255,13 @@ public class CommonHomeFragment extends Fragment {
     private void initCalender() {
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
-            public void onDayClick(Date date) {
-                Toast.makeText(requireContext(), "Day was clicked: " + date, Toast.LENGTH_SHORT).show();
+            public void onDayClick(Date date) { // Test
+                List<Event> events = compactCalendarView.getEvents(date);
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(date.toString())
+                        .setMessage(events.toString())
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
             }
 
             @Override
