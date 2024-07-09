@@ -12,6 +12,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
@@ -63,6 +66,9 @@ public class CommonHomeFragment extends Fragment {
     CompactCalendarView compactCalendarView;
     SwipeRefreshLayout swipeRefreshLayout;
     TaskListItemAdapter taskListItemAdapter;
+    TextView calendarTitleTextView;
+    ImageButton calendarPrevButton;
+    ImageButton calendarNextButton;
 
     public CommonHomeFragment() {
         // Required empty public constructor
@@ -121,6 +127,10 @@ public class CommonHomeFragment extends Fragment {
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this::updateData);
+
+        calendarTitleTextView = view.findViewById(R.id.calendarTitleTextView);
+        calendarPrevButton = view.findViewById(R.id.calendarPrevButton);
+        calendarNextButton = view.findViewById(R.id.calendarNextButton);
 
         initCalender();
 
@@ -266,8 +276,17 @@ public class CommonHomeFragment extends Fragment {
 
             @Override
             public void onMonthScroll(Date date) {
-                // Do nothing
+                // 0000年00月の形式に変換 getYear/getMonthは非推奨
+                calendarTitleTextView.setText(String.format("%d年%d月", date.getYear() + 1900, date.getMonth() + 1));
             }
+        });
+
+        calendarPrevButton.setOnClickListener(v -> {
+            compactCalendarView.scrollLeft();
+        });
+
+        calendarNextButton.setOnClickListener(v -> {
+            compactCalendarView.scrollRight();
         });
     }
 
