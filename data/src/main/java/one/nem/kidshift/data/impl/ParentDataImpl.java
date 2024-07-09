@@ -46,6 +46,11 @@ public class ParentDataImpl implements ParentData {
     }
 
     @Override
+    public CompletableFuture<ParentModel> getParentDirect() {
+        return ksActions.syncParent();
+    }
+
+    @Override
     public void updateParent(ParentModel parent) {
 
     }
