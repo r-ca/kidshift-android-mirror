@@ -1,6 +1,7 @@
 package one.nem.kidshift.feature.common;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,10 +12,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -23,6 +27,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
+import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.data.TaskData;
 import one.nem.kidshift.feature.common.adapter.ChildListItemAdapter;
 import one.nem.kidshift.feature.common.adapter.TaskListItemAdapter;
@@ -47,6 +52,9 @@ public class CommonHomeFragment extends Fragment {
     ChildData childData;
     @Inject
     FabManager fabManager;
+    @Inject
+    RewardData rewardData;
+
 
     private boolean isChildMode;
     private String childId;
@@ -113,6 +121,8 @@ public class CommonHomeFragment extends Fragment {
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this::updateData);
+
+        initCalender();
 
         return view;
     }
@@ -235,8 +245,30 @@ public class CommonHomeFragment extends Fragment {
      * @return CompletableFuture<Void>
      */
     private CompletableFuture<Void> updateCalender() {
-        // TODO: タスクの完了状況をカレンダーに表示
-        return CompletableFuture.completedFuture(null);
+        return rewardData.getRewardHistoryList().thenAccept(historyModels -> {
+            historyModels.forEach(historyModel -> {
+                compactCalendarView.addEvent(new Event(Color.RED, historyModel.getRegisteredAt().getTime(), historyModel.getTaskName())); // debug
+            });
+        });
+    }
+
+    private void initCalender() {
+        compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date date) { // Test
+                List<Event> events = compactCalendarView.getEvents(date);
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(date.toString())
+                        .setMessage(events.toString())
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
+
+            @Override
+            public void onMonthScroll(Date date) {
+                // Do nothing
+            }
+        });
     }
 
     /**

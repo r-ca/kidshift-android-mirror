@@ -1,6 +1,9 @@
 package one.nem.kidshift.data;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import one.nem.kidshift.model.HistoryModel;
 
 public interface RewardData {
     /**
@@ -8,4 +11,10 @@ public interface RewardData {
      * @return Integer 合計報酬額
      */
     CompletableFuture<Integer> getTotalReward(String childId);
+
+    CompletableFuture<List<HistoryModel>> getRewardHistoryList();
+
+    CompletableFuture<List<HistoryModel>> getRewardHistoryList(String childId);
+
+
 }
