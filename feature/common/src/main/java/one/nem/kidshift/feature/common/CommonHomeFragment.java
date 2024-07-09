@@ -277,9 +277,13 @@ public class CommonHomeFragment extends Fragment {
             @Override
             public void onMonthScroll(Date date) {
                 // 0000年00月の形式に変換 getYear/getMonthは非推奨
-                calendarTitleTextView.setText(String.format("%d年%d月", date.getYear() + 1900, date.getMonth() + 1));
+                calendarTitleTextView.setText(String.format("%d年%d月", date.getYear() + 1900, date.getMonth() + 1)); // 統合
             }
         });
+
+        // 初回
+        Date date = new Date();
+        calendarTitleTextView.setText(String.format("%d年%d月", date.getYear() + 1900, date.getMonth() + 1)); // 統合
 
         calendarPrevButton.setOnClickListener(v -> {
             compactCalendarView.scrollLeft();
