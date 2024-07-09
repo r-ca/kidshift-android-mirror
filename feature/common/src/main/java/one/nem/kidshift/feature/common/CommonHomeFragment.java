@@ -39,6 +39,7 @@ import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.RecyclerViewAnimUtils;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import one.nem.kidshift.utils.models.FabEventCallback;
 
@@ -58,6 +59,8 @@ public class CommonHomeFragment extends Fragment {
     FabManager fabManager;
     @Inject
     RewardData rewardData;
+    @Inject
+    RecyclerViewAnimUtils recyclerViewAnimUtils;
 
 
     private boolean isChildMode;
@@ -125,6 +128,7 @@ public class CommonHomeFragment extends Fragment {
         RecyclerView taskListRecyclerView = view.findViewById(R.id.taskListRecyclerView);
         taskListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         taskListRecyclerView.setAdapter(taskListItemAdapter);
+        recyclerViewAnimUtils.setSlideUpAnimation(taskListRecyclerView);
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this::updateData);
