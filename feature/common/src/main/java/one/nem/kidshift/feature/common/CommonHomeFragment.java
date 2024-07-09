@@ -168,12 +168,12 @@ public class CommonHomeFragment extends Fragment {
                         slideUp.setAnimationListener(new Animation.AnimationListener() {
                             @Override
                             public void onAnimationStart(Animation animation) {
+                                recyclerViewRefresh();
                             }
 
                             @Override
                             public void onAnimationEnd(Animation animation) {
                                 calendarContainer.setVisibility(View.GONE);
-                                recyclerViewRefresh();
                             }
 
                             @Override
@@ -187,11 +187,11 @@ public class CommonHomeFragment extends Fragment {
                             @Override
                             public void onAnimationStart(Animation animation) {
                                 calendarContainer.setVisibility(View.VISIBLE);
+                                recyclerViewRefresh();
                             }
 
                             @Override
                             public void onAnimationEnd(Animation animation) {
-                                recyclerViewRefresh();
                             }
 
                             @Override
@@ -204,6 +204,9 @@ public class CommonHomeFragment extends Fragment {
                 return false;
             }
         });
+
+        initCalender();
+        updateData();
 
         return view;
     }
@@ -223,7 +226,6 @@ public class CommonHomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // updateData();
         if (isChildMode) {
             setupFabChild();
         } else {
