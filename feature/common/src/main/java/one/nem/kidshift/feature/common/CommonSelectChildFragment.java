@@ -21,6 +21,7 @@ import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.feature.common.adapter.SelectShowChildListItemAdapter;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.RecyclerViewAnimUtils;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
@@ -32,6 +33,8 @@ public class CommonSelectChildFragment extends Fragment {
     ChildData childData;
     @Inject
     FabManager fabManager;
+    @Inject
+    RecyclerViewAnimUtils recyclerViewAnimUtils;
     private KSLogger logger;
 
     private SelectShowChildListItemAdapter adapter;
@@ -54,19 +57,22 @@ public class CommonSelectChildFragment extends Fragment {
 
         RecyclerView childListRecyclerView = view.findViewById(R.id.selectShowChildListRecyclerView);
         childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewAnimUtils.setSlideUpAnimation(childListRecyclerView);
+        adapter = new SelectShowChildListItemAdapter();
+        adapter.setCallback(taskId -> {
+            // 静的解析エラーが発生するのになぜか実行はできる↓
+            findNavController(view).navigate(CommonSelectChildFragmentDirections.actionCommonSelectChildFragmentToCommonHomeFragmentParentChild(taskId));
+        });
         childData.getChildListDirect().thenAccept(childList -> {
-            adapter = new SelectShowChildListItemAdapter(childList);
-            adapter.setCallback(new SelectShowChildListItemAdapter.CompleteButtonClickedCallback() {
-                @Override
-                public void onClicked(String taskId) {
-                    // 静的解析エラーが発生するのになぜか実行はできる↓
-                    findNavController(view).navigate(CommonSelectChildFragmentDirections.actionCommonSelectChildFragmentToCommonHomeFragmentParentChild(taskId));
-                }
-            });
-        }).thenRun(() -> {
             requireActivity().runOnUiThread(() -> {
                 childListRecyclerView.setAdapter(adapter);
+                adapter.notifyItemRangeRemoved(0, adapter.getItemCount());
+                adapter.setChildDataList(childList);
+                adapter.notifyItemRangeInserted(0, childList.size());
             });
+        }).exceptionally(e -> {
+            logger.error("Failed to load child list");
+            return null;
         });
 
         return view;
