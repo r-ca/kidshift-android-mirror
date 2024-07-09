@@ -328,14 +328,18 @@ public class CommonHomeFragment extends Fragment {
         return taskData.getTasks(new TaskItemModelCallback() {
             @Override
             public void onUnchanged() {
+                // Do nothing
             }
 
             @Override
-            public void onUpdated(List<TaskItemModel> taskItem) {
+            public void onUpdated(List<TaskItemModel> taskItem) { // Workaround
+                taskListItemAdapter.setTaskItemModelList(taskItem);
+                recyclerViewRefresh();
             }
-
             @Override
             public void onFailed(String message) {
+                // TODO: ユーザーに丁寧に通知
+                Toast.makeText(requireContext(), "タスク情報の取得に失敗しました", Toast.LENGTH_SHORT).show(); // Workaround
             }
         }).thenAccept(taskItemModel -> {
             requireActivity().runOnUiThread(() -> {
