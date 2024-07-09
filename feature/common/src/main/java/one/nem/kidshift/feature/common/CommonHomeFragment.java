@@ -40,6 +40,7 @@ import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.RecyclerViewAnimUtils;
+import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import one.nem.kidshift.utils.models.FabEventCallback;
 
@@ -57,6 +58,8 @@ public class CommonHomeFragment extends Fragment {
     ChildData childData;
     @Inject
     FabManager fabManager;
+    @Inject
+    ToolBarManager toolBarManager;
     @Inject
     RewardData rewardData;
     @Inject
@@ -322,6 +325,7 @@ public class CommonHomeFragment extends Fragment {
      * タスク追加ダイアログを表示
      */
     private void showAddTaskDialog() {
+        toolBarManager.setTitle("てすと🐈");
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Placeholder")
                 .setMessage("Placeholder")
