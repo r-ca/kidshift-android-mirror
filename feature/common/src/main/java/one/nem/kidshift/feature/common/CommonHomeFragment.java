@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -411,10 +412,20 @@ public class CommonHomeFragment extends Fragment {
      * タスク追加ダイアログを表示
      */
     private void showAddTaskDialog() {
+        View view = getLayoutInflater().inflate(R.layout.common_task_add_dialog_layout, null);
         new MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Placeholder")
-                .setMessage("Placeholder")
-                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .setTitle("タスクを追加")
+                .setView(view)
+                .setPositiveButton("追加", (dialog, which) -> {
+                    EditText taskNameEditText = view.findViewById(R.id.addTaskNameEditText);
+                    EditText taskRewardEditText = view.findViewById(R.id.addTaskRewardEditText);
+                    TaskItemModel taskItemModel = new TaskItemModel();
+                    taskItemModel.setName(taskNameEditText.getText().toString());
+                    taskItemModel.setReward(Integer.parseInt(taskRewardEditText.getText().toString()));
+                    taskData.addTask(taskItemModel).thenRun(this::updateData);
+                })
+                .setNegativeButton("キャンセル", (dialog, which) -> dialog.dismiss())
                 .show();
+
     }
 }
