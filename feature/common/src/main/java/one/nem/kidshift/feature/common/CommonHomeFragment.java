@@ -402,9 +402,13 @@ public class CommonHomeFragment extends Fragment {
      * データを更新 (updateTaskInfoとupdateCalenderを並列実行)
      */
     private void updateData() {
-        swipeRefreshLayout.setRefreshing(true);
+        requireActivity().runOnUiThread(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+        });
         CompletableFuture.allOf(updateTaskInfo(), updateCalender()).thenRun(() -> {
-            swipeRefreshLayout.setRefreshing(false);
+            requireActivity().runOnUiThread(() -> {
+                swipeRefreshLayout.setRefreshing(false);
+            });
         });
     }
 
@@ -413,6 +417,7 @@ public class CommonHomeFragment extends Fragment {
      */
     private void showAddTaskDialog() {
         View view = getLayoutInflater().inflate(R.layout.common_task_add_dialog_layout, null);
+        view.setPadding(48, 24, 48, 24);
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("タスクを追加")
                 .setView(view)
