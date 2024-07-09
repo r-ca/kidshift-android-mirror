@@ -36,6 +36,7 @@ import one.nem.kidshift.feature.child.ChildManageMainActivity;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.FeatureFlag;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     KSLoggerFactory ksLoggerFactory;
     @Inject
     FabManager fabManager;
+    @Inject
+    ToolBarManager toolBarManager;
     @Inject
     FeatureFlag featureFlag;
     @Inject
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolBarManager.setToolbar(toolbar);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
 
