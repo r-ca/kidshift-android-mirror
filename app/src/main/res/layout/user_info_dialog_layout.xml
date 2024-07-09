@@ -28,11 +28,13 @@
                 android:textSize="24sp" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/userNameEditButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                app:srcCompat="@drawable/warning_24px" />
+                android:background="@android:color/transparent"
+                android:padding="24px"
+                app:srcCompat="@drawable/edit_24px" />
         </LinearLayout>
 
         <TextView
