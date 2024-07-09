@@ -56,6 +56,11 @@ public class ParentDataImpl implements ParentData {
     }
 
     @Override
+    public CompletableFuture<ParentModel> getParentCache() {
+        return CompletableFuture.supplyAsync(() -> userSettings.getCache().getParent());
+    }
+
+    @Override
     public CompletableFuture<Void> updateParent(ParentModel parent) {
         Call<ParentInfoResponse> call = kidShiftApiService.renameParent(new ParentRenameRequest(parent.getName()));
         try {

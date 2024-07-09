@@ -21,6 +21,12 @@ public interface ParentData {
     CompletableFuture<ParentModel> getParentDirect();
 
     /**
+     * 親ユーザー情報取得
+     * @return 親ユーザー情報
+     */
+    CompletableFuture<ParentModel> getParentCache();
+
+    /**
      * 親ユーザー情報更新
      * @param parent 親ユーザー情報
      */
