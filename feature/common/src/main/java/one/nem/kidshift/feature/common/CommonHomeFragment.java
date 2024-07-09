@@ -148,13 +148,32 @@ public class CommonHomeFragment extends Fragment {
 
         initCalender();
 
+        MenuHost menuHost = requireActivity();
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.common_home_toolbar_menu, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        });
+
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateData();
+        // updateData();
         if (isChildMode) {
             setupFabChild();
         } else {
@@ -194,14 +213,6 @@ public class CommonHomeFragment extends Fragment {
         } else {
             toolBarManager.setTitle("ホーム");
         }
-        toolBarManager.setMenuResId(R.menu.common_home_toolbar_menu);
-        toolBarManager.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.toggle_calendar) {
-                Toast.makeText(requireContext(), "カレンダー表示切替", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            return false;
-        });
     }
 
 
