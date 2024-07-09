@@ -24,6 +24,41 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorSurface">
 
+                <ImageButton
+                    android:id="@+id/calendarPrevButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/arrow_back_24px"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/colorOnSurface"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:id="@+id/calendarTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="20sp"
+                    android:text="2000年1月"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/calendarNextButton"
+                    app:layout_constraintStart_toEndOf="@+id/calendarPrevButton"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageButton
+                    android:id="@+id/calendarNextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/arrow_forward_24px"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/colorOnSurface"
+                    android:padding="8dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.github.sundeepk.compactcalendarview.CompactCalendarView
