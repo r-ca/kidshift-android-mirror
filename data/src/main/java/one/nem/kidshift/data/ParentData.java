@@ -24,6 +24,6 @@ public interface ParentData {
      * 親ユーザー情報更新
      * @param parent 親ユーザー情報
      */
-    void updateParent(ParentModel parent);
+    CompletableFuture<Void> updateParent(ParentModel parent);
 
 }
