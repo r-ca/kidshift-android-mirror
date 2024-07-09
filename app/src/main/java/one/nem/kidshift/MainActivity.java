@@ -101,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.show_debug_dialog) {
                     showDebugDialog();
                     return true;
+                } else if (item.getItemId() == R.id.show_account_dialog) {
+                    showAccountDialog();
+                    return true;
                 } else {
                     logger.warn("不明なアイテム: " + item.getItemId());
                 }
@@ -156,6 +159,16 @@ public class MainActivity extends AppCompatActivity {
      */
     private void startup() {
 
+    }
+
+    private void showAccountDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("アカウント情報")
+                .setMessage("Placeholder")
+                .setPositiveButton("OK", (dialog, which) -> {
+                    // Do nothing
+                })
+                .show();
     }
 
     private void showDebugDialog() {
