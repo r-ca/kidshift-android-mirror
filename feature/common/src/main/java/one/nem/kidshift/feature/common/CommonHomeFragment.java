@@ -18,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -161,9 +163,39 @@ public class CommonHomeFragment extends Fragment {
                 if (menuItem.getItemId() == R.id.toggle_calendar) {
                     View calendarContainer = view.findViewById(R.id.calendarContainer);
                     if (calendarContainer.getVisibility() == View.VISIBLE) {
-                        calendarContainer.setVisibility(View.GONE);
+                        Animation slideUp = AnimationUtils.loadAnimation(getContext(), one.nem.kidshift.shared.R.anim.slide_up);
+                        calendarContainer.startAnimation(slideUp);
+                        slideUp.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                calendarContainer.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
                     } else {
-                        calendarContainer.setVisibility(View.VISIBLE);
+                        Animation slideDown = AnimationUtils.loadAnimation(getContext(), one.nem.kidshift.shared.R.anim.slide_down);
+                        calendarContainer.startAnimation(slideDown);
+                        slideDown.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                calendarContainer.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
                     }
                     return true;
                 }
