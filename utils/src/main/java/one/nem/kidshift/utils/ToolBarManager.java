@@ -41,6 +41,7 @@ public class ToolBarManager {
 
     public void setMenuResId(int resId) {
         checkToolbar();
+        toolbar.getMenu().clear();
         toolbar.inflateMenu(resId);
     }
 
