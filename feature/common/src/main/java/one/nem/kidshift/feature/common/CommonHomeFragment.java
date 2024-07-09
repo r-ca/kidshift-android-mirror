@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.data.TaskData;
@@ -124,6 +125,7 @@ public class CommonHomeFragment extends Fragment {
         RecyclerView taskListRecyclerView = view.findViewById(R.id.taskListRecyclerView);
         taskListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         taskListRecyclerView.setAdapter(taskListItemAdapter);
+        taskListRecyclerView.setItemAnimator(new SlideInUpAnimator());
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this::updateData);
@@ -245,9 +247,10 @@ public class CommonHomeFragment extends Fragment {
             public void onFailed(String message) {
             }
         }).thenAccept(taskItemModel -> {
-            taskListItemAdapter.setTaskItemModelList(taskItemModel);
             requireActivity().runOnUiThread(() -> {
-                taskListItemAdapter.notifyDataSetChanged();
+                taskListItemAdapter.notifyItemRangeRemoved(0, taskListItemAdapter.getItemCount());
+                taskListItemAdapter.setTaskItemModelList(taskItemModel);
+                taskListItemAdapter.notifyItemRangeInserted(0, taskItemModel.size());
             });
         });
     }
