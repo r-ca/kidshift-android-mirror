@@ -11,7 +11,7 @@ public class ParentModelConverter {
      * @return ParentModel
      */
     public static ParentModel parentInfoResponseToParentModel(ParentInfoResponse parentInfoResponse) {
-        return new ParentModel(parentInfoResponse.getId(), parentInfoResponse.getDisplayName(), parentInfoResponse.getEmail());
+        return new ParentModel(parentInfoResponse.getId(), parentInfoResponse.getDisplay_name(), parentInfoResponse.getEmail());
     }
 
     /**

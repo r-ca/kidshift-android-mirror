@@ -21,6 +21,10 @@
             <argument
                 android:name="childId"
                 app:argType="string" />
+            <argument
+                android:name="isChildMode"
+                app:argType="boolean"
+                android:defaultValue="true" />
         </action>
     </fragment>
 </navigation>

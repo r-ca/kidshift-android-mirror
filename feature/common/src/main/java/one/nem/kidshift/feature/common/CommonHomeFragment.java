@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,6 +81,7 @@ public class CommonHomeFragment extends Fragment {
     private KSLogger logger;
 
     CompactCalendarView compactCalendarView;
+    View calendarContainer;
     SwipeRefreshLayout swipeRefreshLayout;
     TaskListItemAdapter taskListItemAdapter;
     TextView calendarTitleTextView;
@@ -139,6 +142,7 @@ public class CommonHomeFragment extends Fragment {
         RecyclerView taskListRecyclerView = view.findViewById(R.id.taskListRecyclerView);
         taskListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         taskListRecyclerView.setAdapter(taskListItemAdapter);
+        taskListRecyclerView.setItemViewCacheSize(10);
         recyclerViewAnimUtils.setSlideUpAnimation(taskListRecyclerView);
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -147,63 +151,7 @@ public class CommonHomeFragment extends Fragment {
         calendarTitleTextView = view.findViewById(R.id.calendarTitleTextView);
         calendarPrevButton = view.findViewById(R.id.calendarPrevButton);
         calendarNextButton = view.findViewById(R.id.calendarNextButton);
-
-        initCalender();
-
-        MenuHost menuHost = requireActivity();
-        menuHost.addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menu.clear();
-                menuInflater.inflate(R.menu.common_home_toolbar_menu, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.toggle_calendar) {
-                    View calendarContainer = view.findViewById(R.id.calendarContainer);
-                    if (calendarContainer.getVisibility() == View.VISIBLE) {
-                        Animation slideUp = AnimationUtils.loadAnimation(getContext(), one.nem.kidshift.shared.R.anim.slide_up);
-                        calendarContainer.startAnimation(slideUp);
-                        slideUp.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-                                recyclerViewRefresh();
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                calendarContainer.setVisibility(View.GONE);
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                            }
-                        });
-                    } else {
-                        Animation slideDown = AnimationUtils.loadAnimation(getContext(), one.nem.kidshift.shared.R.anim.slide_down);
-                        calendarContainer.startAnimation(slideDown);
-                        slideDown.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-                                calendarContainer.setVisibility(View.VISIBLE);
-                                recyclerViewRefresh();
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                            }
-                        });
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
+        calendarContainer = view.findViewById(R.id.calendarContainer);
 
         initCalender();
         updateData();
@@ -261,10 +209,68 @@ public class CommonHomeFragment extends Fragment {
 
     private void setupToolBar() {
         if (isChildMode) {
-            toolBarManager.setTitle("タスク一覧");
+            toolBarManager.setTitle("ホーム");
+            toolBarManager.setSubtitle("子供ビュー");
         } else {
             toolBarManager.setTitle("ホーム");
+            toolBarManager.setSubtitle("保護者ビュー");
         }
+        MenuHost menuHost = requireActivity();
+
+        menuHost.invalidateMenu();
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                logger.debug("onCreateMenu, インフレート");
+                menu.clear();
+                menuInflater.inflate(R.menu.common_home_toolbar_menu, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.toggle_calendar) {
+                    if (calendarContainer.getVisibility() == View.VISIBLE) {
+                        Animation slideUp = AnimationUtils.loadAnimation(getContext(), one.nem.kidshift.shared.R.anim.slide_up);
+                        calendarContainer.startAnimation(slideUp);
+                        slideUp.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                recyclerViewRefresh();
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                calendarContainer.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+                    } else {
+                        Animation slideDown = AnimationUtils.loadAnimation(getContext(), one.nem.kidshift.shared.R.anim.slide_down);
+                        calendarContainer.startAnimation(slideDown);
+                        slideDown.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                calendarContainer.setVisibility(View.VISIBLE);
+                                recyclerViewRefresh();
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+                    }
+                    return true;
+                }
+                return false;
+            }
+        }, this.getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
 
@@ -344,9 +350,11 @@ public class CommonHomeFragment extends Fragment {
             }
         }).thenAccept(taskItemModel -> {
             requireActivity().runOnUiThread(() -> {
-                taskListItemAdapter.notifyItemRangeRemoved(0, taskListItemAdapter.getItemCount());
+//                taskListItemAdapter.notifyItemRangeRemoved(0, taskListItemAdapter.getItemCount());
+//                taskListItemAdapter.setTaskItemModelList(taskItemModel);
+//                taskListItemAdapter.notifyItemRangeInserted(0, taskItemModel.size());
                 taskListItemAdapter.setTaskItemModelList(taskItemModel);
-                taskListItemAdapter.notifyItemRangeInserted(0, taskItemModel.size());
+                taskListItemAdapter.notifyItemRangeChanged(0, taskItemModel.size());
             });
         });
     }
@@ -399,9 +407,13 @@ public class CommonHomeFragment extends Fragment {
      * データを更新 (updateTaskInfoとupdateCalenderを並列実行)
      */
     private void updateData() {
-        swipeRefreshLayout.setRefreshing(true);
+        requireActivity().runOnUiThread(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+        });
         CompletableFuture.allOf(updateTaskInfo(), updateCalender()).thenRun(() -> {
-            swipeRefreshLayout.setRefreshing(false);
+            requireActivity().runOnUiThread(() -> {
+                swipeRefreshLayout.setRefreshing(false);
+            });
         });
     }
 
@@ -409,10 +421,21 @@ public class CommonHomeFragment extends Fragment {
      * タスク追加ダイアログを表示
      */
     private void showAddTaskDialog() {
+        View view = getLayoutInflater().inflate(R.layout.common_task_add_dialog_layout, null);
+        view.setPadding(48, 24, 48, 24);
         new MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Placeholder")
-                .setMessage("Placeholder")
-                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .setTitle("タスクを追加")
+                .setView(view)
+                .setPositiveButton("追加", (dialog, which) -> {
+                    EditText taskNameEditText = view.findViewById(R.id.addTaskNameEditText);
+                    EditText taskRewardEditText = view.findViewById(R.id.addTaskRewardEditText);
+                    TaskItemModel taskItemModel = new TaskItemModel();
+                    taskItemModel.setName(taskNameEditText.getText().toString());
+                    taskItemModel.setReward(Integer.parseInt(taskRewardEditText.getText().toString()));
+                    taskData.addTask(taskItemModel).thenRun(this::updateData);
+                })
+                .setNegativeButton("キャンセル", (dialog, which) -> dialog.dismiss())
                 .show();
+
     }
 }
