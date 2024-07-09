@@ -44,6 +44,8 @@ dependencies {
 
     implementation 'one.nem:compact-calendar-view:1.0.0'
 
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
+
     // Project modules
     implementation project(':model')
     implementation project(':utils')
