@@ -158,6 +158,15 @@ public class CommonHomeFragment extends Fragment {
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.toggle_calendar) {
+                    View calendarContainer = view.findViewById(R.id.calendarContainer);
+                    if (calendarContainer.getVisibility() == View.VISIBLE) {
+                        calendarContainer.setVisibility(View.GONE);
+                    } else {
+                        calendarContainer.setVisibility(View.VISIBLE);
+                    }
+                    return true;
+                }
                 return false;
             }
         });
