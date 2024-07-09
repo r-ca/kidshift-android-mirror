@@ -173,6 +173,7 @@ public class CommonHomeFragment extends Fragment {
                             @Override
                             public void onAnimationEnd(Animation animation) {
                                 calendarContainer.setVisibility(View.GONE);
+                                recyclerViewRefresh();
                             }
 
                             @Override
@@ -190,6 +191,7 @@ public class CommonHomeFragment extends Fragment {
 
                             @Override
                             public void onAnimationEnd(Animation animation) {
+                                recyclerViewRefresh();
                             }
 
                             @Override
@@ -204,6 +206,13 @@ public class CommonHomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void recyclerViewRefresh() {
+        requireActivity().runOnUiThread(() -> {
+            taskListItemAdapter.notifyItemRangeRemoved(0, taskListItemAdapter.getItemCount());
+            taskListItemAdapter.notifyItemRangeInserted(0, taskListItemAdapter.getItemCount());
+        });
     }
 
     @Override
