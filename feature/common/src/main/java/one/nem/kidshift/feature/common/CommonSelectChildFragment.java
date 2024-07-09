@@ -22,6 +22,7 @@ import one.nem.kidshift.feature.common.adapter.SelectShowChildListItemAdapter;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.RecyclerViewAnimUtils;
+import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
@@ -33,6 +34,8 @@ public class CommonSelectChildFragment extends Fragment {
     ChildData childData;
     @Inject
     FabManager fabManager;
+    @Inject
+    ToolBarManager toolBarManager;
     @Inject
     RecyclerViewAnimUtils recyclerViewAnimUtils;
     private KSLogger logger;
@@ -80,6 +83,8 @@ public class CommonSelectChildFragment extends Fragment {
     public void onResume() {
         super.onResume();
         fabManager.hide();
+        toolBarManager.setTitle("子供選択");
+        toolBarManager.setSubtitle(null);
     }
 
 }

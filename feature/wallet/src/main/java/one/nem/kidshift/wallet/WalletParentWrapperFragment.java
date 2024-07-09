@@ -26,7 +26,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
@@ -42,6 +44,10 @@ public class WalletParentWrapperFragment extends Fragment {
 
     @Inject
     RewardData rewardData;
+    @Inject
+    FabManager fabManager;
+    @Inject
+    ToolBarManager toolBarManager;
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
@@ -103,5 +109,13 @@ public class WalletParentWrapperFragment extends Fragment {
         public int getItemCount() {
             return childList == null ? 0 : childList.size();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fabManager.hide();
+        toolBarManager.setTitle("ウォレット");
+        toolBarManager.setSubtitle(null);
     }
 }

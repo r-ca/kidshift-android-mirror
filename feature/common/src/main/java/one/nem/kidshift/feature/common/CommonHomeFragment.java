@@ -209,11 +209,11 @@ public class CommonHomeFragment extends Fragment {
 
     private void setupToolBar() {
         if (isChildMode) {
-            toolBarManager.setTitle("KidShift");
-            toolBarManager.setSubtitle("子供ビュー - タスク一覧");
+            toolBarManager.setTitle("ホーム");
+            toolBarManager.setSubtitle("子供ビュー");
         } else {
-            toolBarManager.setTitle("KidShift");
-            toolBarManager.setSubtitle("保護者ビュー - タスク一覧");
+            toolBarManager.setTitle("ホーム");
+            toolBarManager.setSubtitle("保護者ビュー");
         }
         MenuHost menuHost = requireActivity();
 

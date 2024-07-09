@@ -14,6 +14,7 @@ import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 
 @AndroidEntryPoint
@@ -27,6 +28,8 @@ public class WalletContentFragment extends Fragment {
 
     @Inject
     FabManager fabManager;
+    @Inject
+    ToolBarManager toolBarManager;
 
     @Inject
     UserSettings userSettings;
@@ -100,5 +103,7 @@ public class WalletContentFragment extends Fragment {
         super.onResume();
         updateTotalReward();
         fabManager.hide();
+        toolBarManager.setTitle("ウォレット");
+        toolBarManager.setSubtitle(null);
     }
 }
