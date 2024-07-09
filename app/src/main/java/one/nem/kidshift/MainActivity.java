@@ -184,9 +184,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             parentData.getParentDirect().thenAccept(parentModel -> {
                 ((TextView) view.findViewById(R.id.userNameTextView)).setText(parentModel.getName());
+                logger.debug("ParentModel: " + parentModel.getName() + ", " + parentModel.getEmail());
                 ((TextView) view.findViewById(R.id.emailTextView)).setText(parentModel.getEmail());
                 ((Chip) view.findViewById(R.id.chip)).setText("保護者/Parent");
-            });
+            }).join();
         }
 
         view.findViewById(R.id.userNameEditButton).setOnClickListener(v -> {
@@ -220,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
 
         new MaterialAlertDialogBuilder(this)
                 .setTitle("アカウント情報")
-                .setMessage("Placeholder")
+                .setView(view)
                 .setPositiveButton("OK", (dialog, which) -> {
                     // Do nothing
                 })
