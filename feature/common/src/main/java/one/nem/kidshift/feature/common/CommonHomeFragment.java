@@ -333,8 +333,9 @@ public class CommonHomeFragment extends Fragment {
 
             @Override
             public void onUpdated(List<TaskItemModel> taskItem) { // Workaround
+                taskListItemAdapter.notifyItemRangeRemoved(0, taskListItemAdapter.getItemCount());
                 taskListItemAdapter.setTaskItemModelList(taskItem);
-                recyclerViewRefresh();
+                taskListItemAdapter.notifyItemRangeInserted(0, taskItem.size());
             }
             @Override
             public void onFailed(String message) {
