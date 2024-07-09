@@ -325,7 +325,6 @@ public class CommonHomeFragment extends Fragment {
      * タスク追加ダイアログを表示
      */
     private void showAddTaskDialog() {
-        toolBarManager.setTitle("てすと🐈");
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Placeholder")
                 .setMessage("Placeholder")
