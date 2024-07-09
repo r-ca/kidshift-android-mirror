@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.divider.MaterialDivider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,8 +34,12 @@ import com.google.android.material.navigation.NavigationView;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import one.nem.kidshift.data.ChildData;
+import one.nem.kidshift.data.ParentData;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.feature.child.ChildManageMainActivity;
+import one.nem.kidshift.model.ParentModel;
+import one.nem.kidshift.model.callback.ParentModelCallback;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.FeatureFlag;
 import one.nem.kidshift.utils.KSLogger;
@@ -52,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
     FeatureFlag featureFlag;
     @Inject
     UserSettings userSettings;
+    @Inject
+    ParentData parentData;
+    @Inject
+    ChildData childData;
+
 
     private KSLogger logger;
     private FloatingActionButton fab;
@@ -162,6 +174,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAccountDialog() {
+        boolean isEditMode = false;
+        View view = getLayoutInflater().inflate(R.layout.user_info_dialog_layout, null);
+        if (userSettings.getAppCommonSetting().isChildMode()) {
+            ((TextView) view.findViewById(R.id.userNameTextView)).setText(
+                    childData.getChild(userSettings.getAppCommonSetting().getChildId()).join().getName());
+            ((TextView) view.findViewById(R.id.emailTextView)).setText("子供モードはメールアドレスを設定できません");
+            ((Chip) view.findViewById(R.id.chip)).setText("子供/Child");
+        } else {
+            parentData.getParentDirect().thenAccept(parentModel -> {
+                ((TextView) view.findViewById(R.id.userNameTextView)).setText(parentModel.getName());
+                ((TextView) view.findViewById(R.id.emailTextView)).setText(parentModel.getEmail());
+                ((Chip) view.findViewById(R.id.chip)).setText("保護者/Parent");
+            });
+        }
+
+        view.findViewById(R.id.userNameEditButton).setOnClickListener(v -> {
+            EditText editText = new EditText(this);
+            editText.setText(((TextView) view.findViewById(R.id.userNameTextView)).getText());
+            editText.setHint("ユーザー名");
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("ユーザー名の変更")
+                    .setView(editText)
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        ((TextView) view.findViewById(R.id.userNameTextView)).setText(editText.getText());
+                        if (userSettings.getAppCommonSetting().isChildMode()) {
+                            // 子供モード
+                            childData.getChild(userSettings.getAppCommonSetting().getChildId()).thenAccept(childModel -> {
+                                childModel.setName(editText.getText().toString());
+                                childData.updateChild(childModel);
+                            });
+                        } else {
+                            // 保護者モード
+                            parentData.getParentDirect().thenAccept(parentModel -> {
+                                parentModel.setName(editText.getText().toString());
+                                parentData.updateParent(parentModel);
+                            });
+                        }
+                    })
+                    .setNegativeButton("キャンセル", (dialog, which) -> {
+                        // Do nothing
+                    })
+                    .show();
+        });
+
         new MaterialAlertDialogBuilder(this)
                 .setTitle("アカウント情報")
                 .setMessage("Placeholder")
