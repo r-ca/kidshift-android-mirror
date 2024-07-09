@@ -20,7 +20,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -43,21 +42,20 @@ import one.nem.kidshift.utils.factory.KSLoggerFactory;
 public class MainActivity extends AppCompatActivity {
 
     @Inject
-    KSLoggerFactory loggerFactory;
-
+    KSLoggerFactory ksLoggerFactory;
     @Inject
     FabManager fabManager;
-
     @Inject
     FeatureFlag featureFlag;
+    @Inject
+    UserSettings userSettings;
 
 
     private KSLogger logger;
 
     private FloatingActionButton fab;
 
-    @Inject
-    UserSettings userSettings;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        logger = loggerFactory.create("MainActivity");
+        logger = ksLoggerFactory.create("MainActivity");
 
         // Check logged in
         if (userSettings.getAppCommonSetting().isLoggedIn()) {
