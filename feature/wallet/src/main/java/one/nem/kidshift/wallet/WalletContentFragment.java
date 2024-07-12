@@ -16,6 +16,7 @@ import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 @AndroidEntryPoint
 public class WalletContentFragment extends Fragment {
@@ -38,6 +39,7 @@ public class WalletContentFragment extends Fragment {
     private String childId;
 
     private TextView totalRewardTextView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public WalletContentFragment() {
         // Required empty public constructor
@@ -80,6 +82,13 @@ public class WalletContentFragment extends Fragment {
 
         totalRewardTextView = view.findViewById(R.id.totalRewardTextView);
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            updateTotalReward();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
         return view;
     }
 
@@ -89,9 +98,14 @@ public class WalletContentFragment extends Fragment {
     }
 
     private void updateTotalReward() {
+        swipeRefreshLayout.setRefreshing(true);
         rewardData.getTotalReward(childId).thenAccept(totalReward -> {
             logger.debug("Total reward: " + totalReward);
             totalRewardTextView.setText(String.valueOf(totalReward) + "円");
+        }).thenRun(() -> {
+            requireActivity().runOnUiThread(() -> {
+                swipeRefreshLayout.setRefreshing(false);
+            });
         }).exceptionally(throwable -> {
             logger.error("Failed to get total reward: " + throwable.getMessage());
             return null;
