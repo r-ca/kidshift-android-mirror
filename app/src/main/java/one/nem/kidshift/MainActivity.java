@@ -192,6 +192,13 @@ public class MainActivity extends AppCompatActivity {
             }).join();
         }
 
+        // Workaround
+        if (userSettings.getAppCommonSetting().isChildMode()) {
+            view.findViewById(R.id.userNameEditButton).setVisibility(View.GONE);
+        } else {
+            view.findViewById(R.id.userNameEditButton).setVisibility(View.VISIBLE);
+        }
+
         view.findViewById(R.id.userNameEditButton).setOnClickListener(v -> {
             EditText editText = new EditText(this);
             editText.setText(((TextView) view.findViewById(R.id.userNameTextView)).getText());
