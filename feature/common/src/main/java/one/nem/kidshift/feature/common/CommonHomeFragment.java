@@ -43,6 +43,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.data.TaskData;
+import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.feature.common.adapter.ChildListItemAdapter;
 import one.nem.kidshift.feature.common.adapter.TaskListItemAdapter;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
@@ -74,6 +75,8 @@ public class CommonHomeFragment extends Fragment {
     RewardData rewardData;
     @Inject
     RecyclerViewAnimUtils recyclerViewAnimUtils;
+    @Inject
+    UserSettings userSettings;
 
 
     private boolean isChildMode;
@@ -98,9 +101,7 @@ public class CommonHomeFragment extends Fragment {
         CommonHomeFragment fragment = new CommonHomeFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_IS_CHILD_MODE, isChildMode);
-        if (isChildMode) {
-            args.putString(ARG_CHILD_ID, childId);
-        }
+        args.putString(ARG_CHILD_ID, childId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -108,16 +109,30 @@ public class CommonHomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            isChildMode = getArguments().getBoolean(ARG_IS_CHILD_MODE);
-            childId = getArguments().getString(ARG_CHILD_ID);
-        }
+
         logger = ksLoggerFactory.create("CommonHomeFragment");
 
-        if (isChildMode) {
-            logger.info("Child mode, childId: " + childId);
+        if (userSettings.getAppCommonSetting().isChildMode()) {
+            logger.debug("子供モードで起動(子供ログイン)");
+            isChildMode = true;
+            childId = userSettings.getAppCommonSetting().getChildId();
+            logger.debug("childId: " + childId);
         } else {
-            logger.info("Parent mode");
+            if (getArguments() != null) {
+                isChildMode = getArguments().getBoolean(ARG_IS_CHILD_MODE) && getArguments().getBoolean(ARG_IS_CHILD_MODE);
+                childId = getArguments().getString(ARG_CHILD_ID) != null ? getArguments().getString(ARG_CHILD_ID) : "";
+            }
+
+            if (childId != null && !childId.isEmpty()) {
+                isChildMode = true;
+            }
+
+            if (isChildMode) {
+                logger.debug("子供モードで起動");
+                logger.debug("childId: " + childId);
+            } else {
+                logger.debug("保護者モードで起動");
+            }
         }
     }
 
@@ -131,9 +146,7 @@ public class CommonHomeFragment extends Fragment {
         taskListItemAdapter = new TaskListItemAdapter();
         taskListItemAdapter.setCallback((taskId, taskName) -> {
             if (isChildMode) {
-                if (showConfirmDialog(taskName)) {
-                    taskData.recordTaskCompletion(taskId, childId);
-                }
+                showConfirmDialog(taskId, taskName);
             } else {
                 showChildSelectDialog(taskId, taskName);
             }
@@ -277,24 +290,22 @@ public class CommonHomeFragment extends Fragment {
     /**
      * タスク完了確認ダイアログを表示 (子供モード用)
      *
+     * @param taskId   タスクID
      * @param taskName タスク名
-     * @return OKボタンが押されたかどうか
      */
-    private boolean showConfirmDialog(String taskName) {
-        AtomicBoolean selection = new AtomicBoolean(false);
+    private void showConfirmDialog(String taskId, String taskName) {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("タスクを完了しますか？")
                 .setMessage(taskName + "を完了しますか？")
                 .setPositiveButton("はい", (dialog, which) -> {
                     dialog.dismiss();
-                    selection.set(true);
+                    taskData.recordTaskCompletion(taskId, childId);
                 })
                 .setNegativeButton("いいえ", (dialog, which) -> {
                     dialog.dismiss();
-                    selection.set(false);
+                    taskData.recordTaskCompletion(taskId, childId);
                 })
                 .show();
-        return selection.get();
     }
 
     /**

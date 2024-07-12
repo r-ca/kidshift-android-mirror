@@ -62,9 +62,9 @@ public class CommonSelectChildFragment extends Fragment {
         childListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewAnimUtils.setSlideUpAnimation(childListRecyclerView);
         adapter = new SelectShowChildListItemAdapter();
-        adapter.setCallback(taskId -> {
+        adapter.setCallback(childId -> {
             // 静的解析エラーが発生するのになぜか実行はできる↓
-            findNavController(view).navigate(CommonSelectChildFragmentDirections.actionCommonSelectChildFragmentToCommonHomeFragmentParentChild(taskId));
+            findNavController(view).navigate(CommonSelectChildFragmentDirections.actionCommonSelectChildFragmentToCommonHomeFragmentParentChild(childId));
         });
         CompletableFuture.runAsync(() -> childListRecyclerView.setAdapter(adapter)).thenRun(() -> childData.getChildListDirect().thenAccept(childList -> {
             requireActivity().runOnUiThread(() -> {

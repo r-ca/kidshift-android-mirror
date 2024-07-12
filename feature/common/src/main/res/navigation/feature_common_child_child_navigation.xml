@@ -11,6 +11,9 @@
         android:label="fragment_common_home"
         tools:layout="@layout/fragment_common_home" >
         <argument
+            android:name="childId"
+            app:argType="string" />
+        <argument
             android:name="isChildMode"
             app:argType="boolean"
             android:defaultValue="true" />
