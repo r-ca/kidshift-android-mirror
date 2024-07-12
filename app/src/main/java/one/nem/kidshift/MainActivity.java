@@ -177,10 +177,12 @@ public class MainActivity extends AppCompatActivity {
         boolean isEditMode = false;
         View view = getLayoutInflater().inflate(R.layout.user_info_dialog_layout, null);
         if (userSettings.getAppCommonSetting().isChildMode()) {
-            ((TextView) view.findViewById(R.id.userNameTextView)).setText(
-                    childData.getChild(userSettings.getAppCommonSetting().getChildId()).join().getName());
-            ((TextView) view.findViewById(R.id.emailTextView)).setText("子供モードはメールアドレスを設定できません");
-            ((Chip) view.findViewById(R.id.chip)).setText("子供/Child");
+            childData.getChild(userSettings.getAppCommonSetting().getChildId()).thenAccept(childModel -> {
+                ((TextView) view.findViewById(R.id.userNameTextView)).setText(childModel.getName());
+                logger.debug("ChildModel: " + childModel.getName());
+                ((TextView) view.findViewById(R.id.emailTextView)).setText("子供モードはメールアドレスを設定できません");
+                ((Chip) view.findViewById(R.id.chip)).setText("子供/Child");
+            }).join();
         } else {
             parentData.getParentDirect().thenAccept(parentModel -> {
                 ((TextView) view.findViewById(R.id.userNameTextView)).setText(parentModel.getName());
