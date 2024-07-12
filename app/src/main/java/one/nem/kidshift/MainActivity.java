@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             childData.getChild(userSettings.getAppCommonSetting().getChildId()).thenAccept(childModel -> {
                 ((TextView) view.findViewById(R.id.userNameTextView)).setText(childModel.getName());
                 logger.debug("ChildModel: " + childModel.getName());
-                ((TextView) view.findViewById(R.id.emailTextView)).setText("子供モードはメールアドレスを設定できません");
+                ((TextView) view.findViewById(R.id.emailTextView)).setText("子供ユーザーはメールアドレスを設定できません");
                 ((Chip) view.findViewById(R.id.chip)).setText("子供/Child");
             }).join();
         } else {
