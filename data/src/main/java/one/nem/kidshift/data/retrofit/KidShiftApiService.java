@@ -138,6 +138,15 @@ public interface KidShiftApiService {
     Call<ChildListResponse> getChildList();
 
     /**
+     * 子供情報取得
+     * @param id 子供ID
+     * @return ChildResponse
+     */
+    @GET("/child/{id}")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<ChildResponse> getChild(@Path("id") String id);
+
+    /**
      * 子供追加
      * @param request ChildAddRequest
      * @return ChildResponse
