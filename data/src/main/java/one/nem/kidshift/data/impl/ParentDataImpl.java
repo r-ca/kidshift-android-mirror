@@ -74,4 +74,9 @@ public class ParentDataImpl implements ParentData {
         }
     }
 
+    @Override
+    public CompletableFuture<Integer> issueLoginCode() {
+        return null;
+    }
+
 }

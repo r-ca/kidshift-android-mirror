@@ -32,4 +32,10 @@ public interface ParentData {
      */
     CompletableFuture<Void> updateParent(ParentModel parent);
 
+    /**
+     * 親ユーザーログインコード発行
+     * @return ログインコード
+     */
+    CompletableFuture<Integer> issueLoginCode();
+
 }
