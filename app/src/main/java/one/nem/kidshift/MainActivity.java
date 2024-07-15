@@ -237,6 +237,19 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void showLoginCodeDialog(Integer loginCode) {
+        View view = getLayoutInflater().inflate(R.layout.parent_login_code_dialog_layout, null);
+        TextView loginCodeTextView = view.findViewById(R.id.loginCodeTextView);
+        // loginCodeをStringに変換して4桁 2つに分割してハイフンで繋げる
+        loginCodeTextView.setText(loginCode.toString().substring(0, 4) + "-" + loginCode.toString().substring(4));
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("ログインコード")
+                .setView(view)
+                .setPositiveButton("閉じる", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
     private void showDebugDialog() {
 
         ScrollView scrollView = new ScrollView(this);
