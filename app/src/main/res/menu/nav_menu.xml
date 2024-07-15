@@ -10,6 +10,11 @@
         android:icon="@drawable/manage_accounts_24px"
         android:title="子供アカウントの管理" />
 
+    <item
+        android:id="@+id/issue_login_code"
+        android:icon="@drawable/password_24px"
+        android:title="Alexaログインコード発行" />
+
     <!-- Divider -->
     <item
         android:id="@+id/divider"
