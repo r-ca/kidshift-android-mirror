@@ -158,6 +158,9 @@ public class MainActivity extends AppCompatActivity {
 
             // manage_child_accountを削除
             navigationView.getMenu().removeItem(R.id.manage_child_account);
+
+            // issue_login_codeを削除
+            navigationView.getMenu().removeItem(R.id.issue_login_code);
         } else {
             logger.info("Child mode is disabled!");
             bottomNavigationView.getMenu().removeItem(R.id.feature_common_child_child_navigation);
