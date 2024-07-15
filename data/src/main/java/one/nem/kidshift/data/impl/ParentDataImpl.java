@@ -10,6 +10,7 @@ import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.data.retrofit.KidShiftApiService;
 import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.parent.ParentRenameRequest;
+import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginCodeResponse;
 import one.nem.kidshift.model.ParentModel;
 import one.nem.kidshift.model.callback.ParentModelCallback;
 import one.nem.kidshift.utils.KSLogger;
@@ -76,7 +77,15 @@ public class ParentDataImpl implements ParentData {
 
     @Override
     public CompletableFuture<Integer> issueLoginCode() {
-        return null;
+        Call<ParentLoginCodeResponse> call = kidShiftApiService.issueParentLoginCode();
+        try {
+            ParentLoginCodeResponse response = call.execute().body();
+            if (response == null) {
+                return CompletableFuture.completedFuture(null);
+            }
+            return CompletableFuture.completedFuture(response.getCode());
+        } catch (Exception e) {
+            return CompletableFuture.completedFuture(null);
+        }
     }
-
 }
