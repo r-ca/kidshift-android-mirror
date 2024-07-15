@@ -11,6 +11,7 @@ import one.nem.kidshift.data.retrofit.model.parent.ParentInfoResponse;
 import one.nem.kidshift.data.retrofit.model.parent.ParentRenameRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthResponse;
+import one.nem.kidshift.data.retrofit.model.parent.auth.ParentLoginCodeResponse;
 import one.nem.kidshift.data.retrofit.model.task.HistoryListResponse;
 import one.nem.kidshift.data.retrofit.model.task.TaskAddRequest;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
@@ -182,6 +183,14 @@ public interface KidShiftApiService {
     @GET("/child/{id}/login")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<ChildLoginCodeResponse> issueLoginCode(@Path("id") String id);
+
+    /**
+     * 保護者ログインコード発行
+     * @return ParentLoginCodeResponse
+     */
+    @GET("/parent/issue")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<ParentLoginCodeResponse> issueParentLoginCode();
 
     @GET("/task/history/{childId}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
