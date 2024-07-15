@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.show_account_dialog) {
                     showAccountDialog();
                     return true;
+                } else if (item.getItemId() == R.id.issue_login_code) {
+                    parentData.issueLoginCode().thenAccept((loginCode) -> runOnUiThread(() -> showLoginCodeDialog(loginCode)));
                 } else {
                     logger.warn("不明なアイテム: " + item.getItemId());
                 }
