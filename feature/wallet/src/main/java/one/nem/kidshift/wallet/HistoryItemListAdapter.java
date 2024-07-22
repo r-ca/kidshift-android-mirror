@@ -29,6 +29,8 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         TextView historyItemRewardTextView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            historyItemNameTextView = itemView.findViewById(R.id.historyItemNameTextView);
+            historyItemRewardTextView = itemView.findViewById(R.id.historyItemRewardTextView);
         }
     }
 }
