@@ -16,6 +16,9 @@ import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 @AndroidEntryPoint
@@ -40,6 +43,8 @@ public class WalletContentFragment extends Fragment {
 
     private TextView totalRewardTextView;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private HistoryItemListAdapter historyItemListAdapter;
 
     public WalletContentFragment() {
         // Required empty public constructor
@@ -89,6 +94,11 @@ public class WalletContentFragment extends Fragment {
             swipeRefreshLayout.setRefreshing(false);
         });
 
+        RecyclerView historyItemRecyclerView = view.findViewById(R.id.historyItemRecyclerView);
+        historyItemListAdapter = new HistoryItemListAdapter();
+        historyItemRecyclerView.setAdapter(historyItemListAdapter);
+        historyItemRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
         return view;
     }
 
@@ -108,6 +118,14 @@ public class WalletContentFragment extends Fragment {
             });
         }).exceptionally(throwable -> {
             logger.error("Failed to get total reward: " + throwable.getMessage());
+            return null;
+        });
+
+        rewardData.getRewardHistoryList().thenAccept(historyList -> { // test
+            historyItemListAdapter.setHistoryDataList(historyList);
+            historyItemListAdapter.notifyDataSetChanged();
+        }).exceptionally(throwable -> {
+            logger.error("Failed to get history list: " + throwable.getMessage());
             return null;
         });
     }
