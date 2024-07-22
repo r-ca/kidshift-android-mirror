@@ -19,6 +19,7 @@ public class HistoryModelConverter { // TODO: JavaDoc
         historyModel.setTaskId(historyResponse.getTaskId());
         historyModel.setChildId(historyResponse.getChildId());
         historyModel.setRegisteredAt(historyResponse.getRegisteredAt());
+        historyModel.setPaid(historyResponse.isPaid());
         return historyModel;
     }
 
@@ -28,6 +29,7 @@ public class HistoryModelConverter { // TODO: JavaDoc
         historyResponse.setTaskId(historyModel.getTaskId());
         historyResponse.setChildId(historyModel.getChildId());
         historyResponse.setRegisteredAt(historyModel.getRegisteredAt());
+        historyResponse.setPaid(historyModel.isPaid());
         return historyResponse;
     }
 
