@@ -9,7 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
+import one.nem.kidshift.model.HistoryModel;
+
 public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemListAdapter.ViewHolder> {
+
+    private List<HistoryModel> historyDataList;
+
+    public void setHistoryDataList(List<HistoryModel> historyDataList) {
+        this.historyDataList = historyDataList;
+    }
+
     @NonNull
     @Override
     public HistoryItemListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -19,11 +30,14 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 
     @Override
     public void onBindViewHolder(@NonNull HistoryItemListAdapter.ViewHolder holder, int position) {
+        HistoryModel historyData = this.historyDataList.get(position);
+        holder.historyItemNameTextView.setText(historyData.getTaskName());
+        holder.historyItemRewardTextView.setText(historyData.getReward() + "円");
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return historyDataList == null ? 0 : historyDataList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
