@@ -1,5 +1,7 @@
 package one.nem.kidshift.wallet;
 
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -11,12 +13,12 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
     @NonNull
     @Override
     public HistoryItemListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HistoryItemListAdapter.ViewHolder holder, int position) {
-
     }
 
     @Override
