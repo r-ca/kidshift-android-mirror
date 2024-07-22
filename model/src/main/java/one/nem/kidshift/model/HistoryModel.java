@@ -9,14 +9,16 @@ public class HistoryModel {
     private String childId;
     private Date registeredAt;
     private int reward;
+    private boolean isPaid;
 
-    public HistoryModel(String id, String taskId, String taskName, String childId, Date registeredAt, int reward) {
+    public HistoryModel(String id, String taskId, String taskName, String childId, Date registeredAt, int reward, boolean isPaid) {
         this.id = id;
         this.taskId = taskId;
         this.taskName = taskName;
         this.childId = childId;
         this.registeredAt = registeredAt;
         this.reward = reward;
+        this.isPaid = isPaid;
     }
 
     public HistoryModel(String id, String taskId, String childId, Date registeredAt) { // 他モデルとのマージが必要なので
@@ -75,5 +77,13 @@ public class HistoryModel {
 
     public void setReward(int reward) {
         this.reward = reward;
+    }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
     }
 }
