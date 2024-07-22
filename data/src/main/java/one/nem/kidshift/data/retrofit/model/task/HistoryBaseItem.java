@@ -7,12 +7,14 @@ public class HistoryBaseItem {
     private String taskId;
     private String childId;
     private Date registeredAt;
+    private boolean isPaid;
 
-    public HistoryBaseItem(String id, String taskId, String childId, Date registeredAt) {
+    public HistoryBaseItem(String id, String taskId, String childId, Date registeredAt, boolean isPaid) {
         this.id = id;
         this.taskId = taskId;
         this.childId = childId;
         this.registeredAt = registeredAt;
+        this.isPaid = isPaid;
     }
 
     public HistoryBaseItem() {
@@ -48,5 +50,13 @@ public class HistoryBaseItem {
 
     public void setRegisteredAt(Date registeredAt) {
         this.registeredAt = registeredAt;
+    }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
     }
 }
