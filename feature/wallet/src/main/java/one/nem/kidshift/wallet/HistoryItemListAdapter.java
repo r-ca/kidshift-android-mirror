@@ -24,7 +24,7 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView historyItemNameTextView;
         TextView historyItemRewardTextView;
         public ViewHolder(@NonNull View itemView) {
