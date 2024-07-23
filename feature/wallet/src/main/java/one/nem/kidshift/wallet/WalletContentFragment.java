@@ -12,10 +12,15 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.data.UserSettings;
+import one.nem.kidshift.model.HistoryModel;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import one.nem.kidshift.utils.models.FabEventCallback;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 @AndroidEntryPoint
@@ -40,6 +45,8 @@ public class WalletContentFragment extends Fragment {
 
     private TextView totalRewardTextView;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private HistoryItemListAdapter historyItemListAdapter;
 
     public WalletContentFragment() {
         // Required empty public constructor
@@ -85,16 +92,76 @@ public class WalletContentFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            updateTotalReward();
+//            updateTotalReward();
+            updateItems();
             swipeRefreshLayout.setRefreshing(false);
+        });
+
+        RecyclerView historyItemRecyclerView = view.findViewById(R.id.historyItemRecyclerView);
+        historyItemListAdapter = new HistoryItemListAdapter();
+        historyItemRecyclerView.setAdapter(historyItemListAdapter);
+        historyItemRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        historyItemListAdapter.setCallback(() -> {
+            if (historyItemListAdapter.hasChecked()) {
+                fabManager.show();
+                initFab();
+            } else {
+                fabManager.hide();
+            }
         });
 
         return view;
     }
 
+    private void initFab() {
+        fabManager.setFabEventCallback(new FabEventCallback() {
+            @Override
+            public void onClicked() {
+                historyItemListAdapter.getCheckedHistoryDataList().forEach(historyModel -> {
+                    rewardData.payReward(historyModel.getId()).thenRun(() -> {
+                        logger.debug("Paid reward: " + historyModel.getId());
+                        updateItems();
+                    }).exceptionally(throwable -> {
+                        logger.error("Failed to pay reward: " + throwable.getMessage());
+                        return null;
+                    });
+                });
+
+                updateItems(); // workaround
+            }
+
+            @Override
+            public void onLongClicked() {
+
+            }
+        });
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        updateItems();
+    }
+
+    private void updateItems() {
+        swipeRefreshLayout.setRefreshing(true);
+        rewardData.getRewardHistoryList(childId).thenAccept(historyList -> {
+            historyItemListAdapter.setHistoryDataList(historyList);
+//            totalRewardTextView.setText(String.valueOf(historyList.stream().mapToInt(HistoryModel::getReward).sum()) + "円");
+            requireActivity().runOnUiThread(() -> {
+                historyItemListAdapter.notifyDataSetChanged();
+                totalRewardTextView.setText(String.valueOf(historyList.stream().filter(HistoryModel::isPaid).mapToInt(HistoryModel::getReward).sum()) + "円");
+            });
+        }).thenRun(() -> {
+            requireActivity().runOnUiThread(() -> {
+                swipeRefreshLayout.setRefreshing(false);
+            });
+        }).exceptionally(throwable -> {
+            logger.error("Failed to get history list: " + throwable.getMessage());
+            return null;
+        });
     }
 
     private void updateTotalReward() {
@@ -110,13 +177,22 @@ public class WalletContentFragment extends Fragment {
             logger.error("Failed to get total reward: " + throwable.getMessage());
             return null;
         });
+
+        rewardData.getRewardHistoryList(childId).thenAccept(historyList -> { // test
+            historyItemListAdapter.setHistoryDataList(historyList);
+            historyItemListAdapter.notifyDataSetChanged();
+        }).exceptionally(throwable -> {
+            logger.error("Failed to get history list: " + throwable.getMessage());
+            return null;
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateTotalReward();
-        fabManager.hide();
+//        updateTotalReward();
+//        updateItems();
+//        fabManager.hide();
         toolBarManager.setTitle("ウォレット");
         toolBarManager.setSubtitle(null);
     }

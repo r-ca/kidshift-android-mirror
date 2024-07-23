@@ -26,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.ToolBarManager;
@@ -51,6 +52,7 @@ public class WalletParentWrapperFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
+    private TabAdapter tabAdapter;
 
     public WalletParentWrapperFragment() {
         // Required empty public constructor
@@ -70,20 +72,48 @@ public class WalletParentWrapperFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayout);
         viewPager = view.findViewById(R.id.viewPager);
 
-        TabAdapter tabAdapter = new TabAdapter(requireActivity());
-
-        // デバッグ用
-        List<ChildModel> childList = childData.getChildListDirect().join();
-        tabAdapter.setChildList(childList);
+        tabAdapter = new TabAdapter(requireActivity());
 
         viewPager.setAdapter(tabAdapter);
 
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            tab.setText(childList.get(position).getName());
-        }).attach();
-
+        setupViewPager();
 
         return view;
+    }
+
+    private void setupViewPager() {
+
+        // デバッグ用
+        childData.getChildList(new ChildModelCallback() {
+            @Override
+            public void onUnchanged() {
+                // TODO: impl
+            }
+
+            @Override
+            public void onUpdated(List<ChildModel> childModelList) {
+                // TODO: impl
+            }
+
+            @Override
+            public void onFailed(String message) {
+                // TODO: impl
+            }
+        }).thenAccept(childModels -> {
+
+//        childData.getChildListDirect().thenAccept(childModels -> {
+
+            tabAdapter.setChildList(childModels);
+            requireActivity().runOnUiThread(() -> {
+
+                tabAdapter.notifyDataSetChanged();
+
+                new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+                    tab.setText(childModels.get(position).getName());
+                }).attach();
+
+            });
+        });
     }
 
     private static class TabAdapter extends FragmentStateAdapter {
