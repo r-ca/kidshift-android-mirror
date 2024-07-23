@@ -24,6 +24,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +48,7 @@ import one.nem.kidshift.data.TaskData;
 import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.feature.common.adapter.ChildListItemAdapter;
 import one.nem.kidshift.feature.common.adapter.TaskListItemAdapter;
+import one.nem.kidshift.model.HistoryModel;
 import one.nem.kidshift.model.callback.TaskItemModelCallback;
 import one.nem.kidshift.model.tasks.TaskItemModel;
 import one.nem.kidshift.utils.FabManager;
@@ -377,7 +380,7 @@ public class CommonHomeFragment extends Fragment {
     private CompletableFuture<Void> updateCalender() {
         return rewardData.getRewardHistoryList().thenAccept(historyModels -> {
             historyModels.forEach(historyModel -> {
-                compactCalendarView.addEvent(new Event(Color.RED, historyModel.getRegisteredAt().getTime(), historyModel.getTaskName())); // debug
+                compactCalendarView.addEvent(new Event(Color.RED, historyModel.getRegisteredAt().getTime(), historyModel)); // debug
             });
         });
     }
@@ -387,10 +390,25 @@ public class CommonHomeFragment extends Fragment {
             @Override
             public void onDayClick(Date date) { // Test
                 List<Event> events = compactCalendarView.getEvents(date);
+
+                ScrollView scrollView = new ScrollView(requireContext());
+                LinearLayout linearLayout = new LinearLayout(requireContext());
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                linearLayout.setPadding(96, 24, 96, 24);
+                scrollView.addView(linearLayout);
+
+                events.forEach(event -> {
+                    TextView textView = new TextView(requireContext());
+                    textView.setText(((HistoryModel) event.getData()).getTaskName() + " @ " + ((HistoryModel) event.getData()).getChildId());
+                    textView.setPadding(0, 0, 0, 24);
+                    linearLayout.addView(textView);
+                });
+
                 new MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(date.toString())
-                        .setMessage(events.toString())
-                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .setTitle("タスク一覧 (DEBUG)")
+                        .setMessage(events.size() + "件のタスクが登録されています")
+                        .setView(scrollView)
+                        .setNeutralButton("閉じる", (dialog, which) -> dialog.dismiss())
                         .show();
             }
 
