@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -154,6 +155,19 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
             // DEBUG: 月をまたぐデータがないので
             ((MonthHeaderViewHolder) holder).monthHeaderTitle.setText(historyData.getRegisteredAt().getDate() + "日");
             ((MonthHeaderViewHolder) holder).monthTotalTextView.setText(getMonthTotal(historyData) + "円");
+            ((MonthHeaderViewHolder) holder).checkAllButton.setOnClickListener(v -> {
+                // TODO: 一括で外すことも出来るように
+                // 判定が変わるまで全部チェックする
+                try {
+                    int index = historyDataList.getList().indexOf(historyData);
+                    while (!isFirstOfMonth(this.historyDataList.getList().get(index))) {
+                        this.historyDataList.getList().get(index).setChecked(true);
+                        index++;
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    // 1個しかない場合? Workaround
+                }
+            });
         }
     }
 
@@ -207,11 +221,13 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 
         TextView monthHeaderTitle;
         TextView monthTotalTextView;
+        ImageButton checkAllButton;
 
         public MonthHeaderViewHolder(@NonNull View itemView) {
             super(itemView);
             monthHeaderTitle = itemView.findViewById(R.id.monthHeaderTitle);
             monthTotalTextView = itemView.findViewById(R.id.monthTotalTextView);
+            checkAllButton = itemView.findViewById(R.id.checkAllButton);
         }
     }
 }
