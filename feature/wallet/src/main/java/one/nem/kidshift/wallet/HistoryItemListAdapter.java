@@ -125,9 +125,10 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
     public HistoryItemListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == ViewType.WITH_HEADER.getValue()) {
             LinearLayout view = new LinearLayout(parent.getContext());
-            // 横全幅
-            view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
             view.setOrientation(LinearLayout.VERTICAL);
+            view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
             view.addView(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_month_header, parent, false));
             view.addView(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false));
             return new ViewHolder(view);
@@ -135,8 +136,6 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false);
             return new ViewHolder(view);
         }
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false);
-//        return new ViewHolder(view);
     }
 
     @Override
