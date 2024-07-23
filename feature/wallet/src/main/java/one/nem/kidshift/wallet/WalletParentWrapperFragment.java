@@ -84,29 +84,35 @@ public class WalletParentWrapperFragment extends Fragment {
     private void setupViewPager() {
 
         // デバッグ用
-        childData.getChildList(new ChildModelCallback() {
-            @Override
-            public void onUnchanged() {
-                // TODO: impl
-            }
+//        childData.getChildList(new ChildModelCallback() {
+//            @Override
+//            public void onUnchanged() {
+//                // TODO: impl
+//            }
+//
+//            @Override
+//            public void onUpdated(List<ChildModel> childModelList) {
+//                // TODO: impl
+//            }
+//
+//            @Override
+//            public void onFailed(String message) {
+//                // TODO: impl
+//            }
+//        }).thenAccept(childModels -> {
 
-            @Override
-            public void onUpdated(List<ChildModel> childModelList) {
-                // TODO: impl
-            }
+        childData.getChildListDirect().thenAccept(childModels -> {
 
-            @Override
-            public void onFailed(String message) {
-                // TODO: impl
-            }
-        }).thenAccept(childModels -> {
             tabAdapter.setChildList(childModels);
+            requireActivity().runOnUiThread(() -> {
 
-            new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-                tab.setText(childModels.get(position).getName());
-            }).attach();
+                tabAdapter.notifyDataSetChanged();
 
-            requireActivity().runOnUiThread(() -> tabAdapter.notifyDataSetChanged());
+                new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+                    tab.setText(childModels.get(position).getName());
+                }).attach();
+
+            });
         });
     }
 
