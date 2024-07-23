@@ -121,7 +121,7 @@ public class WalletContentFragment extends Fragment {
             return null;
         });
 
-        rewardData.getRewardHistoryList().thenAccept(historyList -> { // test
+        rewardData.getRewardHistoryList(childId).thenAccept(historyList -> { // test
             historyItemListAdapter.setHistoryDataList(historyList);
             historyItemListAdapter.notifyDataSetChanged();
         }).exceptionally(throwable -> {
