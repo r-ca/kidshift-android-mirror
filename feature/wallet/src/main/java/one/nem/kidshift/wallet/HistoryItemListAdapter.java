@@ -167,6 +167,7 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         holder.historyItemCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (holder.historyItemCheckBox.isShown()) {
                 historyData.setChecked(isChecked);
+                callback.onCheckBoxChanged();
             }
         });
         if (holder instanceof MonthHeaderViewHolder) {
