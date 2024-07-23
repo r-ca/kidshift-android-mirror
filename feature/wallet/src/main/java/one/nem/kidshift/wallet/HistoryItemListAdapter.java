@@ -1,5 +1,6 @@
 package one.nem.kidshift.wallet;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +95,9 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         holder.historyItemRewardTextView.setText(historyData.getReward() + "円");
         holder.historyItemCheckBox.setChecked(historyData.isChecked());
         holder.historyItemCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            this.historyDataList.getList().get(position).setChecked(isChecked);
+            if (holder.historyItemCheckBox.isShown()) {
+                historyData.setChecked(isChecked);
+            }
         });
     }
 
