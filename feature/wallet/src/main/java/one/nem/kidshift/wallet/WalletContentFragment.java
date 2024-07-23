@@ -15,6 +15,7 @@ import one.nem.kidshift.data.UserSettings;
 import one.nem.kidshift.model.HistoryModel;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
+import one.nem.kidshift.utils.RecyclerViewAnimUtils;
 import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
 import one.nem.kidshift.utils.models.FabEventCallback;
@@ -39,6 +40,8 @@ public class WalletContentFragment extends Fragment {
 
     @Inject
     UserSettings userSettings;
+    @Inject
+    RecyclerViewAnimUtils recyclerViewAnimUtils;
 
     private KSLogger logger;
     private String childId;
@@ -98,6 +101,7 @@ public class WalletContentFragment extends Fragment {
         });
 
         RecyclerView historyItemRecyclerView = view.findViewById(R.id.historyItemRecyclerView);
+        recyclerViewAnimUtils.setSlideUpAnimation(historyItemRecyclerView);
         historyItemListAdapter = new HistoryItemListAdapter();
         historyItemRecyclerView.setAdapter(historyItemListAdapter);
         historyItemRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
