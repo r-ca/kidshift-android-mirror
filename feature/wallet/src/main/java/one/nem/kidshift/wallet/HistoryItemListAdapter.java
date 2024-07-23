@@ -161,6 +161,11 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
     @Override
     public void onBindViewHolder(@NonNull HistoryItemListAdapter.ViewHolder holder, int position) {
         HistoryModelExtended historyData = this.historyDataList.getList().get(position);
+        if (historyData.isPaid()) {
+            holder.historyItemCheckBox.setVisibility(View.GONE);
+        } else {
+            holder.historyItemCheckBox.setVisibility(View.VISIBLE);
+        }
         holder.historyItemNameTextView.setText(historyData.getTaskName());
         holder.historyItemRewardTextView.setText(historyData.getReward() + "円");
         holder.historyItemCheckBox.setChecked(historyData.isChecked());
