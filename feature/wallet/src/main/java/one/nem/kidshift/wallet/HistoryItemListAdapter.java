@@ -181,10 +181,14 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         }
     }
 
-    public static class MonthHeaderViewHolder extends RecyclerView.ViewHolder {
+    public static class MonthHeaderViewHolder extends HistoryItemListAdapter.ViewHolder {
+        // かなり邪道な方法だけど，とりあえず取得できるので
+
+        TextView monthHeaderTextView;
+
         public MonthHeaderViewHolder(@NonNull View itemView) {
             super(itemView);
-            // TODO
+            monthHeaderTextView = itemView.findViewById(R.id.monthHeaderTextView);
         }
     }
 }
