@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -156,21 +157,7 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
             ((MonthHeaderViewHolder) holder).monthHeaderTitle.setText(historyData.getRegisteredAt().getDate() + "日");
             ((MonthHeaderViewHolder) holder).monthTotalTextView.setText(getMonthTotal(historyData) + "円");
             ((MonthHeaderViewHolder) holder).checkAllButton.setOnClickListener(v -> {
-                // 次のヘッダーまでの間のアイテムを全てチェックする
-                int index = position + 1;
-                try {
-                    while (!isFirstOfMonth(this.historyDataList.getList().get(index))) {
-                        this.historyDataList.getList().get(index).setChecked(true);
-                        index++;
-                    }
-                    // 自身を更新 Workaround: なぜかindexを+1しないとチェックをつけれないので
-                    this.historyDataList.getList().get(position).setChecked(true);
-                    // 表示更新
-                    notifyItemRangeChanged(position, index - position);
-//                    notifyDataSetChanged();
-                } catch (IndexOutOfBoundsException e) {
-                    // 1個しかない場合 Workaround
-                }
+                Toast.makeText(v.getContext(), "実装中", Toast.LENGTH_SHORT).show();
             });
         }
     }
