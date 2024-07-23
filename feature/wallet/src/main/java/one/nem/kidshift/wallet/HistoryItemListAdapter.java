@@ -104,12 +104,17 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
     }
 
     private HistoryModelExtendedList historyDataList;
+    private CheckBoxChangedCallback callback;
 
     public void setHistoryDataList(List<HistoryModel> historyDataList) {
         this.historyDataList = new HistoryModelExtendedList();
         for (HistoryModel historyModel : historyDataList) {
             this.historyDataList.getList().add(new HistoryModelExtended(historyModel));
         }
+    }
+
+    public void setCallback(CheckBoxChangedCallback callback) {
+        this.callback = callback;
     }
 
     public List<HistoryModel> getCheckedHistoryDataList() {
