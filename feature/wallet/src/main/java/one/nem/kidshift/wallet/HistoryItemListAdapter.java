@@ -181,9 +181,9 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
             }
         });
         if (holder instanceof MonthHeaderViewHolder) {
-//            ((MonthHeaderViewHolder) holder).monthHeaderTextView.setText(historyData.getRegisteredAt().getMonth() + "月");
-            // DEBUG: 月をまたぐデータがないので
-            ((MonthHeaderViewHolder) holder).monthHeaderTitle.setText(historyData.getRegisteredAt().getDate() + "日");
+            ((MonthHeaderViewHolder) holder).monthHeaderTitle.setText(historyData.getRegisteredAt().getMonth() + "月");
+//            // DEBUG: 月をまたぐデータがないので
+//            ((MonthHeaderViewHolder) holder).monthHeaderTitle.setText(historyData.getRegisteredAt().getDate() + "日");
             ((MonthHeaderViewHolder) holder).monthTotalTextView.setText(getMonthTotal(historyData) + "円");
             ((MonthHeaderViewHolder) holder).checkAllButton.setOnClickListener(v -> {
                 Toast.makeText(v.getContext(), "実装中", Toast.LENGTH_SHORT).show();
@@ -198,9 +198,9 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         } else {
             HistoryModel previousHistoryModel = historyDataList.getList().get(historyDataList.getList().indexOf(historyModel) - 1);
             // getMonth()はDeprecated TODO: やめる
-//            return historyModel.getRegisteredAt().getMonth() != previousHistoryModel.getRegisteredAt().getMonth();
+            return historyModel.getRegisteredAt().getMonth() != previousHistoryModel.getRegisteredAt().getMonth();
             // DEBUG: 月をまたぐデータがないので
-            return historyModel.getRegisteredAt().getDate() != previousHistoryModel.getRegisteredAt().getDate();
+//            return historyModel.getRegisteredAt().getDate() != previousHistoryModel.getRegisteredAt().getDate();
         }
     }
 
