@@ -1,6 +1,5 @@
 package one.nem.kidshift.wallet;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,7 +151,7 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         if (holder instanceof MonthHeaderViewHolder) {
 //            ((MonthHeaderViewHolder) holder).monthHeaderTextView.setText(historyData.getRegisteredAt().getMonth() + "月");
             // DEBUG: 月をまたぐデータがないので
-            ((MonthHeaderViewHolder) holder).monthHeaderTextView.setText(historyData.getRegisteredAt().getDate() + "日");
+            ((MonthHeaderViewHolder) holder).monthHeaderTitle.setText(historyData.getRegisteredAt().getDate() + "日");
         }
     }
 
@@ -167,6 +166,16 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
             // DEBUG: 月をまたぐデータがないので
             return historyModel.getRegisteredAt().getDate() != previousHistoryModel.getRegisteredAt().getDate();
         }
+    }
+
+    private int getMonthTotal(HistoryModel historyModel) {
+        int total = historyModel.getReward();
+        int index = historyDataList.getList().indexOf(historyModel) + 1;
+        while (!isFirstOfMonth(this.historyDataList.getList().get(index))) {
+            total += historyModel.getReward();
+            index++;
+        }
+        return total;
     }
 
     @Override
@@ -189,11 +198,13 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
     public static class MonthHeaderViewHolder extends HistoryItemListAdapter.ViewHolder {
         // かなり邪道な方法だけど，とりあえず取得できるので
 
-        TextView monthHeaderTextView;
+        TextView monthHeaderTitle;
+        TextView monthTotalTextView;
 
         public MonthHeaderViewHolder(@NonNull View itemView) {
             super(itemView);
-            monthHeaderTextView = itemView.findViewById(R.id.monthHeaderTextView);
+            monthHeaderTitle = itemView.findViewById(R.id.monthHeaderTitle);
+            monthTotalTextView = itemView.findViewById(R.id.monthTotalTextView);
         }
     }
 }
