@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,21 @@ import java.util.List;
 import one.nem.kidshift.model.HistoryModel;
 
 public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemListAdapter.ViewHolder> {
+
+    enum ViewType {
+        WITH_HEADER(1),
+        ITEM(0);
+
+        private final int value;
+
+        ViewType(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
 
     public static class HistoryModelExtended extends HistoryModel {
         private boolean isChecked;
@@ -91,11 +107,32 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         return checkedHistoryDataList;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return ViewType.WITH_HEADER.getValue();
+        } else {
+            if (isFirstOfMonth(historyDataList.getList().get(position))) {
+                return ViewType.WITH_HEADER.getValue();
+            } else {
+                return ViewType.ITEM.getValue();
+            }
+        }
+    }
+
     @NonNull
     @Override
     public HistoryItemListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false);
-        return new ViewHolder(view);
+        if (viewType == ViewType.WITH_HEADER.getValue()) {
+            LinearLayout view = new LinearLayout(parent.getContext());
+            view.addView(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false));
+            return new ViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false);
+            return new ViewHolder(view);
+        }
+//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false);
+//        return new ViewHolder(view);
     }
 
     @Override
@@ -109,6 +146,11 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
                 historyData.setChecked(isChecked);
             }
         });
+    }
+
+    private boolean isFirstOfMonth(HistoryModel historyModel) {
+        // 1個前の要素と比較して月が変わったかどうかを判定する
+        if ()
     }
 
     @Override
