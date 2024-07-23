@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import one.nem.kidshift.model.HistoryModel;
@@ -62,6 +63,11 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
             for (HistoryModelExtended item : list) {
                 item.setChecked(false);
             }
+        }
+
+        // constructor
+        public HistoryModelExtendedList() {
+            list = new ArrayList<>();
         }
     }
 
