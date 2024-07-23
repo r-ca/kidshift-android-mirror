@@ -1,5 +1,6 @@
 package one.nem.kidshift.wallet;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -172,9 +173,14 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
     private int getMonthTotal(HistoryModel historyModel) {
         int total = historyModel.getReward();
         int index = historyDataList.getList().indexOf(historyModel) + 1;
-        while (!isFirstOfMonth(this.historyDataList.getList().get(index))) {
-            total += historyModel.getReward();
-            index++;
+        try {
+            while (!isFirstOfMonth(this.historyDataList.getList().get(index))) {
+                total += historyModel.getReward();
+                index++;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            // 1個しかない場合 Workaround
+            // TODO: 例外をひねり潰すのではなく，そもそも発生しないようにするべき
         }
         return total;
     }
