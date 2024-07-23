@@ -81,6 +81,16 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         }
     }
 
+    public List<HistoryModel> getCheckedHistoryDataList() {
+        List<HistoryModel> checkedHistoryDataList = new ArrayList<>();
+        for (HistoryModelExtended historyModelExtended : historyDataList.getList()) {
+            if (historyModelExtended.isChecked()) {
+                checkedHistoryDataList.add(historyModelExtended);
+            }
+        }
+        return checkedHistoryDataList;
+    }
+
     @NonNull
     @Override
     public HistoryItemListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
