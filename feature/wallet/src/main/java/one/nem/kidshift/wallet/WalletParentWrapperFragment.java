@@ -84,24 +84,24 @@ public class WalletParentWrapperFragment extends Fragment {
     private void setupViewPager() {
 
         // デバッグ用
-//        childData.getChildList(new ChildModelCallback() {
-//            @Override
-//            public void onUnchanged() {
-//                // TODO: impl
-//            }
-//
-//            @Override
-//            public void onUpdated(List<ChildModel> childModelList) {
-//                // TODO: impl
-//            }
-//
-//            @Override
-//            public void onFailed(String message) {
-//                // TODO: impl
-//            }
-//        }).thenAccept(childModels -> {
+        childData.getChildList(new ChildModelCallback() {
+            @Override
+            public void onUnchanged() {
+                // TODO: impl
+            }
 
-        childData.getChildListDirect().thenAccept(childModels -> {
+            @Override
+            public void onUpdated(List<ChildModel> childModelList) {
+                // TODO: impl
+            }
+
+            @Override
+            public void onFailed(String message) {
+                // TODO: impl
+            }
+        }).thenAccept(childModels -> {
+
+//        childData.getChildListDirect().thenAccept(childModels -> {
 
             tabAdapter.setChildList(childModels);
             requireActivity().runOnUiThread(() -> {
