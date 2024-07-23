@@ -16,9 +16,12 @@
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:background="@color/colorSurface"
+            android:backgroundTintMode="add"
+            android:elevation="16px"
             app:layout_constraintBottom_toTopOf="@+id/historyItemRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
