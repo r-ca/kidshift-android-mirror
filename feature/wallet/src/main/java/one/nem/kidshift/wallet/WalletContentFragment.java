@@ -127,6 +127,8 @@ public class WalletContentFragment extends Fragment {
                         return null;
                     });
                 });
+
+                updateItems(); // workaround
             }
 
             @Override
