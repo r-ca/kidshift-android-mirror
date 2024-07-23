@@ -2,7 +2,7 @@ package one.nem.kidshift.data.retrofit.model.task;
 
 import java.util.List;
 
-public class TaskAddRequest extends TaskBaseItem {
+public class TaskModRequest extends TaskBaseItem {
     private List<String> attachedChildren;
 
     /**
@@ -13,7 +13,7 @@ public class TaskAddRequest extends TaskBaseItem {
      * @param reward 報酬
      * @param attachedChildren アタッチされた子供IDリスト
      */
-    public TaskAddRequest(String name, String iconEmoji, String bgColor, int reward, List<String> attachedChildren) {
+    public TaskModRequest(String name, String iconEmoji, String bgColor, int reward, List<String> attachedChildren) {
         super(name, iconEmoji, bgColor, reward);
         this.attachedChildren = attachedChildren;
     }
@@ -24,7 +24,7 @@ public class TaskAddRequest extends TaskBaseItem {
      * @param reward 報酬
      * @param attachedChildren アタッチされた子供IDリスト
      */
-    public TaskAddRequest(String name, int reward, List<String> attachedChildren) {
+    public TaskModRequest(String name, int reward, List<String> attachedChildren) {
         super(name, reward);
         this.attachedChildren = attachedChildren;
     }
@@ -32,7 +32,7 @@ public class TaskAddRequest extends TaskBaseItem {
     /**
      * コンストラクタ (空)
      */
-    public TaskAddRequest() {
+    public TaskModRequest() {
     }
 
     /**
@@ -40,7 +40,7 @@ public class TaskAddRequest extends TaskBaseItem {
      * @param taskBaseItem タスクベースアイテム
      * @param attachedChildren アタッチされた子供IDリスト
      */
-    public TaskAddRequest(TaskBaseItem taskBaseItem, List<String> attachedChildren) {
+    public TaskModRequest(TaskBaseItem taskBaseItem, List<String> attachedChildren) {
         super(taskBaseItem.getName(), taskBaseItem.getIconEmoji(), taskBaseItem.getBgColor(), taskBaseItem.getReward());
         this.attachedChildren = attachedChildren;
     }

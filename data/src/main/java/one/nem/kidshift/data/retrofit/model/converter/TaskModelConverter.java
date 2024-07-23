@@ -3,7 +3,7 @@ package one.nem.kidshift.data.retrofit.model.converter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import one.nem.kidshift.data.retrofit.model.task.TaskAddRequest;
+import one.nem.kidshift.data.retrofit.model.task.TaskModRequest;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.data.retrofit.model.task.TaskResponse;
 import one.nem.kidshift.model.tasks.TaskItemModel;
@@ -49,8 +49,8 @@ public class TaskModelConverter {
         return taskListResponse.getList().stream().map(TaskModelConverter::taskResponseToTaskItemModel).collect(Collectors.toList());
     }
 
-    public static TaskAddRequest taskItemModelToTaskAddRequest(TaskItemModel taskItemModel) {
-        TaskAddRequest request = new TaskAddRequest();
+    public static TaskModRequest taskItemModelToTaskAddRequest(TaskItemModel taskItemModel) {
+        TaskModRequest request = new TaskModRequest();
         request.setName(taskItemModel.getName());
         request.setReward(taskItemModel.getReward());
         request.setBgColor(taskItemModel.getBgColor());
