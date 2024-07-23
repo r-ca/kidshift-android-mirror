@@ -140,7 +140,7 @@ public class WalletContentFragment extends Fragment {
 //            totalRewardTextView.setText(String.valueOf(historyList.stream().mapToInt(HistoryModel::getReward).sum()) + "円");
             requireActivity().runOnUiThread(() -> {
                 historyItemListAdapter.notifyDataSetChanged();
-                totalRewardTextView.setText("debug");
+                totalRewardTextView.setText(String.valueOf(historyList.stream().mapToInt(HistoryModel::getReward).sum()) + "円");
             });
         }).thenRun(() -> {
             requireActivity().runOnUiThread(() -> {
