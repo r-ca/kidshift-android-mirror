@@ -131,7 +131,7 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 
             view.addView(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_month_header, parent, false));
             view.addView(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false));
-            return new ViewHolder(view);
+            return new MonthHeaderViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false);
             return new ViewHolder(view);
@@ -149,6 +149,11 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
                 historyData.setChecked(isChecked);
             }
         });
+        if (holder instanceof MonthHeaderViewHolder) {
+//            ((MonthHeaderViewHolder) holder).monthHeaderTextView.setText(historyData.getRegisteredAt().getMonth() + "月");
+            // DEBUG: 月をまたぐデータがないので
+            ((MonthHeaderViewHolder) holder).monthHeaderTextView.setText(historyData.getRegisteredAt().getDate() + "日");
+        }
     }
 
     private boolean isFirstOfMonth(HistoryModel historyModel) {
