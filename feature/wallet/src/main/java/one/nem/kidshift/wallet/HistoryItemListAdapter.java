@@ -94,7 +94,7 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         holder.historyItemRewardTextView.setText(historyData.getReward() + "円");
         holder.historyItemCheckBox.setChecked(historyData.isChecked());
         holder.historyItemCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            historyData.setChecked(isChecked);
+            this.historyDataList.getList().get(position).setChecked(isChecked);
         });
     }
 
