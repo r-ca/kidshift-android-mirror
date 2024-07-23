@@ -152,6 +152,7 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 //            ((MonthHeaderViewHolder) holder).monthHeaderTextView.setText(historyData.getRegisteredAt().getMonth() + "月");
             // DEBUG: 月をまたぐデータがないので
             ((MonthHeaderViewHolder) holder).monthHeaderTitle.setText(historyData.getRegisteredAt().getDate() + "日");
+            ((MonthHeaderViewHolder) holder).monthTotalTextView.setText(getMonthTotal(historyData) + "円");
         }
     }
 
