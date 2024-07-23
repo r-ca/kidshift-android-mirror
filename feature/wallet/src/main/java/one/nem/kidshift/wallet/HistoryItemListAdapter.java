@@ -90,6 +90,19 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         }
     }
 
+    public interface CheckBoxChangedCallback {
+        void onCheckBoxChanged();
+    }
+
+    public boolean hasChecked() {
+        for (HistoryModelExtended historyModelExtended : historyDataList.getList()) {
+            if (historyModelExtended.isChecked()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private HistoryModelExtendedList historyDataList;
 
     public void setHistoryDataList(List<HistoryModel> historyDataList) {
