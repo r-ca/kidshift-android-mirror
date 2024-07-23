@@ -12,7 +12,7 @@ import one.nem.kidshift.data.retrofit.model.parent.ParentRenameRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthRequest;
 import one.nem.kidshift.data.retrofit.model.parent.auth.ParentAuthResponse;
 import one.nem.kidshift.data.retrofit.model.task.HistoryListResponse;
-import one.nem.kidshift.data.retrofit.model.task.TaskModRequest;
+import one.nem.kidshift.data.retrofit.model.task.TaskAddRequest;
 import one.nem.kidshift.data.retrofit.model.task.TaskListResponse;
 import one.nem.kidshift.data.retrofit.model.task.TaskResponse;
 import retrofit2.Call;
@@ -88,7 +88,7 @@ public interface KidShiftApiService {
      */
     @POST("/task")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
-    Call<TaskResponse> addTask(@Body TaskModRequest request);
+    Call<TaskResponse> addTask(@Body TaskAddRequest request);
 
     /**
      * タスク更新
@@ -98,7 +98,7 @@ public interface KidShiftApiService {
      */
     @PUT("/task/{id}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
-    Call<TaskResponse> updateTask(@Body TaskModRequest request, @Path("id") String id);
+    Call<TaskResponse> updateTask(@Body TaskAddRequest request, @Path("id") String id);
 
     /**
      * タスク削除
