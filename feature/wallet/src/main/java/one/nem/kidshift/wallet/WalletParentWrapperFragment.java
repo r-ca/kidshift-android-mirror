@@ -52,6 +52,7 @@ public class WalletParentWrapperFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
+    private TabAdapter tabAdapter;
 
     public WalletParentWrapperFragment() {
         // Required empty public constructor
@@ -71,10 +72,19 @@ public class WalletParentWrapperFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayout);
         viewPager = view.findViewById(R.id.viewPager);
 
-        TabAdapter tabAdapter = new TabAdapter(requireActivity());
+        tabAdapter = new TabAdapter(requireActivity());
+
+        viewPager.setAdapter(tabAdapter);
+
+        setupViewPager();
+
+        return view;
+    }
+
+    private void setupViewPager() {
 
         // デバッグ用
-        List<ChildModel> childList = childData.getChildList(new ChildModelCallback() {
+        childData.getChildList(new ChildModelCallback() {
             @Override
             public void onUnchanged() {
                 // TODO: impl
@@ -89,17 +99,15 @@ public class WalletParentWrapperFragment extends Fragment {
             public void onFailed(String message) {
                 // TODO: impl
             }
-        }).join();
+        }).thenAccept(childModels -> {
+            tabAdapter.setChildList(childModels);
 
-        tabAdapter.setChildList(childList);
-        viewPager.setAdapter(tabAdapter);
+            new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+                tab.setText(childModels.get(position).getName());
+            }).attach();
 
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            tab.setText(childList.get(position).getName());
-        }).attach();
-
-
-        return view;
+            requireActivity().runOnUiThread(() -> tabAdapter.notifyDataSetChanged());
+        });
     }
 
     private static class TabAdapter extends FragmentStateAdapter {
