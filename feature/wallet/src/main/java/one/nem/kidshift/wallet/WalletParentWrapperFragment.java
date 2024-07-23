@@ -26,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.ChildData;
 import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.model.ChildModel;
+import one.nem.kidshift.model.callback.ChildModelCallback;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.ToolBarManager;
@@ -73,9 +74,24 @@ public class WalletParentWrapperFragment extends Fragment {
         TabAdapter tabAdapter = new TabAdapter(requireActivity());
 
         // デバッグ用
-        List<ChildModel> childList = childData.getChildListDirect().join();
-        tabAdapter.setChildList(childList);
+        List<ChildModel> childList = childData.getChildList(new ChildModelCallback() {
+            @Override
+            public void onUnchanged() {
+                // TODO: impl
+            }
 
+            @Override
+            public void onUpdated(List<ChildModel> childModelList) {
+                // TODO: impl
+            }
+
+            @Override
+            public void onFailed(String message) {
+                // TODO: impl
+            }
+        }).join();
+
+        tabAdapter.setChildList(childList);
         viewPager.setAdapter(tabAdapter);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
