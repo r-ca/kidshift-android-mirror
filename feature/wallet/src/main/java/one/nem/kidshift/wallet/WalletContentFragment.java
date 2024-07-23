@@ -141,6 +141,8 @@ public class WalletContentFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        updateItems();
     }
 
     private void updateItems() {
