@@ -71,14 +71,14 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 
     @Override
     public void onBindViewHolder(@NonNull HistoryItemListAdapter.ViewHolder holder, int position) {
-        HistoryModel historyData = this.historyDataList.get(position);
+        HistoryModel historyData = this.historyDataList.getList().get(position);
         holder.historyItemNameTextView.setText(historyData.getTaskName());
         holder.historyItemRewardTextView.setText(historyData.getReward() + "円");
     }
 
     @Override
     public int getItemCount() {
-        return historyDataList == null ? 0 : historyDataList.size();
+        return historyDataList == null ? 0 : historyDataList.getList().size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
