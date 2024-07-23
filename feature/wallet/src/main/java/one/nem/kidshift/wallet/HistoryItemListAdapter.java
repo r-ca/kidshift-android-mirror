@@ -25,6 +25,25 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         public void setChecked(boolean checked) {
             isChecked = checked;
         }
+
+        // add isChecked to the constructor
+        public HistoryModelExtended() {
+            super();
+            isChecked = false;
+        }
+
+        // copy constructor
+        public HistoryModelExtended(HistoryModel historyModel) {
+            super();
+            this.setId(historyModel.getId());
+            this.setPaid(historyModel.isPaid());
+            this.setChildId(historyModel.getChildId());
+            this.setRegisteredAt(historyModel.getRegisteredAt());
+            this.setTaskId(historyModel.getTaskId());
+            this.setTaskName(historyModel.getTaskName());
+            this.setReward(historyModel.getReward());
+            this.setChecked(false);
+        }
     }
 
     public static class HistoryModelExtendedList {
@@ -50,15 +69,9 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 
     public void setHistoryDataList(List<HistoryModel> historyDataList) {
         this.historyDataList = new HistoryModelExtendedList();
-        historyDataList.stream()
-                .map(historyModel -> {
-                    HistoryModelExtended historyModelExtended = new HistoryModelExtended();
-                    historyModelExtended.setTaskName(historyModel.getTaskName());
-                    historyModelExtended.setReward(historyModel.getReward());
-                    historyModelExtended.setChecked(false);
-                    return historyModelExtended;
-                })
-                .forEach(this.historyDataList.getList()::add);
+        for (HistoryModel historyModel : historyDataList) {
+            this.historyDataList.getList().add(new HistoryModelExtended(historyModel));
+        }
     }
 
     @NonNull
