@@ -187,4 +187,7 @@ public interface KidShiftApiService {
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
     Call<HistoryListResponse> getHistory(@Path("childId") String childId);
 
+    @POST("/task/history/{historyId}/paid")
+    @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
+    Call<Void> payHistory(@Path("historyId") String historyId, @Query("isPaid") boolean isPaid);
 }
