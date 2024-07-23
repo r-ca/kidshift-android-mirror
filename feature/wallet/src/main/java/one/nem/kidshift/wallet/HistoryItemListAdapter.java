@@ -180,4 +180,11 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
             historyItemCheckBox = itemView.findViewById(R.id.checkBox);
         }
     }
+
+    public static class MonthHeaderViewHolder extends RecyclerView.ViewHolder {
+        public MonthHeaderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            // TODO
+        }
+    }
 }
