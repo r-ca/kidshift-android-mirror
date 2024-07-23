@@ -105,6 +105,7 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 
     private HistoryModelExtendedList historyDataList;
     private CheckBoxChangedCallback callback;
+    private boolean hideCheckBox; // for child mode
 
     public void setHistoryDataList(List<HistoryModel> historyDataList) {
         this.historyDataList = new HistoryModelExtendedList();
@@ -115,6 +116,10 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 
     public void setCallback(CheckBoxChangedCallback callback) {
         this.callback = callback;
+    }
+
+    public void setHideCheckBox(boolean hideCheckBox) {
+        this.hideCheckBox = hideCheckBox;
     }
 
     public List<HistoryModel> getCheckedHistoryDataList() {
@@ -161,7 +166,7 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
     @Override
     public void onBindViewHolder(@NonNull HistoryItemListAdapter.ViewHolder holder, int position) {
         HistoryModelExtended historyData = this.historyDataList.getList().get(position);
-        if (historyData.isPaid()) {
+        if (historyData.isPaid() || hideCheckBox) {
             holder.historyItemCheckBox.setVisibility(View.GONE);
         } else {
             holder.historyItemCheckBox.setVisibility(View.VISIBLE);
