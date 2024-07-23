@@ -127,6 +127,7 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
             LinearLayout view = new LinearLayout(parent.getContext());
             // 横全幅
             view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            view.addView(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_month_header, parent, false));
             view.addView(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history_list_item, parent, false));
             return new ViewHolder(view);
         } else {
