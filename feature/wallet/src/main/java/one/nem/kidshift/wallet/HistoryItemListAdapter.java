@@ -3,6 +3,7 @@ package one.nem.kidshift.wallet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -60,8 +61,6 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
                 .forEach(this.historyDataList.getList()::add);
     }
 
-
-
     @NonNull
     @Override
     public HistoryItemListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -71,9 +70,13 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 
     @Override
     public void onBindViewHolder(@NonNull HistoryItemListAdapter.ViewHolder holder, int position) {
-        HistoryModel historyData = this.historyDataList.getList().get(position);
+        HistoryModelExtended historyData = this.historyDataList.getList().get(position);
         holder.historyItemNameTextView.setText(historyData.getTaskName());
         holder.historyItemRewardTextView.setText(historyData.getReward() + "円");
+        holder.historyItemCheckBox.setChecked(historyData.isChecked());
+        holder.historyItemCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            historyData.setChecked(isChecked);
+        });
     }
 
     @Override
@@ -84,10 +87,12 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView historyItemNameTextView;
         TextView historyItemRewardTextView;
+        CheckBox historyItemCheckBox;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             historyItemNameTextView = itemView.findViewById(R.id.historyItemNameTextView);
             historyItemRewardTextView = itemView.findViewById(R.id.historyItemRewardTextView);
+            historyItemCheckBox = itemView.findViewById(R.id.checkBox);
         }
     }
 }
