@@ -155,7 +155,9 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
         } else {
             HistoryModel previousHistoryModel = historyDataList.getList().get(historyDataList.getList().indexOf(historyModel) - 1);
             // getMonth()はDeprecated TODO: やめる
-            return historyModel.getRegisteredAt().getMonth() != previousHistoryModel.getRegisteredAt().getMonth();
+//            return historyModel.getRegisteredAt().getMonth() != previousHistoryModel.getRegisteredAt().getMonth();
+            // DEBUG: 月をまたぐデータがないので
+            return historyModel.getRegisteredAt().getDate() != previousHistoryModel.getRegisteredAt().getDate();
         }
     }
 
