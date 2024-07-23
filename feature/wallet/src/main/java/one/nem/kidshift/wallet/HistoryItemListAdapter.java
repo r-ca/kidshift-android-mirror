@@ -14,11 +14,50 @@ import one.nem.kidshift.model.HistoryModel;
 
 public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemListAdapter.ViewHolder> {
 
-    private List<HistoryModel> historyDataList;
+    public static class HistoryModelExtended extends HistoryModel {
+        private boolean isChecked;
+
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
+    }
+
+    public static class HistoryModelExtendedList {
+        private List<HistoryModelExtended> list;
+
+        public List<HistoryModelExtended> getList() {
+            return list;
+        }
+
+        public void setList(List<HistoryModelExtended> list) {
+            this.list = list;
+        }
+
+        // clear all checked items
+        public void clearChecked() {
+            for (HistoryModelExtended item : list) {
+                item.setChecked(false);
+            }
+        }
+    }
+
+    private HistoryModelExtendedList historyDataList;
 
     public void setHistoryDataList(List<HistoryModel> historyDataList) {
-        this.historyDataList = historyDataList;
+        this.historyDataList = new HistoryModelExtendedList();
+        for (HistoryModel historyModel : historyDataList) {
+            HistoryModelExtended historyModelExtended = new HistoryModelExtended();
+            historyModelExtended.setTaskName(historyModel.getTaskName());
+            historyModelExtended.setReward(historyModel.getReward());
+            historyModelExtended.setChecked(false);
+            this.historyDataList.getList().add(historyModelExtended);
+        }
     }
+
 
     @NonNull
     @Override
