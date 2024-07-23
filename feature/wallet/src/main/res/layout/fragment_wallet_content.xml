@@ -35,6 +35,7 @@
                     android:layout_height="wrap_content"
                     android:text="今月の支払い総額"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/colorOnSurface"
                     android:textSize="20sp" />
 
                 <TextView
@@ -43,7 +44,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="0000円"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                    android:textColor="@color/colorOnSurface" />
             </LinearLayout>
         </FrameLayout>
 
