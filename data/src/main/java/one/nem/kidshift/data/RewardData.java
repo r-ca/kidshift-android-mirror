@@ -16,5 +16,7 @@ public interface RewardData {
 
     CompletableFuture<List<HistoryModel>> getRewardHistoryList(String childId);
 
+    CompletableFuture<Void> payReward(String historyId);
 
+    CompletableFuture<Void> payReward(List<String> historyIds);
 }
