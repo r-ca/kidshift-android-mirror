@@ -159,7 +159,7 @@ public class KSActionsImpl implements KSActions {
     @Override
     public CompletableFuture<List<HistoryModel>> syncHistory(String childId) {
         CompletableFuture<HistoryListResponse> callHistoryApi = CompletableFuture.supplyAsync(() -> {
-            Call<HistoryListResponse> call = kidShiftApiService.getHistory(childId);
+            Call<HistoryListResponse> call = kidShiftApiService.getHistory(childId, true); // TODO: containPaidを引数に
             try {
                 Response<HistoryListResponse> response = call.execute();
                 if (!response.isSuccessful()) {

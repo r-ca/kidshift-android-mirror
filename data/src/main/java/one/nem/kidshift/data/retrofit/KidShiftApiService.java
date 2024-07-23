@@ -185,7 +185,7 @@ public interface KidShiftApiService {
 
     @GET("/task/history/{childId}")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
-    Call<HistoryListResponse> getHistory(@Path("childId") String childId);
+    Call<HistoryListResponse> getHistory(@Path("childId") String childId, @Query("containPaid") boolean containPaid);
 
     @POST("/task/history/{historyId}/paid")
     @Headers(AuthorizationInterceptor.HEADER_PLACEHOLDER)
