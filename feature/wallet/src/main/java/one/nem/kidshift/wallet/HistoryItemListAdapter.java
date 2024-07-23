@@ -150,7 +150,13 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 
     private boolean isFirstOfMonth(HistoryModel historyModel) {
         // 1個前の要素と比較して月が変わったかどうかを判定する
-        if ()
+        if (historyDataList.getList().indexOf(historyModel) == 0) {
+            return true;
+        } else {
+            HistoryModel previousHistoryModel = historyDataList.getList().get(historyDataList.getList().indexOf(historyModel) - 1);
+            // getMonth()はDeprecated TODO: やめる
+            return historyModel.getRegisteredAt().getMonth() != previousHistoryModel.getRegisteredAt().getMonth();
+        }
     }
 
     @Override
