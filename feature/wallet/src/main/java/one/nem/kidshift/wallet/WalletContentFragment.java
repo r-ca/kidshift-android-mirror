@@ -16,6 +16,7 @@ import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.ToolBarManager;
 import one.nem.kidshift.utils.factory.KSLoggerFactory;
+import one.nem.kidshift.utils.models.FabEventCallback;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -99,7 +100,30 @@ public class WalletContentFragment extends Fragment {
         historyItemRecyclerView.setAdapter(historyItemListAdapter);
         historyItemRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
+        historyItemListAdapter.setCallback(() -> {
+            if (historyItemListAdapter.hasChecked()) {
+                fabManager.show();
+                initFab();
+            } else {
+                fabManager.hide();
+            }
+        });
+
         return view;
+    }
+
+    private void initFab() {
+        fabManager.setFabEventCallback(new FabEventCallback() {
+            @Override
+            public void onClicked() {
+                logger.debug("Fab clicked");
+            }
+
+            @Override
+            public void onLongClicked() {
+
+            }
+        });
     }
 
     @Override
@@ -133,8 +157,8 @@ public class WalletContentFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateTotalReward();
-        fabManager.hide();
+//        updateTotalReward();
+//        fabManager.hide();
         toolBarManager.setTitle("ウォレット");
         toolBarManager.setSubtitle(null);
     }
