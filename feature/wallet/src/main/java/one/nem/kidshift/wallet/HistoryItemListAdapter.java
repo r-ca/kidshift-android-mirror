@@ -49,14 +49,17 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
 
     public void setHistoryDataList(List<HistoryModel> historyDataList) {
         this.historyDataList = new HistoryModelExtendedList();
-        for (HistoryModel historyModel : historyDataList) {
-            HistoryModelExtended historyModelExtended = new HistoryModelExtended();
-            historyModelExtended.setTaskName(historyModel.getTaskName());
-            historyModelExtended.setReward(historyModel.getReward());
-            historyModelExtended.setChecked(false);
-            this.historyDataList.getList().add(historyModelExtended);
-        }
+        historyDataList.stream()
+                .map(historyModel -> {
+                    HistoryModelExtended historyModelExtended = new HistoryModelExtended();
+                    historyModelExtended.setTaskName(historyModel.getTaskName());
+                    historyModelExtended.setReward(historyModel.getReward());
+                    historyModelExtended.setChecked(false);
+                    return historyModelExtended;
+                })
+                .forEach(this.historyDataList.getList()::add);
     }
+
 
 
     @NonNull
