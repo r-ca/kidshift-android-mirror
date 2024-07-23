@@ -118,7 +118,15 @@ public class WalletContentFragment extends Fragment {
         fabManager.setFabEventCallback(new FabEventCallback() {
             @Override
             public void onClicked() {
-                logger.debug("Fab clicked");
+                historyItemListAdapter.getCheckedHistoryDataList().forEach(historyModel -> {
+                    rewardData.payReward(historyModel.getId()).thenRun(() -> {
+                        logger.debug("Paid reward: " + historyModel.getId());
+                        updateItems();
+                    }).exceptionally(throwable -> {
+                        logger.error("Failed to pay reward: " + throwable.getMessage());
+                        return null;
+                    });
+                });
             }
 
             @Override
