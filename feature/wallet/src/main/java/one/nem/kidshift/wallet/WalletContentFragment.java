@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import one.nem.kidshift.data.KSActions;
 import one.nem.kidshift.data.RewardData;
 import one.nem.kidshift.data.UserSettings;
+import one.nem.kidshift.model.HistoryModel;
 import one.nem.kidshift.utils.FabManager;
 import one.nem.kidshift.utils.KSLogger;
 import one.nem.kidshift.utils.ToolBarManager;
@@ -91,7 +92,8 @@ public class WalletContentFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            updateTotalReward();
+//            updateTotalReward();
+            updateItems();
             swipeRefreshLayout.setRefreshing(false);
         });
 
@@ -131,6 +133,25 @@ public class WalletContentFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    private void updateItems() {
+        swipeRefreshLayout.setRefreshing(true);
+        rewardData.getRewardHistoryList(childId).thenAccept(historyList -> {
+            historyItemListAdapter.setHistoryDataList(historyList);
+//            totalRewardTextView.setText(String.valueOf(historyList.stream().mapToInt(HistoryModel::getReward).sum()) + "円");
+            requireActivity().runOnUiThread(() -> {
+                historyItemListAdapter.notifyDataSetChanged();
+                totalRewardTextView.setText("debug");
+            });
+        }).thenRun(() -> {
+            requireActivity().runOnUiThread(() -> {
+                swipeRefreshLayout.setRefreshing(false);
+            });
+        }).exceptionally(throwable -> {
+            logger.error("Failed to get history list: " + throwable.getMessage());
+            return null;
+        });
+    }
+
     private void updateTotalReward() {
         swipeRefreshLayout.setRefreshing(true);
         rewardData.getTotalReward(childId).thenAccept(totalReward -> {
@@ -158,6 +179,7 @@ public class WalletContentFragment extends Fragment {
     public void onResume() {
         super.onResume();
 //        updateTotalReward();
+//        updateItems();
 //        fabManager.hide();
         toolBarManager.setTitle("ウォレット");
         toolBarManager.setSubtitle(null);
