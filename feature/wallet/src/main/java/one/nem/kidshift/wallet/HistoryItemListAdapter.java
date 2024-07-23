@@ -156,16 +156,20 @@ public class HistoryItemListAdapter extends RecyclerView.Adapter<HistoryItemList
             ((MonthHeaderViewHolder) holder).monthHeaderTitle.setText(historyData.getRegisteredAt().getDate() + "日");
             ((MonthHeaderViewHolder) holder).monthTotalTextView.setText(getMonthTotal(historyData) + "円");
             ((MonthHeaderViewHolder) holder).checkAllButton.setOnClickListener(v -> {
-                // TODO: 一括で外すことも出来るように
-                // 判定が変わるまで全部チェックする
+                // 次のヘッダーまでの間のアイテムを全てチェックする
+                int index = position + 1;
                 try {
-                    int index = historyDataList.getList().indexOf(historyData);
                     while (!isFirstOfMonth(this.historyDataList.getList().get(index))) {
                         this.historyDataList.getList().get(index).setChecked(true);
                         index++;
                     }
+                    // 自身を更新 Workaround: なぜかindexを+1しないとチェックをつけれないので
+                    this.historyDataList.getList().get(position).setChecked(true);
+                    // 表示更新
+                    notifyItemRangeChanged(position, index - position);
+//                    notifyDataSetChanged();
                 } catch (IndexOutOfBoundsException e) {
-                    // 1個しかない場合? Workaround
+                    // 1個しかない場合 Workaround
                 }
             });
         }
