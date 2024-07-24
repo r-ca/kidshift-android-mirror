@@ -106,6 +106,8 @@ public class WalletContentFragment extends Fragment {
         historyItemRecyclerView.setAdapter(historyItemListAdapter);
         historyItemRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
+        historyItemListAdapter.setHideCheckBox(userSettings.getAppCommonSetting().isChildMode());
+
         historyItemListAdapter.setCallback(() -> {
             if (historyItemListAdapter.hasChecked()) {
                 fabManager.show();
